@@ -2,8 +2,8 @@
 
 #include "Vector2D.h"
 #include "Texture.h"
-#include "Game.h"
 
+class Game;
 class Ball {
 private:
 	Vector2D position;
@@ -12,6 +12,7 @@ private:
 	Texture* texture;
 	Game* game;
 public:
+	Ball();
 	Ball(Vector2D position, int width, int heigth, Texture* texture, Game* game);
 	Ball(double x, double y, int width, int heigth, Texture* texture, Game* game);
 	void render();

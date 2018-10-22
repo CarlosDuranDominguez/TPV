@@ -5,9 +5,9 @@
 #include "checkML.h"
 #include "Texture.h"
 #include "Ball.h"
-#include "Paddle.h"
-#include "BlocksMap.h"
-#include "Wall.h"
+//#include "Paddle.h"
+//#include "BlocksMap.h"
+//#include "Wall.h"
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
@@ -24,14 +24,14 @@ struct TextureInfo {
 };
 
 const TextureInfo TEXTURES[5]{
-	TextureInfo{"./images/ball.png",1,1},
-	TextureInfo{"./images/bricks.png",1,1},
-	TextureInfo{"./images/paddle.png",1,1},
-	TextureInfo{"./images/side.png",1,1},
-	TextureInfo{"./images/topside.png",1,1},
+	TextureInfo{"../images/ball.png",1,1},
+	TextureInfo{"../images/bricks.png",1,1},
+	TextureInfo{"../images/paddle.png",1,1},
+	TextureInfo{"../images/side.png",1,1},
+	TextureInfo{"../images/topside.png",1,1},
 };
 
-const string LEVEL[3]{ "./levels/level01.ark","./levels/level02.ark","./levels/level02.ark" };
+const string LEVEL[3]{ "../levels/level01.ark","../levels/level02.ark","../levels/level02.ark" };
 
 class Game {
 private:
@@ -40,9 +40,9 @@ private:
 	bool exit = false, gameover = false, win = false;
 	Texture* textures[NUMBER_TEXTURES];
 	Ball* ball = nullptr;
-	Paddle* paddle = nullptr;
-	BlocksMap* blocksmap = nullptr;
-	Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
+	//Paddle* paddle = nullptr;
+	//BlocksMap* blocksmap = nullptr;
+	//Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
 public:
 	Game();
 	~Game();
