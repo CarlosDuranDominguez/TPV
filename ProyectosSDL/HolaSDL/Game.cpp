@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#include "checkML.h"
 
 Game::Game() :
 	window(nullptr), renderer(nullptr),	exit(false), gameover(false), win(false) 
@@ -10,19 +13,22 @@ Game::Game() :
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		textures[i] = new Texture(renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
 	}
-	ball = new Ball(0, 0, textures[BALL]->getW(), textures[BALL]->getH(), textures[BALL], this);
-	//paddle = new Paddle(0, 0, textures[PADDLE]->getW(), textures[PADDLE]->getH(), textures[PADDLE]);
-	//blocksmap = new BlocksMap(LEVEL[0]);
-	//upWall = new Wall(0,0,textures[TOPSIDE]->getW(),textures[TOPSIDE]->getH(),textures[TOPSIDE]);
-	//rightWall = new Wall(0, 0, textures[SIDE]->getW(), textures[SIDE]->getH(), textures[SIDE]); 
-	//leftWall = new Wall(0, 0, textures[SIDE]->getW(), textures[SIDE]->getH(), textures[SIDE]);
+	ball = new Ball((WIN_WIDTH- textures[BALL]->getW()/4)/2, WIN_HEIGHT*14/16, textures[BALL]->getW()/4, textures[BALL]->getH()/4, textures[BALL], this);
+	paddle = new Paddle((WIN_WIDTH- textures[PADDLE]->getW()) /2, WIN_HEIGHT*15/16, textures[PADDLE]->getW(), textures[PADDLE]->getH(), PADDLESPEED, textures[PADDLE]);
+	blocksmap = new BlocksMap(LEVEL[0],textures[BRICKS]);
+	upWall = new Wall(0,0,WIN_WIDTH,textures[TOPSIDE]->getH(),textures[TOPSIDE]);
+	rightWall = new Wall(0, 0, textures[SIDE]->getW(),WIN_HEIGHT, textures[SIDE]); 
+	leftWall = new Wall(WIN_WIDTH- textures[SIDE]->getW(), 0, textures[SIDE]->getW(), WIN_HEIGHT, textures[SIDE]);
 
 };
 Game::~Game() 
 {
 	delete ball;
-	//delete paddle;
-	//delete blocksmap;
+	delete paddle;
+	delete blocksmap;
+	delete upWall;
+	delete rightWall;
+	delete leftWall;
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		delete textures[i];
 	}
@@ -32,10 +38,15 @@ Game::~Game()
 };
 void Game::run()
 {
-	int startTime, frameTime;
+	uint32_t startTime, frameTime;
+	startTime = SDL_GetTicks();
 	while (!exit && !gameover && !win) {
-		//handleEvents();
-		//update();
+		handleEvents();
+		frameTime = SDL_GetTicks() - startTime;
+		if (frameTime >= FRAMERATE) {
+			update();
+			startTime = SDL_GetTicks();
+		}
 		//collides();
 		render();
 	}
@@ -44,18 +55,17 @@ void Game::run()
 void Game::update()
 {
 	ball->update();
-	//paddle->update();
+	paddle->update();
 };
 void Game::render() const 
 {
 	SDL_RenderClear(renderer);
+	blocksmap->render();
 	ball->render();
-
-	//paddle->render();
-	//blocksmap->render();
-	//upWall->render();
-	//rightWall->render();
-	//leftWall->render();
+	paddle->render();
+	upWall->render();
+	rightWall->render();
+	leftWall->render();
 	SDL_RenderPresent(renderer);
 };
 void Game::handleEvents()
@@ -64,7 +74,7 @@ void Game::handleEvents()
 	while (SDL_PollEvent(&event) && !exit) {
 		if (event.type == SDL_QUIT) 
 			exit = true;
-		//paddle->handleEvents(event);
+		paddle->handleEvents(event);
 	}
 };
 void Game::collides() {

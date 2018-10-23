@@ -9,11 +9,9 @@ private:
 	int width, height;
 	Texture* texture;
 public:
-	Wall(float x, float y, int width, int height, Texture* texture)
-		:position(x, y), width(width), height(height), texture(texture) {};
-	Wall(Vector2D position, int width, int height, Texture* texture)
-		: position(position), width(width), height(height), texture(texture) {};
-	~Wall() {};
+	Wall(float x, float y, int width, int height, Texture* texture);
+	Wall(Vector2D position, int width, int height, Texture* texture);
+	~Wall();
 	void render();
 };
 

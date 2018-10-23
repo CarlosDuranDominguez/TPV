@@ -14,6 +14,7 @@ int main(int argc, char* argv[]){
 	try {
 		Game* game = new Game();
 		game->run();
+		delete game;
 		return 0;
 	}
 	catch (exception e) {

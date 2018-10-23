@@ -4,16 +4,14 @@
 #include <string>
 class BlocksMap {
 private:
-	Block** blocks;
+	Block*** blocks;
 	int columns, rows;
 	int mapWidth, mapHeight;
 	int cellWidth, cellHeight;
 public:
-	BlocksMap() :
-		blocks(nullptr), columns(0), rows(0), mapWidth(0), mapHeight(0), cellWidth(0), cellHeight(0) {};
-	BlocksMap(string path) { loadMap(path); };
+	BlocksMap(string, Texture*);
 	~BlocksMap();
-	void loadMap(string);
+	void loadMap(string, Texture*);
 	void render();
 	int numberOfBlocks();
 	Block* collide();
