@@ -14,7 +14,7 @@ const uint WIN_HEIGHT = 600;
 const uint NUM_TEXTURES = 3;
 const uint FRAMERATE = 30;
 const uint NUMBER_TEXTURES = 5;
-const double PADDLESPEED = 3;
+const double PADDLESPEED = 5; 
 
 enum Textures { BALL, BRICKS, PADDLE, SIDE, TOPSIDE };
 
@@ -32,7 +32,7 @@ const TextureInfo TEXTURES[5]{
 	TextureInfo{"../images/topside.png",1,1},
 };
 
-const string LEVEL[3]{ "../levels/level01.ark","../levels/level02.ark","../levels/level02.ark" };
+const string LEVEL[3]{ "../levels/level01.ark","../levels/level02.ark","../levels/level03.ark" };
 
 class Game {
 private:

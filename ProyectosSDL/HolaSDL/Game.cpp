@@ -13,12 +13,37 @@ Game::Game() :
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		textures[i] = new Texture(renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
 	}
-	ball = new Ball((WIN_WIDTH- textures[BALL]->getW()/4)/2, WIN_HEIGHT*14/16, textures[BALL]->getW()/4, textures[BALL]->getH()/4, textures[BALL], this);
-	paddle = new Paddle((WIN_WIDTH- textures[PADDLE]->getW()) /2, WIN_HEIGHT*15/16, textures[PADDLE]->getW(), textures[PADDLE]->getH(), PADDLESPEED, textures[PADDLE]);
-	blocksmap = new BlocksMap(LEVEL[0],textures[BRICKS]);
-	upWall = new Wall(0,0,WIN_WIDTH,textures[TOPSIDE]->getH(),textures[TOPSIDE]);
-	rightWall = new Wall(0, 0, textures[SIDE]->getW(),WIN_HEIGHT, textures[SIDE]); 
-	leftWall = new Wall(WIN_WIDTH- textures[SIDE]->getW(), 0, textures[SIDE]->getW(), WIN_HEIGHT, textures[SIDE]);
+
+	int wall_width = textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
+	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
+	ball = new Ball((WIN_WIDTH- textures[BALL]->getW()/4)/2, 
+		WIN_HEIGHT*14/16, 
+		textures[BALL]->getW()/4, 
+		textures[BALL]->getH()/4, 
+		textures[BALL], 
+		this);
+	paddle = new Paddle((WIN_WIDTH- textures[PADDLE]->getW()) /2,
+		WIN_HEIGHT*15/16, 
+		textures[PADDLE]->getW(), 
+		textures[PADDLE]->getH(), 
+		PADDLESPEED, 
+		textures[PADDLE]);
+	blocksmap = new BlocksMap(LEVEL[0], wall_width,textures[BRICKS]);
+	upWall = new Wall(0,
+		0,
+		WIN_WIDTH,
+		wall_width,
+		textures[TOPSIDE]);
+	leftWall = new Wall(0, 
+		wall_width,
+		wall_width,
+		wall_height,
+		textures[SIDE]);
+	rightWall = new Wall(WIN_WIDTH - wall_width,
+		wall_width,
+		wall_width,
+		wall_height,
+		textures[SIDE]);
 
 };
 Game::~Game() 

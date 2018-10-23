@@ -9,9 +9,9 @@ private:
 	int mapWidth, mapHeight;
 	int cellWidth, cellHeight;
 public:
-	BlocksMap(string, Texture*);
+	BlocksMap(string,int, Texture*);
 	~BlocksMap();
-	void loadMap(string, Texture*);
+	void loadMap(string,int, Texture*);
 	void render();
 	int numberOfBlocks();
 	Block* collide();

@@ -10,10 +10,11 @@ private:
 	Vector2D velocity;
 	double speed;
 	Texture* texture;
+	bool leftMovement, rightMovement;
 public:
 	Paddle(Vector2D position, int width, int heigth, double speed ,Texture* texture);
 	Paddle(double x, double y, int width, int heigth, double speed, Texture* texture);
-	void render();
+	void render() const;
 	void update();
 	void handleEvents(SDL_Event event);
 	Vector2D colision();

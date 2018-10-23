@@ -3,11 +3,11 @@
 #include "Texture.h"
 #include <iostream>
 #include <fstream>
-BlocksMap::BlocksMap(string path,Texture* texture)
+BlocksMap::BlocksMap(string path, int padding, Texture* texture)
 {
-	mapWidth = WIN_WIDTH;
-	mapHeight = WIN_HEIGHT/2;
-	loadMap(path, texture);
+	mapWidth = WIN_WIDTH-2*padding;
+	mapHeight = WIN_HEIGHT/2-padding;
+	loadMap(path, padding, texture);
 };
 BlocksMap::~BlocksMap() 
 {
@@ -22,7 +22,7 @@ BlocksMap::~BlocksMap()
 	}
 	delete[] blocks;
 };
-void BlocksMap::loadMap(string path, Texture* texture)
+void BlocksMap::loadMap(string path, int padding, Texture* texture)
 {
 	ifstream file;
 	file.open(path);
@@ -39,7 +39,7 @@ void BlocksMap::loadMap(string path, Texture* texture)
 				file >> aux;
 				if (aux != 0)
 				{
-					blocks[i][j] = new Block(j*cellWidth, i*cellHeight, cellWidth, cellHeight, i, j, aux-1, texture);
+					blocks[i][j] = new Block(padding + j*cellWidth, padding + i*cellHeight, cellWidth, cellHeight, i, j, aux-1, texture);
 				}
 				else
 				{
