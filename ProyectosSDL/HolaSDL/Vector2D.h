@@ -13,20 +13,22 @@ public:
 	double getY() const;
 	double modulus() const;
 	Vector2D normalize();
-	Vector2D projectionOn(Vector2D v) const;
-	Vector2D reflect(Vector2D) const;
-	Vector2D operator+(const Vector2D) const;
-	Vector2D operator-(const Vector2D) const;
+	Vector2D projectionOn(const Vector2D& v) const;
+	Vector2D reflect(const Vector2D&) const;
+	Vector2D operator+(const Vector2D&) const;
+	Vector2D operator-(const Vector2D&) const;
 	Vector2D operator-() const;
-	double operator*(const Vector2D) const;
-	Vector2D operator*(const double) const;
-	Vector2D operator/(const double) const;
-	friend Vector2D operator*(const double, const Vector2D);
-	friend ostream& operator<<(ostream&, const Vector2D);
+	double operator*(const Vector2D&) const;
+	Vector2D operator*(const double&) const;
+	Vector2D operator/(const double&) const;
+	bool isIn(const Vector2D&, const Vector2D&) const;
+	bool isIn(const double, const double, const double, const double) const;
+	friend Vector2D operator*(const double&, const Vector2D&);
+	friend ostream& operator<<(ostream&, const Vector2D&);
 
 };
 
-Vector2D operator*(const double, const Vector2D);
-ostream& operator<<(ostream&, const Vector2D);
+Vector2D operator*(const double&, const Vector2D&);
+ostream& operator<<(ostream&, const Vector2D&);
 
 

@@ -1,8 +1,20 @@
-﻿  Game.cpp
+﻿  Ball.cpp
+c:\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': macro redefinition
+  c:\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: see previous definition of '_malloca'
+  Block.cpp
+  BlocksMap.cpp
+c:\users\usuario_local\documents\github\tpv\proyectossdl\holasdl\blocksmap.cpp(42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Game.cpp
 c:\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': macro redefinition
   c:\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: see previous definition of '_malloca'
 c:\users\usuario_local\documents\github\tpv\proyectossdl\holasdl\game.cpp(38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\usuario_local\documents\github\tpv\proyectossdl\holasdl\game.cpp(43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 c:\users\usuario_local\documents\github\tpv\proyectossdl\holasdl\game.cpp(42): warning C4244: 'argument': conversion from 'uint' to 'float', possible loss of data
-  LINK : C:\Users\usuario_local\Documents\GitHub\TPV\ProyectosSDL\bin\HolaSDLDebug.exe not found or not built by the last incremental link; performing full link
+  Paddle.cpp
+  Vector2D.cpp
+  Wall.cpp
+  main.cpp
+c:\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': macro redefinition
+  c:\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: see previous definition of '_malloca'
+  Generating Code...
   HolaSDL.vcxproj -> C:\Users\usuario_local\Documents\GitHub\TPV\ProyectosSDL\bin\HolaSDLDebug.exe

@@ -14,7 +14,7 @@ public:
 	void loadMap(string,int, Texture*);
 	void render();
 	int numberOfBlocks();
-	Block* collide();
+	bool collide(const Ball*, Vector2D&, Vector2D&);
 
 };
 

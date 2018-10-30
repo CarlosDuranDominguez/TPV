@@ -78,10 +78,19 @@ int BlocksMap::numberOfBlocks()
 	}
 	return -1;
 };
-Block* BlocksMap::collide() 
-{
-	return nullptr;
-};
+bool BlocksMap::collide(const Ball& object, Vector2D& collisionPosition, Vector2D& reflection) {
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			if (blocks[i][j]->collide(object, collisionPosition, reflection))
+			{
+				delete blocks[i][j];
+				blocks[i][j] = nullptr;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 /*ofstream myfile;
   myfile.open ("example.txt");
   myfile << "Writing this to a file.\n";

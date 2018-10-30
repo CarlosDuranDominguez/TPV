@@ -102,7 +102,11 @@ void Game::handleEvents()
 		paddle->handleEvents(event);
 	}
 };
-void Game::collides() {
-
+bool Game::collides(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
+	return blocksmap->collide(object, collisionPosition, reflection) ||
+		paddle->collide(object, collisionPosition, reflection) ||
+		leftWall->collide(object, collisionPosition, reflection) ||
+		upWall->collide(object, collisionPosition, reflection) ||
+		rightWall->collide(object, collisionPosition, reflection);
 };
 

@@ -15,6 +15,7 @@ public:
 	Block(Vector2D position, int width, int height, int column, int row, int color, Texture* texture);
 	~Block();
 	void render();
+	bool collide(const Ball&, Vector2D&, Vector2D&);
 };
 
 

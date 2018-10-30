@@ -8,3 +8,6 @@ Wall::~Wall() {};
 void Wall::render() {
 	texture->render(SDL_Rect{ (int)position.getX(),(int)position.getY(),width,height });
 };
+bool Wall::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
+	return false;
+}

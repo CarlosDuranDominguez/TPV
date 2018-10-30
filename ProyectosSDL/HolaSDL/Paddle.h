@@ -2,7 +2,7 @@
 
 #include "Vector2D.h"
 #include "Texture.h"
-
+#include "Ball.h"
 class Paddle {
 private:
 	Vector2D position;
@@ -17,6 +17,7 @@ public:
 	void render() const;
 	void update();
 	void handleEvents(SDL_Event event);
-	Vector2D colision();
+	bool collide(const Ball*, Vector2D&, Vector2D&);
+	Vector2D Position() const;
 };
 

@@ -46,3 +46,43 @@ void Paddle::handleEvents(SDL_Event event)
 	velocity = velocity + (rightMovement ? Vector2D(1, 0) : Vector2D(0, 0));
 	velocity = velocity + (leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
 }
+Vector2D Paddle::Position() const {
+	return Vector2D(width / 2 + position.getX(), heigth / 2 + position.getY());
+}
+bool Paddle::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
+	if (object->Position().isIn(position.getX() - width - object->getRadius(),
+			position.getY() - heigth,
+			position.getX() + width + object->getRadius(),
+			position.getY() + heigth) ||
+		object->Position().isIn(position.getX() - width ,
+			position.getY() - heigth - object->getRadius(),
+			position.getX() + width,
+			position.getY() + heigth + object->getRadius()) ||
+		(object->Position() - Vector2D(position.getX() + width, position.getY() + heigth)).modulus<object->getRadius() ||
+		(object->Position() - Vector2D(position.getX(), position.getY() + heigth)).modulus < object->getRadius() ||
+		(object->Position() - Vector2D(position.getX() + width, position.getY())).modulus < object->getRadius() ||
+		(object->Position() - Vector2D(position.getX(), position.getY())).modulus < object->getRadius() ) {
+		if (noseque > 0.0) {
+			if (nosecual > 0.0) {
+				reflection = Vector2D(?, ?);
+				collisionPosition = corte;
+			}
+			else {
+				reflection = Vector2D(?, ?);
+				collisionPosition = corte;
+			}
+		}
+		else {
+			if (nosecual > 0.0) {
+				reflection = Vector2D(?, ?);
+				collisionPosition = corte;
+			}
+			else {
+				reflection = Vector2D(?, ?);
+				collisionPosition = corte;
+			}
+		}
+		return true;
+	}
+	return false;
+}

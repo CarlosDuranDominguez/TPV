@@ -31,19 +31,19 @@ Vector2D Vector2D::normalize()
 /*
  * Calculate the vector proyection
 */
-Vector2D Vector2D::projectionOn(Vector2D v) const
+Vector2D Vector2D::projectionOn(const Vector2D& v) const
 {
 	return v * ((*this*v)/(v*v));
 }
-Vector2D Vector2D::reflect(Vector2D normal) const
+Vector2D Vector2D::reflect(const Vector2D& normal) const
 {
 	return (*this) - normal*normal*(*this)*2.0;
 }
-Vector2D Vector2D::operator+(const Vector2D v) const
+Vector2D Vector2D::operator+(const Vector2D& v) const
 {
 	return Vector2D(x + v.x, y + v.y);
 }
-Vector2D Vector2D::operator-(const Vector2D v) const
+Vector2D Vector2D::operator-(const Vector2D& v) const
 {
 	return Vector2D(x - v.x, y - v.y);
 }
@@ -51,24 +51,37 @@ Vector2D Vector2D::operator-() const
 {
 	return Vector2D(-x, -y);
 }
-double Vector2D::operator*(const Vector2D v) const
+double Vector2D::operator*(const Vector2D& v) const
 {
 	return x * v.x + y * v.y;
 }
-Vector2D Vector2D::operator*(const double k) const
+Vector2D Vector2D::operator*(const double& k) const
 {
 	return Vector2D(k*x, k*y);
 }
-Vector2D operator*(const double k , const Vector2D v) 
+Vector2D operator*(const double& k , const Vector2D& v) 
 {
 	return Vector2D(k*v.x, k*v.y);
 }
 
-Vector2D Vector2D::operator/(const double k) const
+bool Vector2D::isIn(const Vector2D& leftInferior, const Vector2D& rightSuperior) const {
+	return (x >= leftInferior.x) &&
+		   (y >= leftInferior.y) &&
+		   (x <= rightSuperior.x) &&
+		   (y <= rightSuperior.y);
+}
+bool Vector2D::isIn(const double minX, const double minY, const double maxX, const double maxY) const {
+	return (x >= minX) &&
+		   (y >= minY) &&
+		   (x <= maxX) &&
+		   (y <= maxY);
+}
+
+Vector2D Vector2D::operator/(const double& k) const
 {
 	return Vector2D(x / k, y / k);
 }
-ostream& operator<<(ostream& os, const Vector2D v) 
+ostream& operator<<(ostream& os, const Vector2D& v) 
 {
 	return os << "(" << v.x << "," << v.y << ")";
 }

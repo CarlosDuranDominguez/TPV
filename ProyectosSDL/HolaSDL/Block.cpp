@@ -11,3 +11,6 @@ Block::~Block() {};
 void Block::render() {
 	texture->renderFrame(SDL_Rect{ (int)position.getX(),(int)position.getY(),width, height }, color/texture->getNumCols(), color%texture->getNumCols());
 }
+bool collide(const Ball& object, Vector2D& collisionPOsition, Vector2D& reflection) {
+	return false;
+}

@@ -51,6 +51,6 @@ public:
 	void render() const;
 	void update();
 	void handleEvents();
-	void collides();
+	bool collides(const Ball*, Vector2D&, Vector2D&);
 };
 
