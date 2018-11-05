@@ -7,6 +7,9 @@ Game::Game() :
 	window(nullptr), renderer(nullptr),	exit(false), gameover(false), win(false) 
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	if (TTF_Init() < 0) {
+		throw "Error loading the SDL font";
+	}
 	window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (window == nullptr || renderer == nullptr) throw "Error loading the SDL window or renderer";
@@ -22,6 +25,7 @@ Game::Game() :
 		textures[BALL]->getH()/4, 
 		textures[BALL], 
 		this);
+	ball->setVelocity( 0,150);
 	paddle = new Paddle((WIN_WIDTH- textures[PADDLE]->getW()) /2,
 		WIN_HEIGHT*15/16, 
 		textures[PADDLE]->getW(), 
@@ -59,6 +63,7 @@ Game::~Game()
 	}
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
+	TTF_Quit();
 	SDL_Quit();
 };
 void Game::run()

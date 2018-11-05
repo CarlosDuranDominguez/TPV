@@ -6,7 +6,7 @@
 class Paddle {
 private:
 	Vector2D position;
-	int width, heigth;
+	int width, height;
 	Vector2D velocity;
 	double speed;
 	Texture* texture;

@@ -39,7 +39,7 @@ void BlocksMap::loadMap(string path, int padding, Texture* texture)
 				file >> aux;
 				if (aux != 0)
 				{
-					blocks[i][j] = new Block(padding + j*cellWidth, padding + i*cellHeight, cellWidth, cellHeight, i, j, aux-1, texture);
+					blocks[i][j] = new Block(padding + j * cellWidth, padding + i * cellHeight, cellWidth, cellHeight, i, j, aux - 1, texture);
 				}
 				else
 				{
@@ -78,12 +78,12 @@ int BlocksMap::numberOfBlocks()
 	}
 	return -1;
 };
-bool BlocksMap::collide(const Ball& object, Vector2D& collisionPosition, Vector2D& reflection) {
+bool BlocksMap::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-			if (blocks[i][j]->collide(object, collisionPosition, reflection))
+			if (blocks[i][j]!=nullptr && blocks[i][j]->collide(object, collisionPosition, reflection))
 			{
-				delete blocks[i][j];
+				blocks[i][j]->~Block();
 				blocks[i][j] = nullptr;
 				return true;
 			}
@@ -91,8 +91,3 @@ bool BlocksMap::collide(const Ball& object, Vector2D& collisionPosition, Vector2
 	}
 	return false;
 }
-/*ofstream myfile;
-  myfile.open ("example.txt");
-  myfile << "Writing this to a file.\n";
-  myfile.close();
-  return 0;*/
