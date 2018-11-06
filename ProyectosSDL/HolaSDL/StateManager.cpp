@@ -1,7 +1,7 @@
 #include "StateManager.h"
 
 StateManager::StateManager(GameState* game, MenuState* menu, ScoreBoardState* scoreboard): game(game), menu(menu),scoreboard(scoreboard) {
-	 _currentState = "game";
+	 _currentState = "menu";
  }
 
 StateManager::~StateManager() {
