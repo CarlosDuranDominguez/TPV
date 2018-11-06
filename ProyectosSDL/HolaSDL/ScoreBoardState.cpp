@@ -2,10 +2,8 @@
 #include "Game.h"
 
 ScoreBoardState::ScoreBoardState(Game* game, SDL_Renderer* renderer): game(game), renderer(renderer) {
-	SDL_Color white = { 255,255,255,255 };
-	SDL_Color grey = { 80,80,80,255 };
-	scoreboard = new ScoreBoard(game->getFonts()[0], 0, 0, 200, 40, white, "../saves/save.save");
-	button = new Button(game->getFonts()[0], 0, 400, 200, 100, white, grey, "Exit", [this,game]() {
+	scoreboard = new ScoreBoard(game->getFonts()[0], 0, 0, 200, 40, WHITE, "../saves/save.save");
+	button = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this,game]() {
 		exit = true; game->changeState("menu");
 	});
 }

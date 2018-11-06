@@ -27,10 +27,12 @@ BlocksMap::~BlocksMap()
 
 void BlocksMap::loadMap(string path, int padding, Texture* texture)
 {
+	
 	ifstream file;
 	file.open(path);
 	if (file.good())
 	{
+		_numberOfBlocks = 0;
 		file >> rows >> columns;
 		blocks = new Block**[rows];
 		cellWidth = mapWidth / columns;
@@ -43,6 +45,7 @@ void BlocksMap::loadMap(string path, int padding, Texture* texture)
 				if (aux != 0)
 				{
 					blocks[i][j] = new Block(padding + j * cellWidth, padding + i * cellHeight, cellWidth, cellHeight, i, j, aux - 1, texture);
+					_numberOfBlocks++;
 				}
 				else
 				{
@@ -72,16 +75,7 @@ void BlocksMap::render()
 
 int BlocksMap::numberOfBlocks() 
 {
-	int ret = 0;
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
-			if (blocks[i][j] != nullptr)
-			{
-				ret++;
-			}
-		}
-	}
-	return -1;
+	return _numberOfBlocks;
 }
 
 bool BlocksMap::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
@@ -89,7 +83,8 @@ bool BlocksMap::collide(const Ball* object, Vector2D& collisionPosition, Vector2
 		for (int j = 0; j < columns; j++) {
 			if (blocks[i][j]!=nullptr && blocks[i][j]->collide(object, collisionPosition, reflection))
 			{
-				blocks[i][j]->~Block();
+				_numberOfBlocks--;
+				delete blocks[i][j];
 				blocks[i][j] = nullptr;
 				return true;
 			}

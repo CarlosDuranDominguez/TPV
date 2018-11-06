@@ -55,6 +55,8 @@ const string FONTSDIRECTORIES[NUMBER_FONT_STYLES]{
 };
 
 const string LEVEL[3]{ "../levels/level01.ark","../levels/level02.ark","../levels/level03.ark" };
+const SDL_Color WHITE = { 255,255,255,255 };
+const SDL_Color GREY = { 80,80,80,255 };
 
 class Game {
 private:

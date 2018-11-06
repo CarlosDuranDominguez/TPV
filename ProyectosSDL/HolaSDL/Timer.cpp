@@ -15,11 +15,19 @@ Timer::~Timer() {
 	delete text;
 }
 
-void Timer::render() {
-	text->setText(to_string((int)difftime(currentTime, firstTime)));
+void Timer::render() const {
+	text->setText(to_string((int)getTime()));
 	text->render();
 }
 
 void Timer::update() {
 	time(&currentTime);
+}
+
+void Timer::reset() {
+	time(&firstTime);
+}
+
+double Timer::getTime() const {
+	return difftime(currentTime, firstTime);
 }

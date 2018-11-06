@@ -6,6 +6,7 @@
 class BlocksMap {
 private:
 	Block*** blocks;
+	uint _numberOfBlocks;
 	int columns, rows;
 	int mapWidth, mapHeight;
 	int cellWidth, cellHeight;

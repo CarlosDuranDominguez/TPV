@@ -19,7 +19,7 @@ Game::Game() :
 	menu = new MenuState(this, renderer);
 	scoreboard = new ScoreBoardState(this, renderer);
 	statemanager = new StateManager(game, menu, scoreboard);
-
+	gamemanager = new GameManager();
 }
 
 Game::~Game() 
@@ -31,6 +31,8 @@ Game::~Game()
 		delete textures[i];
 	}
 	delete fonts[0];
+	delete gamemanager;
+	delete statemanager;
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	TTF_Quit();

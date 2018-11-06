@@ -13,6 +13,7 @@ void StateManager::run() {
 			menu->run();
 		}
 		else if (_currentState == "game") {
+			game->init();
 			game->run();
 		}
 		else if (_currentState == "scoreboard") {

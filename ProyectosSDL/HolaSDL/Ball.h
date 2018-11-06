@@ -7,10 +7,10 @@ class GameState;
 
 class Ball {
 private:
-	Vector2D position;
+	Vector2D _position;
 	int width, height;
 	double radius;
-	Vector2D velocity;
+	Vector2D _velocity;
 	Texture* texture;
 	GameState* game;
 public:
@@ -20,10 +20,10 @@ public:
 	void render() const;
 	void update();
 	double getRadius() const;
-	Vector2D Position() const;
-	Vector2D SetPosition(const double x, const double y);
-	Vector2D SetPosition(const Vector2D pos);
-	Vector2D Velocity() const;
+	Vector2D position() const;
+	Vector2D setPosition(const double x, const double y);
+	Vector2D setPosition(const Vector2D pos);
+	Vector2D velocity() const;
 	Vector2D setVelocity(const double x, const double y);
 };
 

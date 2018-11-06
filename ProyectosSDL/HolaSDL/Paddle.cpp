@@ -3,20 +3,20 @@
 #include "SDL.h"
 
 Paddle::Paddle(Vector2D position, int width, int heigth, double speed, Texture* texture) :
-	position(position), width(width), height(heigth), velocity(), speed(), texture(texture), 
-	leftMovement(false), rightMovement(false) {};
+	_position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture), 
+	_leftMovement(false), _rightMovement(false) {};
 
 Paddle::Paddle(double x, double y, int width, int heigth, double speed, Texture* texture) :
-	position(x, y), width(width), height(heigth), velocity(), speed(speed), texture(texture),
-	leftMovement(false), rightMovement(false) {};
+	_position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
+	_leftMovement(false), _rightMovement(false) {};
 
 void Paddle::render() const
 {
-	texture->render(SDL_Rect{ (int)position.getX(),(int)position.getY(),width,height });
+	_texture->render(SDL_Rect{ (int)_position.getX(),(int)_position.getY(),_width,_height });
 };
 void Paddle::update() 
 {
-	position = position + velocity*FRAMERATE;
+	_position = _position + _velocity*FRAMERATE;
 };
 void Paddle::handleEvents(SDL_Event event)
 {
@@ -26,10 +26,10 @@ void Paddle::handleEvents(SDL_Event event)
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_RIGHT:
-			rightMovement = true;
+			_rightMovement = true;
 		break;
 		case SDLK_LEFT:
-			leftMovement = true;
+			_leftMovement = true;
 		break;
 		}
 		break;
@@ -37,61 +37,82 @@ void Paddle::handleEvents(SDL_Event event)
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_RIGHT:
-			rightMovement = false;
+			_rightMovement = false;
 			break;
 		case SDLK_LEFT:
-			leftMovement = false;
+			_leftMovement = false;
 			break;
 		}
 	}
-	velocity = Vector2D(0, 0);
-	velocity = velocity + (rightMovement ? Vector2D(1, 0) : Vector2D(0, 0));
-	velocity = velocity + (leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
+	_velocity = Vector2D(0, 0);
+	_velocity = _velocity + (_rightMovement ? Vector2D(1, 0) : Vector2D(0, 0));
+	_velocity = _velocity + (_leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
 }
 
-Vector2D Paddle::Position() const {
-	return Vector2D(((double)width) / 2 + position.getX(),((double) height) / 2 + position.getY());
+Vector2D Paddle::position() const {
+	return Vector2D(((double)_width) / 2 + _position.getX(),((double) _height) / 2 + _position.getY());
+}
+
+Vector2D Paddle::setPosition(const double x, const double y) {
+	Vector2D pos(x, y);
+	_position = pos - Vector2D(_width / 2, _height / 2);
+	return pos;
+}
+
+Vector2D Paddle::setPosition(const Vector2D pos) {
+	_position = pos - Vector2D(_width / 2, _height / 2);
+	return pos;
+}
+
+Vector2D Paddle::velocity() const {
+	return _velocity;
+}
+
+Vector2D Paddle::setVelocity(const double x, const double y) {
+	_velocity.setX(x);
+	_velocity.setY(y);
+	return _velocity;
 }
 
 bool Paddle::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
-	if (object->Position().isIn(position.getX() - object->getRadius(),
-		position.getY(),
-		position.getX() + width + object->getRadius(),
-		position.getY() + height) ||
-		object->Position().isIn(position.getX(),
-			position.getY() - object->getRadius(),
-			position.getX() + width,
-			position.getY() + height + object->getRadius()) ||
-			(object->Position() - Vector2D(position.getX() + width, position.getY() + height)).modulus() < object->getRadius() ||
-		(object->Position() - Vector2D(position.getX(), position.getY() + height)).modulus() < object->getRadius() ||
-		(object->Position() - Vector2D(position.getX() + width, position.getY())).modulus() < object->getRadius() ||
-		(object->Position() - Vector2D(position.getX(), position.getY())).modulus() < object->getRadius()) {
-		if ((object->Position().getY() - position.getY()) * (width)-
-			(object->Position().getX() - position.getX()) * (height) < 0.0) {
-			if ((object->Position().getY() - position.getY() - height) * (width)-
-				(object->Position().getX() - position.getX()) * (-height) < 0.0) {
-				collisionPosition = Vector2D::cutPoint(object->Position() + Vector2D(0, object->getRadius()), object->Position() + Vector2D(0, object->getRadius()) + object->Velocity(),
-					position + Vector2D(0, 0), position + Vector2D(width, 0));
-				reflection = Vector2D((object->Position().getX()- Position().getX())/width,-1);
+	if (object->position().isIn(_position.getX() - object->getRadius(),
+		_position.getY(),
+		_position.getX() + _width + object->getRadius(),
+		_position.getY() + _height) ||
+		object->position().isIn(_position.getX(),
+			_position.getY() - object->getRadius(),
+			_position.getX() + _width,
+			_position.getY() + _height + object->getRadius()) ||
+			(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
+		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
+		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
+		(object->position() - Vector2D(_position.getX(), _position.getY())).modulus() < object->getRadius()) {
+		if ((object->position().getY() - _position.getY()) * (_width)-
+			(object->position().getX() - _position.getX()) * (_height) < 0.0) {
+			if ((object->position().getY() - _position.getY() - _height) * (_width)-
+				(object->position().getX() - _position.getX()) * (-_height) < 0.0) {
+				collisionPosition = Vector2D::cutPoint(object->position() + Vector2D(0, object->getRadius()), object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
+					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
+				reflection = Vector2D((object->position().getX()- position().getX())/_width,-1);
 				reflection.normalize();
 			}
 			else {
 				reflection = Vector2D(1, 0);
-				collisionPosition = Vector2D::cutPoint(object->Position() - Vector2D(object->getRadius(), 0), object->Position() - Vector2D(object->getRadius(), 0) + object->Velocity(),
-					position + Vector2D(width, 0), position + Vector2D(width, height));
+				collisionPosition = Vector2D::cutPoint(object->position() - Vector2D(object->getRadius(), 0), object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
+					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
 			}
 		}
 		else {
-			if ((object->Position().getY() - position.getY() - height) * (width)-
-				(object->Position().getX() - position.getX()) * (-height) < 0.0) {
+			if ((object->position().getY() - _position.getY() - _height) * (_width)-
+				(object->position().getX() - _position.getX()) * (-_height) < 0.0) {
 				reflection = Vector2D(-1, 0);
-				collisionPosition = Vector2D::cutPoint(object->Position() + Vector2D(object->getRadius(), 0), object->Position() + Vector2D(object->getRadius(), 0) + object->Velocity(),
-					position + Vector2D(0, 0), position + Vector2D(0, height));
+				collisionPosition = Vector2D::cutPoint(object->position() + Vector2D(object->getRadius(), 0), object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
+					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
 			}
 			else {
 				reflection = Vector2D(0, 1);
-				collisionPosition = Vector2D::cutPoint(object->Position() - Vector2D(0, object->getRadius()), object->Position() - Vector2D(0, object->getRadius()) + object->Velocity(),
-					position + Vector2D(0, height), position + Vector2D(width, height));
+				collisionPosition = Vector2D::cutPoint(object->position() - Vector2D(0, object->getRadius()), object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
+					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
 			}
 		}
 		return true;

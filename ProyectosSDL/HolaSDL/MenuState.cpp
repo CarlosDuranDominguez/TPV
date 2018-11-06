@@ -5,8 +5,6 @@
 
 MenuState::MenuState(Game* game, SDL_Renderer* renderer):  game(game), renderer(renderer) {
 	buttons = new Button* [NUMBER_BUTTONS_MENU];
-	SDL_Color white = { 255,255,255,255 };
-	SDL_Color grey = { 80,80,80,255 };
 	string nombres[NUMBER_BUTTONS_MENU] = { "Play","ScoreBoard","Exit" };
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
 		[this, game]() { exit = true; game->changeState("game"); },
@@ -15,7 +13,7 @@ MenuState::MenuState(Game* game, SDL_Renderer* renderer):  game(game), renderer(
 	};
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++) {
-		buttons[i] = new Button(game->getFonts()[0], 0, i*110, 200, 100, white, grey, nombres[i], callbacks[i]);
+		buttons[i] = new Button(game->getFonts()[0], 0, i*110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
 	}
 	menu = new Menu(buttons, NUMBER_BUTTONS_MENU);
 }

@@ -16,6 +16,8 @@ public:
 	Timer(float x, float y, int width, int height, SDL_Color color, Font* font);
 	Timer(Vector2D position, int width, int height, SDL_Color color, Font* font); 
 	~Timer();
-	void render();
+	void render() const;
 	void update();
+	void reset();
+	double getTime() const;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Text.h"
+#include "Texture.h"
+#include "Timer.h"
 #include "Ball.h"
 #include "Paddle.h"
 #include "BlocksMap.h"
@@ -13,9 +14,7 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool exit = false, gameover = false, win = false;
 	Game* game;
-	Texture** textures;
-	Font** fonts;
-	Text** texts;
+	Timer* timer;
 	Ball* ball = nullptr;
 	Paddle* paddle = nullptr;
 	BlocksMap* blocksmap = nullptr;
@@ -23,6 +22,7 @@ private:
 public:
 	GameState( Game* game, SDL_Renderer*  renderer);
 	~GameState();
+	void init();
 	void run();
 	void render() const;
 	void update();
