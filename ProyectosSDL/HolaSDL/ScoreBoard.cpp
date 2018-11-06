@@ -22,8 +22,12 @@ ScoreBoard::ScoreBoard(Font* font, double x, double y, int width, int height, SD
 			if (i == numberOfGames) {
 				for(unsigned int j = 0; j <allGames.size(); j++)
 				{
-					string aux = to_string(j)+"º "+allGames[j].name+" "+to_string(allGames[j].score)+" " + to_string(allGames[j].time);
-					allGames[j].text = new Text(font, position + Vector2D(0, height)*j, width, height, color, aux);
+					string aux = to_string(j+1)+"º "+allGames[j].name+" "+to_string(allGames[j].score)+" " + to_string(allGames[j].time);
+					texts[j] = new Text(font, position + Vector2D(0, height)*j, width, height, color, aux);
+				}
+				for (unsigned int j = allGames.size(); j < 10; j++) {
+					string aux = to_string(j+1) + "º ------ ------ ------";
+					texts[j] = new Text(font, position + Vector2D(0, height)*j, width, height, color, aux);
 				}
 				return;
 			}
@@ -41,9 +45,8 @@ ScoreBoard::~ScoreBoard() {
 		file << var << '\n';
 	}
 	file.close();
-	for each (PlayerGame game in allGames)
-	{
-		delete game.text;
+	for (unsigned int j = 0; j < 10; j++) {
+		delete texts[j];
 	}
 }
 
@@ -60,7 +63,6 @@ bool ScoreBoard::compareTime(const PlayerGame& game1, const PlayerGame& game2) {
 }
 
 void ScoreBoard::pushGame(PlayerGame newGame) {
-	newGame.text = new Text(font, Vector2D(), width, height, color, "");
 	allGames.push_back(newGame);
 	sortByName();
 }
@@ -83,16 +85,20 @@ void ScoreBoard::sortByTime() {
 void ScoreBoard::_rewrite() {
 	for (unsigned int j = 0; j < allGames.size(); j++)
 	{
-		string aux = to_string(j) + "º " + allGames[j].name + " " + to_string(allGames[j].score) + " " + to_string(allGames[j].time);
-		allGames[j].text->setText(aux);
-		allGames[j].text->setPosition(position + Vector2D(0, height)*j);
+		string aux = to_string(j+1) + "º " + allGames[j].name + " " + to_string(allGames[j].score) + " " + to_string(allGames[j].time);
+		texts[j]->setText(aux);
+		texts[j]->setPosition(position + Vector2D(0, height)*j);
+	}
+	for (unsigned int j = allGames.size(); j < 10; j++) {
+		string aux = to_string(j+1) + "º ------ ------ ------";
+		texts[j]->setText(aux);
+		texts[j]->setPosition(position + Vector2D(0, height)*j);
 	}
 }
 
 void ScoreBoard::render() const {
-	for each (PlayerGame game in allGames)
-	{
-		game.text->render();
+	for (unsigned int j = 0; j < 10; j++) {
+		texts[j]->render();
 	}
 }
 

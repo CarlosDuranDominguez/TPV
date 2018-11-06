@@ -10,7 +10,6 @@ struct PlayerGame{
 	std::string name;
 	int score;
 	int time;
-	Text* text;
 };
 
 class ScoreBoard {
@@ -18,6 +17,7 @@ private:
 	Font* font;
 	string filename;
 	std::vector<PlayerGame> allGames; 
+	Text* texts[10];
 	Vector2D position;
 	int width, height;
 	SDL_Color color;
