@@ -1,3 +1,5 @@
+#pragma once
+
 #include <time.h>  
 #include "Vector2D.h"
 #include "Font.h"

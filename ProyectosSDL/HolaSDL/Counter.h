@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Text.h"
 #include "Vector2D.h"
 class Counter {

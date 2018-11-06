@@ -24,6 +24,10 @@ void Text::setText(string newText) {
 	SDL_FreeSurface(textSurface);
 }
 
+SDL_Rect Text::getRect() {
+	return{ (int)position.getX(),(int)position.getY(),width,height };
+}
+
 void Text::render() const {
 	SDL_Rect rect{ (int)position.getX(),(int)position.getY(),width,height };
 	SDL_RenderCopy(font->getRenderer(), textTexture, nullptr, &rect);
