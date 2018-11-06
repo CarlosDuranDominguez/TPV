@@ -33,9 +33,10 @@ void ScoreBoardState::render() {
 void ScoreBoardState::handleEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event) && !exit) {
-		if (event.type == SDL_QUIT)
+		if (event.type == SDL_QUIT) {
 			exit = true;
-		else {
+			game->changeState("gameover");
+		} else {
 			button->handleEvents(event);
 		}
 	}

@@ -46,9 +46,11 @@ void MenuState::render() {
 
 void MenuState::handleEvents() {
 	SDL_Event event;
-	while (SDL_PollEvent(&event) && !exit) {
-		if (event.type == SDL_QUIT)
+	while (!exit && SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
 			exit = true;
+			game->changeState("gameover");
+		}
 		else{ 
 			for (int i = 0; i < NUMBER_BUTTONS_MENU; i++) {
 				buttons[i]->handleEvents(event);
