@@ -18,12 +18,12 @@ private:
 	Vector2D position;
 	int width, height;
 	SDL_Color color;
-	bool _sortByName(PlayerGame&, PlayerGame&);
-	bool _sortByScore(PlayerGame&, PlayerGame&);
-	bool _sortByTime(PlayerGame&, PlayerGame&);
+	bool static _sortByName(const PlayerGame& game1, const PlayerGame& game2);
+	bool static _sortByScore(PlayerGame&, PlayerGame&);
+	bool static _sortByTime(PlayerGame&, PlayerGame&);
 	void _reWrite();
 public:
-	TopBoard(Font* font, string filename, double x, double y, int width, int height, SDL_Color color);
+	TopBoard(Font* font, double x, double y, int width, int height, SDL_Color color, string filename);
 	~TopBoard();
 	void pushGame(PlayerGame newGame);
 	void sortByName();

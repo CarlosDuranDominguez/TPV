@@ -16,6 +16,8 @@ Game::Game() :
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		textures[i] = new Texture(renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
 	}
+	fonts[0] = new Font(renderer, FONTSDIRECTORIES[REGULAR], 72);
+	texts[0] = new Text(fonts[0], 0, 0, 200, 50, { 255,255,255,255 }, "Hola");
 
 	int wall_width = textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
 	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
@@ -58,9 +60,11 @@ Game::~Game()
 	delete upWall;
 	delete rightWall;
 	delete leftWall;
+	delete texts[0];
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		delete textures[i];
 	}
+	delete fonts[0];
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	TTF_Quit();
@@ -77,7 +81,6 @@ void Game::run()
 			update();
 			startTime = SDL_GetTicks();
 		}
-		//collides();
 		render();
 	}
 };
@@ -96,6 +99,7 @@ void Game::render() const
 	upWall->render();
 	rightWall->render();
 	leftWall->render();
+	texts[0]->render();
 	SDL_RenderPresent(renderer);
 };
 void Game::handleEvents()

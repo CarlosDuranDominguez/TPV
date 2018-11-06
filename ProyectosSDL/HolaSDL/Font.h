@@ -15,7 +15,7 @@ public:
 	Font(SDL_Renderer* renderer, string filename, int size): renderer(renderer), size(size) { load(filename); };
 	~Font() { liberate(); };
 	TTF_Font* getFont();
-	SDL_Renderer* getRenderer() { return renderer; };
+	SDL_Renderer* getRenderer();
 	void liberate();
 	void load(string filename);
 };

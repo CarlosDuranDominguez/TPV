@@ -1,22 +1,7 @@
-﻿  Ball.cpp
+﻿  Game.cpp
 c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': redefinición de macro
   c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: vea la definición anterior de '_malloca'
-  Block.cpp
-  BlocksMap.cpp
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\blocksmap.cpp(42): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-  Game.cpp
-c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': redefinición de macro
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: vea la definición anterior de '_malloca'
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\game.cpp(39): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
 c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\game.cpp(44): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\game.cpp(43): warning C4244: 'argumento': conversión de 'uint' a 'float'; posible pérdida de datos
-  Paddle.cpp
-  Timer.cpp
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\timer.cpp(6): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\timer.cpp(7): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\timer.cpp(7): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-  main.cpp
-c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\crtdbg.h(303): warning C4005: '_malloca': redefinición de macro
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\malloc.h(122): note: vea la definición anterior de '_malloca'
-  Generando código...
+c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\game.cpp(49): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\wurtc\onedrive\documentos\uni\tpv\proyectossdl\holasdl\game.cpp(48): warning C4244: 'argumento': conversión de 'uint' a 'float'; posible pérdida de datos
   HolaSDL.vcxproj -> C:\Users\wurtc\OneDrive\Documentos\UNI\TPV\ProyectosSDL\bin\HolaSDLDebug.exe
