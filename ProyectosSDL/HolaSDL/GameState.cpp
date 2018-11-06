@@ -1,8 +1,7 @@
 #include "GameState.h"
 #include "Game.h"
 
-
-GameState::GameState(SDL_Renderer* renderer, Game* game) : 
+GameState::GameState(Game* game) : 
 	renderer(renderer), exit(false), gameover(false), win(false) {
 
 	texts[0] = new Text(game->getFonts()[0], 0, 0, 200, 50, { 255,255,255,255 }, "Hola");

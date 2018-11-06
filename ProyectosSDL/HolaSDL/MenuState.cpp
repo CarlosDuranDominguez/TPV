@@ -1,5 +1,6 @@
 #include "MenuState.h"
 #include "Button.h"
+#include "Game.h"
 #include <functional>
 
 MenuState::MenuState(Game* game):  game(game) {
@@ -8,9 +9,9 @@ MenuState::MenuState(Game* game):  game(game) {
 	SDL_Color grey = { 80,80,80,255 };
 	string nombres[NUMBER_BUTTONS_MENU] = { "Play","ScoreBoard","Exit" };
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
-		[]() {},
-		[]() {},
-		[]() {}
+		[this, game]() { exit = true; game->changeState("game"); },
+		[this, game]() { exit = true; game->changeState("scoreboard"); },
+		[this, game]() { exit = true; game->changeState("gameover"); }
 	};
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++) {
@@ -28,6 +29,7 @@ MenuState::~MenuState() {
 }
 
 void MenuState::run() {
+	exit = false;
 	while (!exit) {
 		handleEvents();
 		render();

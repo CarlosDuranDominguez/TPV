@@ -9,9 +9,9 @@ Game::Game() :
 	}
 	window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	game = new GameState(renderer, this);
-	menu = new MenuState(renderer, this);
-	scoreboard = new ScoreBoardState(renderer, this);
+	game = new GameState(this);
+	menu = new MenuState(this);
+	scoreboard = new ScoreBoardState(this);
 	statemanager = new StateManager(game, menu, scoreboard);
 	if (window == nullptr || renderer == nullptr) throw "Error loading the SDL window or renderer";
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
@@ -44,5 +44,9 @@ Font** Game::getFonts() {
 }
 void Game::run() {
 	statemanager->run();
+}
+
+void Game::changeState(string stateName) {
+	statemanager->changeState(stateName);
 }
 

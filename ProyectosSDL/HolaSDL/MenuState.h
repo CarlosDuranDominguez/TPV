@@ -1,8 +1,9 @@
 #pragma once
 #include "SDL.h"
 #include "Menu.h"
-#include "Game.h"
 #include "Button.h"
+
+class Game;
 
 const unsigned int NUMBER_BUTTONS_MENU = 3;
 

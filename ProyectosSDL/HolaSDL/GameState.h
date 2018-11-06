@@ -5,7 +5,8 @@
 #include "Paddle.h"
 #include "BlocksMap.h"
 #include "Wall.h"
-#include "Game.h"
+
+class Game;
 
 class GameState {
 private:
@@ -19,7 +20,7 @@ private:
 	BlocksMap* blocksmap = nullptr;
 	Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
 public:
-	GameState(SDL_Renderer* renderer, Game* game);
+	GameState( Game* game);
 	~GameState();
 	void run();
 	void render() const;

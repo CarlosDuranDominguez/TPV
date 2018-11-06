@@ -72,6 +72,7 @@ public:
 	~Game();
 	Texture** getTextures();
 	Font** getFonts();
+	void changeState(string stateName);
 	void run();
 };
 
