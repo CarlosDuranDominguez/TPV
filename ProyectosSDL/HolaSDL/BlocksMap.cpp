@@ -3,12 +3,14 @@
 #include "Texture.h"
 #include <iostream>
 #include <fstream>
+
 BlocksMap::BlocksMap(string path, int padding, Texture* texture)
 {
 	mapWidth = WIN_WIDTH-2*padding;
 	mapHeight = WIN_HEIGHT/2-padding;
 	loadMap(path, padding, texture);
-};
+}
+
 BlocksMap::~BlocksMap() 
 {
 	for (int i = 0; i < rows; i++) {
@@ -21,7 +23,8 @@ BlocksMap::~BlocksMap()
 		delete[] blocks[i];
 	}
 	delete[] blocks;
-};
+}
+
 void BlocksMap::loadMap(string path, int padding, Texture* texture)
 {
 	ifstream file;
@@ -53,7 +56,8 @@ void BlocksMap::loadMap(string path, int padding, Texture* texture)
 	{
 		throw "Error loading level from " + path;
 	}
-};
+}
+
 void BlocksMap::render() 
 {
 	for (int i = 0; i < rows; i++) {
@@ -64,7 +68,8 @@ void BlocksMap::render()
 			}
 		}
 	}
-};
+}
+
 int BlocksMap::numberOfBlocks() 
 {
 	int ret = 0;
@@ -77,7 +82,8 @@ int BlocksMap::numberOfBlocks()
 		}
 	}
 	return -1;
-};
+}
+
 bool BlocksMap::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {

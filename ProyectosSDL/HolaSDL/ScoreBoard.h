@@ -35,12 +35,7 @@ public:
 	void render() const;
 	
 };
-ostream& operator << (ostream& os, const PlayerGame& v)
-{
-	return os << v.name <<' '<<v.score<<' '<<v.time;
-}
 
-istream& operator>> (istream& os, PlayerGame& v)
-{
-	return os >> v.name >> v.score >> v.time;
-}
+ostream& operator << (ostream& os, const PlayerGame& v);
+
+istream& operator>> (istream& os, PlayerGame& v);

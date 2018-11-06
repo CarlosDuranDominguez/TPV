@@ -95,3 +95,13 @@ void ScoreBoard::render() const {
 		game.text->render();
 	}
 }
+
+ostream& operator << (ostream& os, const PlayerGame& v)
+{
+	return os << v.name << ' ' << v.score << ' ' << v.time;
+}
+
+istream& operator>> (istream& os, PlayerGame& v)
+{
+	return os >> v.name >> v.score >> v.time;
+}

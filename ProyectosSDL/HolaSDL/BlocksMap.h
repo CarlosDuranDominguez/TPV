@@ -2,6 +2,7 @@
 
 #include "Block.h"
 #include <string>
+
 class BlocksMap {
 private:
 	Block*** blocks;

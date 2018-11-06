@@ -2,7 +2,7 @@
 #include "Game.h"
 
 GameState::GameState(Game* game) : 
-	renderer(renderer), exit(false), gameover(false), win(false) {
+	renderer(renderer), game(game), exit(false), gameover(false), win(false) {
 
 	texts[0] = new Text(game->getFonts()[0], 0, 0, 200, 50, { 255,255,255,255 }, "Hola");
 
@@ -63,13 +63,14 @@ void GameState::run()
 		}
 		render();
 	}
-};
+}
 
 void GameState::update()
 {
 	ball->update();
 	paddle->update();
-};
+}
+
 void GameState::render() const
 {
 	SDL_RenderClear(renderer);
@@ -81,7 +82,8 @@ void GameState::render() const
 	leftWall->render();
 	texts[0]->render();
 	SDL_RenderPresent(renderer);
-};
+}
+
 void GameState::handleEvents()
 {
 	SDL_Event event;
@@ -90,11 +92,12 @@ void GameState::handleEvents()
 			exit = true;
 		paddle->handleEvents(event);
 	}
-};
+}
+
 bool GameState::collides(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
 	return blocksmap->collide(object, collisionPosition, reflection) ||
 		paddle->collide(object, collisionPosition, reflection) ||
 		leftWall->collide(object, collisionPosition, reflection) ||
 		upWall->collide(object, collisionPosition, reflection) ||
 		rightWall->collide(object, collisionPosition, reflection);
-};
+}

@@ -2,7 +2,9 @@
 
 #include "Vector2D.h"
 #include "Texture.h"
-#include "Ball.h"
+
+class Ball;
+
 class Block {
 private:
 	Vector2D position;

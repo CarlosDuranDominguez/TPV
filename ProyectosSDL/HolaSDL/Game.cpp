@@ -20,7 +20,8 @@ Game::Game() :
 	fonts[0] = new Font(renderer, FONTSDIRECTORIES[REGULAR], 72);
 
 
-};
+}
+
 Game::~Game() 
 {
 	delete game;
@@ -34,14 +35,16 @@ Game::~Game()
 	SDL_DestroyWindow(window);
 	TTF_Quit();
 	SDL_Quit();
-};
+}
 
 Texture** Game::getTextures() {
 	return textures;
 }
+
 Font** Game::getFonts() {
 	return fonts;
 }
+
 void Game::run() {
 	statemanager->run();
 }

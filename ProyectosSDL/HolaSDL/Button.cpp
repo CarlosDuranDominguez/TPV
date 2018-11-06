@@ -4,12 +4,15 @@ Button::Button(Font* font, double x, double y, int width, int height, SDL_Color 
 	inColor(inColor), outColor(outColor),callback(callback) {
 	this->text = new Text(font, x, y, width, height, outColor, text);
 }
+
 Button::~Button() {
 	delete text;
 }
+
 void Button::render() {
 	text->render();
 }
+
 void Button::handleEvents(SDL_Event event) {
 	SDL_Point p;
 	switch (event.type)

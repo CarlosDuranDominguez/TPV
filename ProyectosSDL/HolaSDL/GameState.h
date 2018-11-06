@@ -12,6 +12,7 @@ class GameState {
 private:
 	SDL_Renderer* renderer = nullptr;
 	bool exit = false, gameover = false, win = false;
+	Game* game;
 	Texture** textures;
 	Font** fonts;
 	Text** texts;

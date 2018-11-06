@@ -9,7 +9,7 @@ private:
 public:
 	Counter(float x, float y, int width, int height, SDL_Color color, Font* font);
 	Counter(Vector2D position, int width, int height, SDL_Color color, Font* font);
-	~Counter() { delete text; }
+	~Counter();
 	int setScore(const int num);
 	int increaseScore(const int num);
 	void render() const;

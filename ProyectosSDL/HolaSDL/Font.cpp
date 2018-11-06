@@ -24,7 +24,6 @@ void Font::liberate() {
 void Font::load(string filename) {
 	font = TTF_OpenFont(filename.c_str(), size);
 	if (font == nullptr) {
-		printf("TTF_OpenFont: %s\n", TTF_GetError());
 		throw "Error loading font";
 	}
 }
