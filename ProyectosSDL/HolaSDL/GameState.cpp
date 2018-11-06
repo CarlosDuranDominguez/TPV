@@ -2,131 +2,129 @@
 #include "Game.h"
 
 GameState::GameState(Game *game, SDL_Renderer *renderer)
-	: renderer(renderer), game(game), exit(false), gameover(false), win(false)
+	: _renderer(renderer), _game(game), _exit(false), _gameover(false), _win(false)
 {
-	timer = new Timer(0, 0, 300, 50, WHITE, game->getFonts()[0]);
-	Texture **textures = game->getTextures();
+	_timer = new Timer(0, 0, 300, 50, WHITE, _game->getFonts()[0]);
+	Texture **textures = _game->getTextures();
 	int wall_width = textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();
 	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();
-	ball = new Ball(
+	_ball = new Ball(
 		(WIN_WIDTH - textures[BALL]->getW() / 4) / 2,
 		WIN_HEIGHT * 14 / 16,
 		textures[BALL]->getW() / 4,
 		textures[BALL]->getH() / 4,
 		textures[BALL],
 		this);
-	paddle = new Paddle(
+	_paddle = new Paddle(
 		(WIN_WIDTH - textures[PADDLE]->getW()) / 2,
 		WIN_HEIGHT * 15 / 16,
 		textures[PADDLE]->getW(),
 		textures[PADDLE]->getH(),
 		PADDLESPEED,
 		textures[PADDLE]);
-	upWall = new Wall(
+	_upWall = new Wall(
 		0,
 		0,
 		WIN_WIDTH,
 		wall_width,
 		textures[TOPSIDE]);
-	leftWall = new Wall(
+	_leftWall = new Wall(
 		0,
 		wall_width,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
-	rightWall = new Wall(
+	_rightWall = new Wall(
 		WIN_WIDTH - wall_width,
 		wall_width,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
-	blocksmap = nullptr;
+	_blocksmap = new BlocksMap(wall_width);
 }
 
 GameState::~GameState()
 {
-	delete ball;
-	delete paddle;
-	delete blocksmap;
-	delete upWall;
-	delete rightWall;
-	delete leftWall;
-	delete timer;
+	delete _ball;
+	delete _paddle;
+	delete _blocksmap;
+	delete _upWall;
+	delete _rightWall;
+	delete _leftWall;
+	delete _timer;
 }
 
 void GameState::init()
 {
-	exit = false;
-	gameover = false;
-	win = false;
-	ball->setPosition((WIN_WIDTH - game->getTextures()[BALL]->getW() / 4) / 2, WIN_HEIGHT * 14 / 16);
-	ball->setVelocity(0, 150);
-	paddle->setPosition((WIN_WIDTH - game->getTextures()[PADDLE]->getW()) / 2, WIN_HEIGHT * 15 / 16);
-	if (blocksmap != nullptr)
-		delete blocksmap;
-	blocksmap = new BlocksMap(LEVEL[0], game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / game->getTextures()[TOPSIDE]->getW(), game->getTextures()[BRICKS]);
-	timer->reset();
+	_exit = false;
+	_gameover = false;
+	_win = false;
+	_ball->setPosition((WIN_WIDTH - _game->getTextures()[BALL]->getW() / 4) / 2, WIN_HEIGHT * 14 / 16);
+	_ball->setVelocity(0, 150);
+	_paddle->setPosition((WIN_WIDTH - _game->getTextures()[PADDLE]->getW()) / 2, WIN_HEIGHT * 15 / 16);
+	_blocksmap->loadMap( LEVEL[0], _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW(), _game->getTextures()[BRICKS]);
+	_timer->reset();
 }
 
 void GameState::run()
 {
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
-	while (!exit && !gameover && !win)
+	while (!_exit && !_gameover && !_win)
 	{
-		handleEvents();
+		_handleevents();
 		frameTime = SDL_GetTicks() - startTime;
 		if (frameTime >= FRAMERATE)
 		{
-			update();
+			_update();
 			startTime = SDL_GetTicks();
 		}
-		render();
-		win = blocksmap->numberOfBlocks() == 0;
-		gameover = ball->position().getY() > WIN_HEIGHT;
+		_render();
+		_win = _blocksmap->numberOfBlocks() == 0;
+		_gameover = _ball->position().getY() > WIN_HEIGHT;
 	}
-	if (exit)
-		game->changeState("gameover");
-	else if (gameover)
-		game->changeState("scoreboard");
+	if (_exit)
+		_game->changeState("gameover");
+	else if (_gameover)
+		_game->changeState("scoreboard");
 }
 
-void GameState::update()
+void GameState::_update()
 {
-	ball->update();
-	paddle->update();
-	timer->update();
+	_ball->update();
+	_paddle->update();
+	_timer->update();
 }
 
-void GameState::render() const
+void GameState::_render() const
 {
-	SDL_RenderClear(renderer);
-	blocksmap->render();
-	ball->render();
-	paddle->render();
-	upWall->render();
-	rightWall->render();
-	leftWall->render();
-	timer->render();
-	SDL_RenderPresent(renderer);
+	SDL_RenderClear(_renderer);
+	_blocksmap->render();
+	_ball->render();
+	_paddle->render();
+	_upWall->render();
+	_rightWall->render();
+	_leftWall->render();
+	_timer->render();
+	SDL_RenderPresent(_renderer);
 }
 
-void GameState::handleEvents()
+void GameState::_handleevents()
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event) && !exit)
+	while (SDL_PollEvent(&event) && !_exit)
 	{
 		if (event.type == SDL_QUIT)
-			exit = true;
-		paddle->handleEvents(event);
+			_exit = true;
+		_paddle->handleEvents(event);
 	}
 }
 
-bool GameState::collides(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
+bool GameState::collides(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection) const
 {
-	return blocksmap->collide(object, collisionPosition, reflection) ||
-		   paddle->collide(object, collisionPosition, reflection) ||
-		   leftWall->collide(object, collisionPosition, reflection) ||
-		   upWall->collide(object, collisionPosition, reflection) ||
-		   rightWall->collide(object, collisionPosition, reflection);
+	return _blocksmap->collide(object, collisionPosition, reflection) ||
+		   _paddle->collide(object, collisionPosition, reflection) ||
+		   _leftWall->collide(object, collisionPosition, reflection) ||
+		   _upWall->collide(object, collisionPosition, reflection) ||
+		   _rightWall->collide(object, collisionPosition, reflection);
 }

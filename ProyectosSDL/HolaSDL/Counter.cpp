@@ -2,32 +2,37 @@
 #include <math.h>
 
 Counter::Counter(float x, float y, int width, int height, SDL_Color color, Font *font)
-	: score(0)
+	: _score(0)
 {
-	text = new Text(font, x, y, width, height, color, to_string(score));
+	_text = new Text(font, x, y, width, height, color, to_string(_score));
 }
 
 Counter::Counter(Vector2D position, int width, int height, SDL_Color color, Font *font)
-	: score(0)
+	: _score(0)
 {
-	text = new Text(font, position, width, height, color, to_string(score));
+	_text = new Text(font, position, width, height, color, to_string(_score));
 }
 
-Counter::~Counter() { delete text; }
+Counter::~Counter() { delete _text; }
 
 int Counter::setScore(const int num)
 {
-	text->setText(to_string(num));
-	return score = num;
+	_text->setText(to_string(num));
+	return _score = num;
+}
+
+int Counter::getScore() const
+{
+	return _score;
 }
 
 int Counter::increaseScore(const int num)
 {
-	text->setText(to_string(score += num));
-	return score;
+	_text->setText(to_string(_score += num));
+	return _score;
 }
 
 void Counter::render() const
 {
-	text->render();
+	_text->render();
 }

@@ -7,13 +7,13 @@ class Game;
 class ScoreBoardState
 {
 private:
-	ScoreBoard *scoreboard;
-	Button *button;
-	Game *game;
-	SDL_Renderer *renderer;
-	bool exit = false;
-	void render();
-	void handleEvents();
+	ScoreBoard *_scoreboard;
+	Button *_button;
+	Game *_game;
+	SDL_Renderer *_renderer;
+	bool _exit = false;
+	void _render();
+	void _handleEvents();
 
 public:
 	ScoreBoardState(Game *game, SDL_Renderer *renderer);

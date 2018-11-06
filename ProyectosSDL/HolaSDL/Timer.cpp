@@ -3,40 +3,40 @@
 
 Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
 {
-	text = new Text(font, x, y, width, height, color, "0");
-	time(&firstTime);
-	time(&currentTime);
+	_text = new Text(font, x, y, width, height, color, "0");
+	time(&_firstTime);
+	time(&_currentTime);
 };
 
 Timer::Timer(Vector2D position, int width, int height, SDL_Color color, Font *font)
 {
-	text = new Text(font, position, width, height, color, "0");
-	time(&firstTime);
-	time(&currentTime);
+	_text = new Text(font, position, width, height, color, "0");
+	time(&_firstTime);
+	time(&_currentTime);
 };
 
 Timer::~Timer()
 {
-	delete text;
+	delete _text;
 }
 
 void Timer::render() const
 {
-	text->setText(to_string((int)getTime()));
-	text->render();
+	_text->setText(to_string((int)getTime()));
+	_text->render();
 }
 
 void Timer::update()
 {
-	time(&currentTime);
+	time(&_currentTime);
 }
 
 void Timer::reset()
 {
-	time(&firstTime);
+	time(&_firstTime);
 }
 
 double Timer::getTime() const
 {
-	return difftime(currentTime, firstTime);
+	return difftime(_currentTime, _firstTime);
 }

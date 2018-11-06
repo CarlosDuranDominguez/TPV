@@ -12,22 +12,24 @@ class Game;
 class GameState
 {
 private:
-	SDL_Renderer *renderer = nullptr;
-	bool exit = false, gameover = false, win = false;
-	Game *game;
-	Timer *timer;
-	Ball *ball = nullptr;
-	Paddle *paddle = nullptr;
-	BlocksMap *blocksmap = nullptr;
-	Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
+	SDL_Renderer *_renderer = nullptr;
+	bool _exit = false, _gameover = false, _win = false;
+	Game *_game;
+	Timer *_timer;
+	Ball *_ball = nullptr;
+	Paddle *_paddle = nullptr;
+	BlocksMap *_blocksmap = nullptr;
+	Wall *_upWall = nullptr, *_rightWall = nullptr, *_leftWall = nullptr;
+	void _render() const;
+	void _update();
+	void _handleevents();
+	
 
 public:
 	GameState(Game *game, SDL_Renderer *renderer);
 	~GameState();
 	void init();
 	void run();
-	void render() const;
-	void update();
-	void handleEvents();
-	bool collides(const Ball *, Vector2D &, Vector2D &);
+	bool collides(const Ball *, Vector2D &, Vector2D &) const;
+	
 };

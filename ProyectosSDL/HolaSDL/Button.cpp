@@ -1,19 +1,19 @@
 #include "Button.h"
 
 Button::Button(Font *font, double x, double y, int width, int height, SDL_Color inColor, SDL_Color outColor, string text, function<void()> callback)
-	: inColor(inColor), outColor(outColor), callback(callback)
+	: _inColor(inColor), _outColor(outColor), _callback(callback)
 {
-	this->text = new Text(font, x, y, width, height, outColor, text);
+	this->_text = new Text(font, x, y, width, height, outColor, text);
 }
 
 Button::~Button()
 {
-	delete text;
+	delete _text;
 }
 
-void Button::render()
+void Button::render() const
 {
-	text->render();
+	_text->render();
 }
 
 void Button::handleEvents(SDL_Event event)
@@ -24,21 +24,21 @@ void Button::handleEvents(SDL_Event event)
 	case SDL_MOUSEMOTION:
 
 		p = {event.motion.x, event.motion.y};
-		if (SDL_PointInRect(&p, &text->getRect()))
+		if (SDL_PointInRect(&p, &_text->getRect()))
 		{
-			text->setColor(inColor);
-			mouseIn = true;
+			_text->setColor(_inColor);
+			_mouseIn = true;
 		}
 		else
 		{
-			text->setColor(outColor);
-			mouseIn = false;
+			_text->setColor(_outColor);
+			_mouseIn = false;
 		}
 		break;
 	case SDL_MOUSEBUTTONDOWN:
-		if (mouseIn && event.button.button == SDL_BUTTON_LEFT)
+		if (_mouseIn && event.button.button == SDL_BUTTON_LEFT)
 		{
-			callback();
+			_callback();
 		}
 		break;
 	default:

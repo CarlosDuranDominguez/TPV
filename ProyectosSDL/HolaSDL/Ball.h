@@ -9,11 +9,11 @@ class Ball
 {
 private:
 	Vector2D _position;
-	int width, height;
-	double radius;
+	int _width, _height;
+	double _radius;
 	Vector2D _velocity;
-	Texture *texture;
-	GameState *game;
+	Texture *_texture;
+	GameState *_game;
 
 public:
 	Ball();

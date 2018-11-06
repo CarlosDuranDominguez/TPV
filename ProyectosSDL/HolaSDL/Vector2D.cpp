@@ -1,16 +1,16 @@
 #include "Vector2D.h"
 #include <math.h>
 
-Vector2D::Vector2D() : x(0), y(0) {};
+Vector2D::Vector2D() : _x(0), _y(0) {};
 
-Vector2D::Vector2D(const double x, const double y) : x(x), y(y) {};
+Vector2D::Vector2D(const double x, const double y) : _x(x), _y(y) {};
 
 /*
  * Get the X component of the Vector
  */
 double Vector2D::getX() const
 {
-	return x;
+	return _x;
 }
 
 /*
@@ -18,7 +18,7 @@ double Vector2D::getX() const
  */
 double Vector2D::getY() const
 {
-	return y;
+	return _y;
 }
 
 /*
@@ -26,7 +26,7 @@ double Vector2D::getY() const
  */
 double Vector2D::setX(double _x)
 {
-	return x = _x;
+	return _x = _x;
 }
 
 /*
@@ -34,7 +34,7 @@ double Vector2D::setX(double _x)
  */
 double Vector2D::setY(double _y)
 {
-	return y = _y;
+	return _y = _y;
 }
 
 /*
@@ -42,7 +42,7 @@ double Vector2D::setY(double _y)
  */
 double Vector2D::modulus() const
 {
-	return sqrt(x * x + y * y);
+	return sqrt(_x * _x + _y * _y);
 }
 
 /*
@@ -68,69 +68,69 @@ Vector2D Vector2D::reflect(const Vector2D &normal) const
 
 Vector2D Vector2D::operator+(const Vector2D &v) const
 {
-	return Vector2D(x + v.x, y + v.y);
+	return Vector2D(_x + v._x, _y + v._y);
 }
 
 Vector2D Vector2D::operator-(const Vector2D &v) const
 {
-	return Vector2D(x - v.x, y - v.y);
+	return Vector2D(_x - v._x, _y - v._y);
 }
 
 Vector2D Vector2D::operator-() const
 {
-	return Vector2D(-x, -y);
+	return Vector2D(-_x, -_y);
 }
 
 double Vector2D::operator*(const Vector2D &v) const
 {
-	return x * v.x + y * v.y;
+	return _x * v._x + _y * v._y;
 }
 
 Vector2D Vector2D::operator*(const double &k) const
 {
-	return Vector2D(k * x, k * y);
+	return Vector2D(k * _x, k * _y);
 }
 
 Vector2D operator*(const double &k, const Vector2D &v)
 {
-	return Vector2D(k * v.x, k * v.y);
+	return Vector2D(k * v._x, k * v._y);
 }
 
 bool Vector2D::isIn(const Vector2D &leftInferior, const Vector2D &rightSuperior) const
 {
-	return (x >= leftInferior.x) &&
-		   (y >= leftInferior.y) &&
-		   (x <= rightSuperior.x) &&
-		   (y <= rightSuperior.y);
+	return (_x >= leftInferior._x) &&
+		   (_y >= leftInferior._y) &&
+		   (_x <= rightSuperior._x) &&
+		   (_y <= rightSuperior._y);
 }
 
 bool Vector2D::isIn(const double minX, const double minY, const double maxX, const double maxY) const
 {
-	return (x >= minX) &&
-		   (y >= minY) &&
-		   (x <= maxX) &&
-		   (y <= maxY);
+	return (_x >= minX) &&
+		   (_y >= minY) &&
+		   (_x <= maxX) &&
+		   (_y <= maxY);
 }
 
 Vector2D Vector2D::operator/(const double &k) const
 {
-	return Vector2D(x / k, y / k);
+	return Vector2D(_x / k, _y / k);
 }
 
 ostream &operator<<(ostream &os, const Vector2D &v)
 {
-	return os << "(" << v.x << "," << v.y << ")";
+	return os << "(" << v._x << "," << v._y << ")";
 }
 
 Vector2D Vector2D::cutPoint(const Vector2D &p1, const Vector2D &p2, const Vector2D &pp1, const Vector2D &pp2)
 {
-	double a1 = p2.y - p1.y;
-	double b1 = p1.x - p2.x;
-	double c1 = a1 * p1.x + b1 * (p1.y);
+	double a1 = p2._y - p1._y;
+	double b1 = p1._x - p2._x;
+	double c1 = a1 * p1._x + b1 * (p1._y);
 
-	double a2 = pp2.y - pp1.y;
-	double b2 = pp1.x - pp2.x;
-	double c2 = a2 * pp1.x + b2 * (pp1.y);
+	double a2 = pp2._y - pp1._y;
+	double b2 = pp1._x - pp2._x;
+	double c2 = a2 * pp1._x + b2 * (pp1._y);
 
 	double determinat = a1 * b2 - a2 * b1;
 

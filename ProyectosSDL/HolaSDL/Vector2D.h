@@ -6,7 +6,7 @@ const double PI = 3.141592653589793238463;
 class Vector2D
 {
 private:
-	double x, y;
+	double _x, _y;
 
 public:
 	Vector2D();

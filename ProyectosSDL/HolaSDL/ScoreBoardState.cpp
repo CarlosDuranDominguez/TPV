@@ -1,52 +1,52 @@
 #include "ScoreBoardState.h"
 #include "Game.h"
 
-ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : game(game), renderer(renderer)
+ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
 {
-	scoreboard = new ScoreBoard(game->getFonts()[0], 0, 0, 200, 40, WHITE, "../saves/save.save");
-	button = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this, game]() {
-		exit = true;
+	_scoreboard = new ScoreBoard(game->getFonts()[0], 0, 0, 200, 40, WHITE, "../saves/save.save");
+	_button = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this, game]() {
+		_exit = true;
 		game->changeState("menu");
 	});
 }
 
 ScoreBoardState::~ScoreBoardState()
 {
-	delete scoreboard;
-	delete button;
+	delete _scoreboard;
+	delete _button;
 }
 
 void ScoreBoardState::run()
 {
-	exit = false;
-	while (!exit)
+	_exit = false;
+	while (!_exit)
 	{
-		handleEvents();
-		render();
+		_handleEvents();
+		_render();
 	}
 }
 
-void ScoreBoardState::render()
+void ScoreBoardState::_render()
 {
-	SDL_RenderClear(renderer);
-	scoreboard->render();
-	button->render();
-	SDL_RenderPresent(renderer);
+	SDL_RenderClear(_renderer);
+	_scoreboard->render();
+	_button->render();
+	SDL_RenderPresent(_renderer);
 }
 
-void ScoreBoardState::handleEvents()
+void ScoreBoardState::_handleEvents()
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event) && !exit)
+	while (SDL_PollEvent(&event) && !_exit)
 	{
 		if (event.type == SDL_QUIT)
 		{
-			exit = true;
-			game->changeState("gameover");
+			_exit = true;
+			_game->changeState("gameover");
 		}
 		else
 		{
-			button->handleEvents(event);
+			_button->handleEvents(event);
 		}
 	}
 }

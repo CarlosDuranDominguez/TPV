@@ -10,13 +10,13 @@ const unsigned int NUMBER_BUTTONS_MENU = 3;
 class MenuState
 {
 private:
-	Game *game;
-	SDL_Renderer *renderer;
-	Menu *menu;
-	Button **buttons;
-	bool exit = false;
-	void render();
-	void handleEvents();
+	Game *_game;
+	SDL_Renderer *_renderer;
+	Menu *_menu;
+	Button **_buttons;
+	bool _exit = false;
+	void _render();
+	void _handleEvents();
 
 public:
 	MenuState(Game *game, SDL_Renderer *renderer);

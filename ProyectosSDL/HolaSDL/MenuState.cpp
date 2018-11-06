@@ -3,68 +3,68 @@
 #include "Game.h"
 #include <functional>
 
-MenuState::MenuState(Game *game, SDL_Renderer *renderer) : game(game), renderer(renderer)
+MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
 {
-	buttons = new Button *[NUMBER_BUTTONS_MENU];
+	_buttons = new Button *[NUMBER_BUTTONS_MENU];
 	string nombres[NUMBER_BUTTONS_MENU] = {"Play", "ScoreBoard", "Exit"};
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
-		[this, game]() { exit = true; game->changeState("game"); },
-		[this, game]() { exit = true; game->changeState("scoreboard"); },
-		[this, game]() { exit = true; game->changeState("gameover"); }
+		[this, game]() { _exit = true; game->changeState("game"); },
+		[this, game]() { _exit = true; game->changeState("scoreboard"); },
+		[this, game]() { _exit = true; game->changeState("gameover"); }
 	};
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{
-		buttons[i] = new Button(game->getFonts()[0], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
+		_buttons[i] = new Button(game->getFonts()[0], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
 	}
-	menu = new Menu(buttons, NUMBER_BUTTONS_MENU);
+	_menu = new Menu(_buttons, NUMBER_BUTTONS_MENU);
 }
 
 MenuState::~MenuState()
 {
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{
-		delete buttons[i];
+		delete _buttons[i];
 	}
-	delete[] buttons;
-	delete menu;
+	delete[] _buttons;
+	delete _menu;
 }
 
 void MenuState::run()
 {
-	exit = false;
-	while (!exit)
+	_exit = false;
+	while (!_exit)
 	{
-		handleEvents();
-		render();
+		_handleEvents();
+		_render();
 	}
 }
 
-void MenuState::render()
+void MenuState::_render()
 {
-	SDL_RenderClear(renderer);
+	SDL_RenderClear(_renderer);
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{
-		buttons[i]->render();
+		_buttons[i]->render();
 	}
-	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(_renderer);
 }
 
-void MenuState::handleEvents()
+void MenuState::_handleEvents()
 {
 	SDL_Event event;
-	while (!exit && SDL_PollEvent(&event))
+	while (!_exit && SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
 		{
-			exit = true;
-			game->changeState("gameover");
+			_exit = true;
+			_game->changeState("gameover");
 		}
 		else
 		{
 			for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 			{
-				buttons[i]->handleEvents(event);
+				_buttons[i]->handleEvents(event);
 			}
 		}
 	}

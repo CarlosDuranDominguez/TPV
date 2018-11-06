@@ -16,16 +16,16 @@ struct PlayerGame
 class ScoreBoard
 {
 private:
-	Font *font;
-	string filename;
-	std::vector<PlayerGame> allGames;
-	Text *texts[10];
-	Vector2D position;
-	int width, height;
-	SDL_Color color;
-	bool static compareName(const PlayerGame &game1, const PlayerGame &game2);
-	bool static compareScore(const PlayerGame &, const PlayerGame &);
-	bool static compareTime(const PlayerGame &, const PlayerGame &);
+	Font *_font;
+	string _filename;
+	std::vector<PlayerGame> _allGames;
+	Text *_texts[10];
+	Vector2D _position;
+	int _width, _height;
+	SDL_Color _color;
+	bool static _comparename(const PlayerGame &game1, const PlayerGame &game2);
+	bool static _comparescore(const PlayerGame &, const PlayerGame &);
+	bool static _comparetime(const PlayerGame &, const PlayerGame &);
 	void _rewrite();
 
 public:

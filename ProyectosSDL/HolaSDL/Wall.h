@@ -7,14 +7,14 @@
 class Wall
 {
 private:
-	Vector2D position;
-	int width, height;
-	Texture *texture;
+	Vector2D _position;
+	int _width, _height;
+	Texture *_texture;
 
 public:
 	Wall(float x, float y, int width, int height, Texture *texture);
 	Wall(Vector2D position, int width, int height, Texture *texture);
 	~Wall();
-	void render();
+	void render() const;
 	bool collide(const Ball *, Vector2D &, Vector2D &);
 };

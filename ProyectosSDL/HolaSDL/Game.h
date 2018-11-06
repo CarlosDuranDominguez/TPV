@@ -93,15 +93,15 @@ const SDL_Color GREY = { 80, 80, 80, 255 };
 class Game
 {
 private:
-	SDL_Window *window = nullptr;
-	SDL_Renderer *renderer = nullptr;
-	Texture *textures[NUMBER_TEXTURES];
-	Font *fonts[1];
-	GameManager *gamemanager;
-	StateManager *statemanager;
-	GameState *game;
-	MenuState *menu;
-	ScoreBoardState *scoreboard;
+	SDL_Window *_window = nullptr;
+	SDL_Renderer *_renderer = nullptr;
+	Texture *_textures[NUMBER_TEXTURES];
+	Font *_fonts[1];
+	GameManager *_gamemanager;
+	StateManager *_statemanager;
+	GameState *_game;
+	MenuState *_menu;
+	ScoreBoardState *_scoreboard;
 
 public:
 	Game();
