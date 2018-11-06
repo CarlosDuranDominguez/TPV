@@ -4,17 +4,19 @@
 #include <iostream>
 #include <fstream>
 
-BlocksMap::BlocksMap(string path, int padding, Texture* texture)
+BlocksMap::BlocksMap(string path, int padding, Texture *texture)
 {
-	mapWidth = WIN_WIDTH-2*padding;
-	mapHeight = WIN_HEIGHT/2-padding;
+	mapWidth = WIN_WIDTH - 2 * padding;
+	mapHeight = WIN_HEIGHT / 2 - padding;
 	loadMap(path, padding, texture);
 }
 
-BlocksMap::~BlocksMap() 
+BlocksMap::~BlocksMap()
 {
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < columns; j++)
+		{
 			if (blocks[i][j] != nullptr)
 			{
 				delete blocks[i][j];
@@ -25,22 +27,24 @@ BlocksMap::~BlocksMap()
 	delete[] blocks;
 }
 
-void BlocksMap::loadMap(string path, int padding, Texture* texture)
+void BlocksMap::loadMap(string path, int padding, Texture *texture)
 {
-	
+
 	ifstream file;
 	file.open(path);
 	if (file.good())
 	{
 		_numberOfBlocks = 0;
 		file >> rows >> columns;
-		blocks = new Block**[rows];
+		blocks = new Block **[rows];
 		cellWidth = mapWidth / columns;
 		cellHeight = mapHeight / rows;
 		int aux;
-		for (int i = 0; i < rows; i++) {
-			blocks[i] = new Block*[columns];
-			for (int j = 0; j < columns; j++) {
+		for (int i = 0; i < rows; i++)
+		{
+			blocks[i] = new Block *[columns];
+			for (int j = 0; j < columns; j++)
+			{
 				file >> aux;
 				if (aux != 0)
 				{
@@ -54,17 +58,19 @@ void BlocksMap::loadMap(string path, int padding, Texture* texture)
 			}
 		}
 		file.close();
-	} 
+	}
 	else
 	{
 		throw "Error loading level from " + path;
 	}
 }
 
-void BlocksMap::render() 
+void BlocksMap::render()
 {
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < columns; j++)
+		{
 			if (blocks[i][j] != nullptr)
 			{
 				blocks[i][j]->render();
@@ -73,15 +79,18 @@ void BlocksMap::render()
 	}
 }
 
-int BlocksMap::numberOfBlocks() 
+int BlocksMap::numberOfBlocks()
 {
 	return _numberOfBlocks;
 }
 
-bool BlocksMap::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
-			if (blocks[i][j]!=nullptr && blocks[i][j]->collide(object, collisionPosition, reflection))
+bool BlocksMap::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < columns; j++)
+		{
+			if (blocks[i][j] != nullptr && blocks[i][j]->collide(object, collisionPosition, reflection))
 			{
 				_numberOfBlocks--;
 				delete blocks[i][j];

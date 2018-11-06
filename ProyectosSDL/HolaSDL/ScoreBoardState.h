@@ -4,17 +4,19 @@
 
 class Game;
 
-class ScoreBoardState {
+class ScoreBoardState
+{
 private:
-	ScoreBoard* scoreboard;
-	Button* button;
-	Game* game;
-	SDL_Renderer* renderer;
+	ScoreBoard *scoreboard;
+	Button *button;
+	Game *game;
+	SDL_Renderer *renderer;
 	bool exit = false;
 	void render();
 	void handleEvents();
+
 public:
-	ScoreBoardState(Game* game, SDL_Renderer* renderer);
+	ScoreBoardState(Game *game, SDL_Renderer *renderer);
 	~ScoreBoardState();
-	void run(); 
+	void run();
 };

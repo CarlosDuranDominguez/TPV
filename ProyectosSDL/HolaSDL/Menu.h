@@ -2,12 +2,14 @@
 
 #include "Button.h"
 
-class Menu {
+class Menu
+{
 private:
-	Button** buttons;
+	Button **buttons;
 	int size;
+
 public:
-	Menu(Button**, int);
+	Menu(Button **, int);
 	void render();
 	void handleEvents(SDL_Event event);
 };

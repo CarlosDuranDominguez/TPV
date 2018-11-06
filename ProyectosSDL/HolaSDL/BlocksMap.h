@@ -3,20 +3,20 @@
 #include "Block.h"
 #include <string>
 
-class BlocksMap {
+class BlocksMap
+{
 private:
-	Block*** blocks;
+	Block ***blocks;
 	uint _numberOfBlocks;
 	int columns, rows;
 	int mapWidth, mapHeight;
 	int cellWidth, cellHeight;
+
 public:
-	BlocksMap(string,int, Texture*);
+	BlocksMap(string, int, Texture *);
 	~BlocksMap();
-	void loadMap(string,int, Texture*);
+	void loadMap(string, int, Texture *);
 	void render();
 	int numberOfBlocks();
-	bool collide(const Ball*, Vector2D&, Vector2D&);
-
+	bool collide(const Ball *, Vector2D &, Vector2D &);
 };
-

@@ -5,17 +5,19 @@
 #include "checkML.h"
 #include "Texture.h"
 
-class Font {
+class Font
+{
 private:
-	TTF_Font* font = nullptr;
-	SDL_Renderer* renderer;
+	TTF_Font *font = nullptr;
+	SDL_Renderer *renderer;
 	uint size = 8;
+
 public:
 	Font() {};
-	Font(SDL_Renderer* renderer, string filename, int size);
+	Font(SDL_Renderer *renderer, string filename, int size);
 	~Font();
-	TTF_Font* getFont();
-	SDL_Renderer* getRenderer();
+	TTF_Font *getFont();
+	SDL_Renderer *getRenderer();
 	void liberate();
 	void load(string filename);
 };
