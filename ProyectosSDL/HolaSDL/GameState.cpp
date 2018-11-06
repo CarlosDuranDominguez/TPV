@@ -1,11 +1,11 @@
 #include "GameState.h"
 #include "Game.h"
 
-GameState::GameState(Game* game) : 
+GameState::GameState(Game* game, SDL_Renderer* renderer) : 
 	renderer(renderer), game(game), exit(false), gameover(false), win(false) {
-
+	texts = new Text*[1];
 	texts[0] = new Text(game->getFonts()[0], 0, 0, 200, 50, { 255,255,255,255 }, "Hola");
-
+	textures = game->getTextures();
 	int wall_width = textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
 	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH()*WIN_WIDTH / textures[TOPSIDE]->getW();
 	ball = new Ball((WIN_WIDTH - textures[BALL]->getW() / 4) / 2,
@@ -52,6 +52,7 @@ GameState::~GameState() {
 
 void GameState::run()
 {
+	exit = false; gameover = false; win = false;
 	uint32_t startTime, frameTime;
 	startTime = SDL_GetTicks();
 	while (!exit && !gameover && !win) {
@@ -63,6 +64,8 @@ void GameState::run()
 		}
 		render();
 	}
+	if (exit) game->changeState("gameover");
+	else if (gameover) game->changeState("scoreboard");
 }
 
 void GameState::update()

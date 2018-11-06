@@ -3,7 +3,7 @@
 #include "Game.h"
 #include <functional>
 
-MenuState::MenuState(Game* game):  game(game) {
+MenuState::MenuState(Game* game, SDL_Renderer* renderer):  game(game), renderer(renderer) {
 	buttons = new Button* [NUMBER_BUTTONS_MENU];
 	SDL_Color white = { 255,255,255,255 };
 	SDL_Color grey = { 80,80,80,255 };
@@ -37,9 +37,11 @@ void MenuState::run() {
 }
 
 void MenuState::render() {
+	SDL_RenderClear(renderer);
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++) {
 		buttons[i]->render();
 	}
+	SDL_RenderPresent(renderer);
 }
 
 void MenuState::handleEvents() {

@@ -9,16 +9,16 @@ Game::Game() :
 	}
 	window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	game = new GameState(this);
-	menu = new MenuState(this);
-	scoreboard = new ScoreBoardState(this);
-	statemanager = new StateManager(game, menu, scoreboard);
 	if (window == nullptr || renderer == nullptr) throw "Error loading the SDL window or renderer";
 	for (uint i = 0; i < NUMBER_TEXTURES; i++) {
 		textures[i] = new Texture(renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
 	}
 	fonts[0] = new Font(renderer, FONTSDIRECTORIES[REGULAR], 72);
 
+	game = new GameState(this, renderer);
+	menu = new MenuState(this, renderer);
+	scoreboard = new ScoreBoardState(this, renderer);
+	statemanager = new StateManager(game, menu, scoreboard);
 
 }
 

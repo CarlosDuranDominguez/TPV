@@ -21,7 +21,7 @@ private:
 	BlocksMap* blocksmap = nullptr;
 	Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
 public:
-	GameState( Game* game);
+	GameState( Game* game, SDL_Renderer*  renderer);
 	~GameState();
 	void run();
 	void render() const;
