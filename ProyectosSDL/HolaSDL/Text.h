@@ -18,8 +18,8 @@ public:
 	~Text();
 	void setText(string newText);
 	SDL_Rect getRect();
-	Vector2D setPosition(Vector2D newPosition) { return position = newPosition; };
-	Vector2D setPosition(double x, double y) { return position = Vector2D(x, y); };
-	SDL_Color setColor(SDL_Color color) { return this->color = color; };
+	Vector2D setPosition(Vector2D newPosition);
+	Vector2D setPosition(double x, double y);
+	SDL_Color setColor(SDL_Color color);
 	void render() const;
 };

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include "Game.h"
 
-class Game{};
+using namespace std;
 
 class LoadManager {
 public:
-	static void load(Game*, std::string);
-	static void save(Game*, std::string);
+	static void load(Game* game, string filename);
+	static void save(Game* game, string filename);
 };

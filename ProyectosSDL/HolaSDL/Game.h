@@ -6,11 +6,11 @@
 #include "checkML.h"
 #include "Texture.h"
 #include "Font.h"
-#include "Text.h"
-#include "Ball.h"
-#include "Paddle.h"
-#include "BlocksMap.h"
-#include "Wall.h"
+#include "GameManager.h"
+#include "StateManager.h"
+#include "GameState.h"
+#include "MenuState.h"
+#include "ScoreBoardState.h"
 
 
 const uint WIN_WIDTH = 800;
@@ -60,21 +60,18 @@ class Game {
 private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
-	bool exit = false, gameover = false, win = false;
 	Texture* textures[NUMBER_TEXTURES];
 	Font* fonts[1];
-	Text* texts[1];
-	Ball* ball = nullptr;
-	Paddle* paddle = nullptr;
-	BlocksMap* blocksmap = nullptr;
-	Wall *upWall = nullptr, *rightWall = nullptr, *leftWall = nullptr;
+	GameManager* gamemanager;
+	StateManager* statemanager;
+	GameState* game;
+	MenuState* menu;
+	ScoreBoardState* scoreboard;
 public:
 	Game();
 	~Game();
+	Texture** getTextures();
+	Font** getFonts();
 	void run();
-	void render() const;
-	void update();
-	void handleEvents();
-	bool collides(const Ball*, Vector2D&, Vector2D&);
 };
 

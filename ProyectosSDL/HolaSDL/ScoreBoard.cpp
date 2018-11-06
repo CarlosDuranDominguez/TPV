@@ -1,17 +1,8 @@
-#include"TopBoard.h"
+#include "ScoreBoard.h"
 #include <fstream>
 #include <iostream>
 
-bool TopBoard::_sortByName(const PlayerGame& game1, const PlayerGame& game2) {
-	return game1.name < game2.name;
-}
-bool TopBoard::_sortByScore(PlayerGame& game1, PlayerGame& game2) {
-	return game1.score < game2.score;
-}
-bool TopBoard::_sortByTime(PlayerGame& game1, PlayerGame& game2) {
-	return game1.time > game2.time;
-}
-TopBoard::TopBoard(Font* font, double x, double y, int width, int height, SDL_Color color, string filename = "../save/save.save") :
+ScoreBoard::ScoreBoard(Font* font, double x, double y, int width, int height, SDL_Color color, string filename) :
 	font(font), position(x, y), width(width), height(height), color(color), filename(filename) {
 	fstream file;
 	file.open(filename, fstream::in | fstream::out);
@@ -40,7 +31,8 @@ TopBoard::TopBoard(Font* font, double x, double y, int width, int height, SDL_Co
 	}
 	throw "Error loading scoreboard";
 }
-TopBoard::~TopBoard() {
+
+ScoreBoard::~ScoreBoard() {
 	fstream file;
 	file.open(filename, fstream::out);
 	file << allGames.size() << '\n';
@@ -54,28 +46,41 @@ TopBoard::~TopBoard() {
 		delete game.text;
 	}
 }
-void TopBoard::pushGame(PlayerGame newGame) {
+
+bool ScoreBoard::compareName(const PlayerGame& game1, const PlayerGame& game2) {
+	return game1.name < game2.name;
+}
+
+bool ScoreBoard::compareScore(const PlayerGame& game1, const PlayerGame& game2) {
+	return game1.score < game2.score;
+}
+
+bool ScoreBoard::compareTime(const PlayerGame& game1, const PlayerGame& game2) {
+	return game1.time > game2.time;
+}
+
+void ScoreBoard::pushGame(PlayerGame newGame) {
 	newGame.text = new Text(font, Vector2D(), width, height, color, "");
 	allGames.push_back(newGame);
 	sortByName();
 }
 
-void TopBoard::sortByName() {
-	sort(allGames.begin(), allGames.end(), _sortByName);
-	_reWrite();
+void ScoreBoard::sortByName() {
+	sort(allGames.begin(), allGames.end(), compareName);
+	_rewrite();
 }
 
-void TopBoard::sortByScore() {
-	sort(allGames.begin(), allGames.end(), _sortByScore);
-	_reWrite();
+void ScoreBoard::sortByScore() {
+	sort(allGames.begin(), allGames.end(), compareScore);
+	_rewrite();
 }
 
-void TopBoard::sortByTime() {
-	sort(allGames.begin(), allGames.end(), _sortByTime);
-	_reWrite();
+void ScoreBoard::sortByTime() {
+	sort(allGames.begin(), allGames.end(), compareTime);
+	_rewrite();
 }
 
-void TopBoard::_reWrite() {
+void ScoreBoard::_rewrite() {
 	for (unsigned int j = 0; j < allGames.size(); j++)
 	{
 		string aux = to_string(j) + "º " + allGames[j].name + " " + to_string(allGames[j].score) + " " + to_string(allGames[j].time);
@@ -84,7 +89,7 @@ void TopBoard::_reWrite() {
 	}
 }
 
-void TopBoard::render() const {
+void ScoreBoard::render() const {
 	for each (PlayerGame game in allGames)
 	{
 		game.text->render();

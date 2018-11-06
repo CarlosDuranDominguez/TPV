@@ -1,12 +1,13 @@
-#include "Game.h"
+#include "GameState.h"
 #include"Ball.h"
 #include "Texture.h"
+#include "Game.h"
 
 Ball::Ball() :
 	position(), width(), height(), velocity(), texture(), game(nullptr),radius(((double)width)/2) {};
-Ball::Ball(Vector2D position, int width, int heigth, Texture* texture, Game* game):
+Ball::Ball(Vector2D position, int width, int heigth, Texture* texture, GameState* game):
 	position(position), width(width), height(heigth), velocity(), texture(texture), game(game), radius(((double)width) / 2) {};
-Ball::Ball(double x, double y, int width, int heigth, Texture* texture, Game* game) :
+Ball::Ball(double x, double y, int width, int heigth, Texture* texture, GameState* game) :
 	position(x, y), width(width), height(heigth), velocity(), texture(texture), game(game), radius(((double)width) / 2) {};
 void Ball::render()
 {

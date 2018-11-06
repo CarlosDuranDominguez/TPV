@@ -5,9 +5,11 @@
 Paddle::Paddle(Vector2D position, int width, int heigth, double speed, Texture* texture) :
 	position(position), width(width), height(heigth), velocity(), speed(), texture(texture), 
 	leftMovement(false), rightMovement(false) {};
+
 Paddle::Paddle(double x, double y, int width, int heigth, double speed, Texture* texture) :
 	position(x, y), width(width), height(heigth), velocity(), speed(speed), texture(texture),
 	leftMovement(false), rightMovement(false) {};
+
 void Paddle::render() const
 {
 	texture->render(SDL_Rect{ (int)position.getX(),(int)position.getY(),width,height });
@@ -46,9 +48,11 @@ void Paddle::handleEvents(SDL_Event event)
 	velocity = velocity + (rightMovement ? Vector2D(1, 0) : Vector2D(0, 0));
 	velocity = velocity + (leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
 }
+
 Vector2D Paddle::Position() const {
 	return Vector2D(((double)width) / 2 + position.getX(),((double) height) / 2 + position.getY());
 }
+
 bool Paddle::collide(const Ball* object, Vector2D& collisionPosition, Vector2D& reflection) {
 	if (object->Position().isIn(position.getX() - object->getRadius(),
 		position.getY(),

@@ -73,15 +73,20 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Counter.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="ScoreBoardState.cpp" />
+    <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="TopBoard.cpp" />
+    <ClCompile Include="ScoreBoard.cpp" />
     <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
@@ -92,14 +97,19 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Counter.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="LoadManager.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="ScoreBoardState.h" />
+    <ClInclude Include="StateManager.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TopBoard.h" />
+    <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>

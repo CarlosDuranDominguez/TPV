@@ -28,6 +28,18 @@ SDL_Rect Text::getRect() {
 	return{ (int)position.getX(),(int)position.getY(),width,height };
 }
 
+Vector2D Text::setPosition(Vector2D newPosition) { 
+	return position = newPosition; 
+}
+
+Vector2D Text::setPosition(double x, double y) { 
+	return position = Vector2D(x, y); 
+}
+
+SDL_Color Text::setColor(SDL_Color color) { 
+	return this->color = color; 
+}
+
 void Text::render() const {
 	SDL_Rect rect{ (int)position.getX(),(int)position.getY(),width,height };
 	SDL_RenderCopy(font->getRenderer(), textTexture, nullptr, &rect);

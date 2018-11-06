@@ -4,9 +4,10 @@
 
 class Menu {
 private:
-	Button* buttons;
+	Button** buttons;
+	int size;
 public:
-	Menu(Button*...);
+	Menu(Button**, int);
 	void render();
-	void handleEvents();
+	void handleEvents(SDL_Event event);
 };

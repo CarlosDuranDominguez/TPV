@@ -7,8 +7,8 @@ class Vector2D {
 private:
 	double x, y;
 public:
-	Vector2D() :x(0), y(0) {};
-	Vector2D(const double x, const double y) :x(x), y(y) {};
+	Vector2D();
+	Vector2D(const double x, const double y);
 	~Vector2D() {};
 	double getX() const;
 	double getY() const;

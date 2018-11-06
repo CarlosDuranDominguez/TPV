@@ -12,7 +12,8 @@ struct PlayerGame{
 	int time;
 	Text* text;
 };
-class TopBoard {
+
+class ScoreBoard {
 private:
 	Font* font;
 	string filename;
@@ -20,13 +21,13 @@ private:
 	Vector2D position;
 	int width, height;
 	SDL_Color color;
-	bool static _sortByName(const PlayerGame& game1, const PlayerGame& game2);
-	bool static _sortByScore(PlayerGame&, PlayerGame&);
-	bool static _sortByTime(PlayerGame&, PlayerGame&);
-	void _reWrite();
+	bool static compareName(const PlayerGame& game1, const PlayerGame& game2);
+	bool static compareScore(const PlayerGame&, const PlayerGame&);
+	bool static compareTime(const PlayerGame&, const PlayerGame&);
+	void _rewrite();
 public:
-	TopBoard(Font* font, double x, double y, int width, int height, SDL_Color color, string filename);
-	~TopBoard();
+	ScoreBoard(Font* font, double x, double y, int width, int height, SDL_Color color, string filename);
+	~ScoreBoard();
 	void pushGame(PlayerGame newGame);
 	void sortByName();
 	void sortByScore();
