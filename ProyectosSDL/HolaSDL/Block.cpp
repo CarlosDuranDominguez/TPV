@@ -108,3 +108,8 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 
 	return false;
 }
+
+int Block::getColor() const
+{
+	return _color;
+}

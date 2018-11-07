@@ -23,6 +23,7 @@ public:
 	BlocksMap(double x, double y, int width, int height, string path, Texture *texture);
 	~BlocksMap();
 	void loadMap(string path, Texture *texture);
+	void saveMap(string path) const;
 	void render() const;
 	int numberOfBlocks() const;
 	bool collide(const Ball *, Vector2D &, Vector2D &);

@@ -22,4 +22,5 @@ public:
 	~Block();
 	void render() const;
 	bool collide(const Ball *, Vector2D &, Vector2D &);
+	int getColor() const;
 };

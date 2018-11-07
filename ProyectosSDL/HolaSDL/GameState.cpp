@@ -45,7 +45,7 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 		wall_width,
 		wall_height,
 		textures[SIDE]);
-	_blocksmap = new BlocksMap(wall_width, 50, WIN_WIDTH - 2*wall_width,WIN_HEIGHT/2 - wall_width);
+	_blocksmap = new BlocksMap(wall_width, 50 + wall_width, WIN_WIDTH - 2*wall_width,WIN_HEIGHT/2 - wall_width);
 }
 
 /**

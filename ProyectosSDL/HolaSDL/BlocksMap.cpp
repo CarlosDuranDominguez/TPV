@@ -96,6 +96,35 @@ void BlocksMap::loadMap(string path, Texture *texture)
 	}
 }
 
+void BlocksMap::saveMap(string path) const
+{
+	ofstream file;
+	file.open(path);
+	if (file.good())
+	{
+		file << _rows << ' ' << _columns;
+		for (int i = 0; i < _rows; i++)
+		{
+			for (int j = 0; j < _columns; j++)
+			{
+				if (_blocks[i][j] != nullptr)
+				{
+					file << _blocks[i][j]->getColor() + 1 << ' ';
+				}
+				else
+				{
+					file << 0 << ' ';
+				}
+			}
+		}
+		file.close();
+	}
+	else
+	{
+		throw "Error loading level from " + path;
+	}
+}
+
 /**
  * All blocks are renderized.
  */
