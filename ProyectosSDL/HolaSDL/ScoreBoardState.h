@@ -19,4 +19,5 @@ public:
 	ScoreBoardState(Game *game, SDL_Renderer *renderer);
 	~ScoreBoardState();
 	void run();
+	void pushNewFinishGame(const string& name, int score, int time);
 };

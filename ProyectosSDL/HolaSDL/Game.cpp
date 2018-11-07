@@ -25,7 +25,7 @@ Game::Game()
 	_menu = new MenuState(this, _renderer);
 	_scoreboard = new ScoreBoardState(this, _renderer);
 	_statemanager = new StateManager(_game, _menu, _scoreboard);
-	_gamemanager = new GameManager();
+	_gamemanager = new GameManager(this);
 }
 
 /*
@@ -76,7 +76,16 @@ void Game::run()
 /*
  * Change the state of the game(it is needed to exit from the current state)
  */
-void Game::changeState(string stateName)
+void Game::changeState(const string& stateName)
 {
 	_statemanager->changeState(stateName);
+}
+
+void Game::newScore(const string& name, int score, double time)
+{
+	_scoreboard->pushNewFinishGame(name, score, time);
+}
+GameManager* Game::gameManager() 
+{
+	return _gamemanager;
 }

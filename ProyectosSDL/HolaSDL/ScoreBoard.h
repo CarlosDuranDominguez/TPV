@@ -31,7 +31,7 @@ private:
 public:
 	ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename);
 	~ScoreBoard();
-	void pushGame(PlayerGame newGame);
+	void pushGame(const PlayerGame& newGame);
 	void sortByName();
 	void sortByScore();
 	void sortByTime();

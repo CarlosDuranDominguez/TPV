@@ -27,7 +27,7 @@ ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SD
 			file.close();
 			if (i == numberOfGames)
 			{
-				for (unsigned int j = 0; j < _allGames.size(); j++)
+				for (unsigned int j = 0; j < _allGames.size() && j < 10; j++)
 				{
 					string aux = to_string(j + 1) + "\u00ba " + _allGames[j].name + " " + to_string(_allGames[j].score) + " " + to_string(_allGames[j].time);
 					_texts[j] = new Text(font, _position + Vector2D(0, height) * j, width, height, color, aux);
@@ -90,7 +90,7 @@ bool ScoreBoard::_comparetime(const PlayerGame &game1, const PlayerGame &game2)
 /*
  * It puts a new finish game.
  */
-void ScoreBoard::pushGame(PlayerGame newGame)
+void ScoreBoard::pushGame(const PlayerGame& newGame)
 {
 	_allGames.push_back(newGame);
 	sortByName();
@@ -128,7 +128,7 @@ void ScoreBoard::sortByTime()
  */
 void ScoreBoard::_rewrite()
 {
-	for (unsigned int j = 0; j < _allGames.size(); j++)
+	for (unsigned int j = 0; j < _allGames.size() && j < 10; j++)
 	{
 		string aux = to_string(j + 1) + "\u00ba " + _allGames[j].name + " " + to_string(_allGames[j].score) + " " + to_string(_allGames[j].time);
 		_texts[j]->setText(aux);
@@ -137,7 +137,6 @@ void ScoreBoard::_rewrite()
 	for (unsigned int j = _allGames.size(); j < 10; j++)
 	{
 		string aux = to_string(j + 1) + "\u00ba ------ ------ ------";
-		_texts[j]->setText(aux);
 		_texts[j]->setPosition(_position + Vector2D(0, _height) * j);
 	}
 }

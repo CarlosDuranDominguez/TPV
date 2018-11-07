@@ -25,6 +25,10 @@ BlocksMap::BlocksMap(string path, int padding, Texture *texture)
  */
 BlocksMap::~BlocksMap()
 {
+	_freeBlocks();
+}
+
+void BlocksMap::_freeBlocks() {
 	if (_blocks != nullptr)
 	{
 		for (int i = 0; i < _rows; i++)
@@ -41,19 +45,18 @@ BlocksMap::~BlocksMap()
 		delete[] _blocks;
 	}
 }
-
 /*
  * Load the map from the file in "path", the blocks are positioned with the padding and a proper texture is assigned.
  */
 void BlocksMap::loadMap(string path, int padding, Texture *texture)
 {
-
 	ifstream file;
 	file.open(path);
 	if (file.good())
 	{
 		_numberOfBlocks = 0;
 		file >> _rows >> _columns;
+		_freeBlocks();
 		_blocks = new Block **[_rows];
 		_cellWidth = _mapWidth / _columns;
 		_cellHeight = _mapHeight / _rows;

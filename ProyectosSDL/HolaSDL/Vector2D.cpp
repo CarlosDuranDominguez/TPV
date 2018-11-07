@@ -24,17 +24,17 @@ double Vector2D::getY() const
 /*
  * Set the X component of the Vector
  */
-double Vector2D::setX(double _x)
+double Vector2D::setX(double x)
 {
-	return _x = _x;
+	return _x = x;
 }
 
 /*
  * Set the Y component of the Vector
  */
-double Vector2D::setY(double _y)
+double Vector2D::setY(double y)
 {
-	return _y = _y;
+	return _y = y;
 }
 
 /*

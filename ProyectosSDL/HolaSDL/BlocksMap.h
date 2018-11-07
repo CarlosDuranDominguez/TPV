@@ -11,6 +11,7 @@ private:
 	int _columns, _rows;
 	int _mapWidth, _mapHeight;
 	int _cellWidth, _cellHeight;
+	void _freeBlocks();
 
 public:
 	BlocksMap(int padding);

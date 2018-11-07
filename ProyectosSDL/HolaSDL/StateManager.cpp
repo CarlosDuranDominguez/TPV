@@ -55,7 +55,7 @@ void StateManager::changeState(const string &nameState)
 }
 
 /*
- * It gest the name of the current state.
+ * It gets the name of the current state.
  */
 string StateManager::currentState() const
 {
