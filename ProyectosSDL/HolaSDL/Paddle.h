@@ -24,6 +24,7 @@ class Paddle
 	void render() const;
 	void update();
 	void handleEvents(SDL_Event event);
+	void reset();
 	bool collide(const Ball *, Vector2D &, Vector2D &);
 	Vector2D position() const;
 	Vector2D setPosition(const double x, const double y);

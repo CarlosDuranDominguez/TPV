@@ -73,6 +73,7 @@ void GameState::init()
 	_ball->setPosition((WIN_WIDTH - _game->getTextures()[BALL]->getW() / 4) / 2, WIN_HEIGHT * 14 / 16);
 	_ball->setVelocity(0, 150);
 	_paddle->setPosition((WIN_WIDTH - _game->getTextures()[PADDLE]->getW()) / 2, WIN_HEIGHT * 15 / 16);
+	_paddle->reset();
 	_blocksmap->loadMap(LEVEL[_game->gameManager()->level()], _game->getTextures()[BRICKS]);
 	_timer->reset();
 }
@@ -154,7 +155,7 @@ void GameState::_render() const
 void GameState::_handleevents()
 {
 	SDL_Event event;
-	while (SDL_PollEvent(&event) && !_exit)
+	while (!_exit && SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
 			_exit = true;

@@ -123,6 +123,13 @@ Vector2D Paddle::setVelocity(const double x, const double y)
 	return _velocity;
 }
 
+void Paddle::reset()
+{
+	setVelocity(0, 0);
+	_rightMovement = false;
+	_leftMovement = false;
+}
+
 /**
  * Detects if the circular object collides with the paddle and return the position of the collision and the reflection vector(normal vector of the side).
  * If the collision happends int the top the reflection vector depends on the distance between the centers.
