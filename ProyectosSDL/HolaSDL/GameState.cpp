@@ -8,7 +8,7 @@
 GameState::GameState(Game *game, SDL_Renderer *renderer)
 	: _renderer(renderer), _game(game), _exit(false), _gameover(false), _win(false)
 {
-	_timer = new Timer(0, 0, 300, 50, WHITE, _game->getFonts()[BIGFONT]);
+	_timer = new Timer(0, 0, 300, 50, WHITE, _game->getFonts()[MEDIUMFONT]);
 	Texture **textures = _game->getTextures();
 	int wall_width = textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();
 	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();
@@ -29,23 +29,23 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 		textures[PADDLE]);
 	_upWall = new Wall(
 		0,
-		0,
+		50,
 		WIN_WIDTH,
 		wall_width,
 		textures[TOPSIDE]);
 	_leftWall = new Wall(
 		0,
-		wall_width,
+		wall_width+50,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
 	_rightWall = new Wall(
 		WIN_WIDTH - wall_width,
-		wall_width,
+		wall_width+50,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
-	_blocksmap = new BlocksMap(wall_width);
+	_blocksmap = new BlocksMap(wall_width, 50, WIN_WIDTH - 2*wall_width,WIN_HEIGHT/2 - wall_width);
 }
 
 /**
@@ -73,7 +73,7 @@ void GameState::init()
 	_ball->setPosition((WIN_WIDTH - _game->getTextures()[BALL]->getW() / 4) / 2, WIN_HEIGHT * 14 / 16);
 	_ball->setVelocity(0, 150);
 	_paddle->setPosition((WIN_WIDTH - _game->getTextures()[PADDLE]->getW()) / 2, WIN_HEIGHT * 15 / 16);
-	_blocksmap->loadMap( LEVEL[_game->gameManager()->level()], _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW(), _game->getTextures()[BRICKS]);
+	_blocksmap->loadMap( LEVEL[_game->gameManager()->level()], _game->getTextures()[BRICKS]);
 	_timer->reset();
 }
 

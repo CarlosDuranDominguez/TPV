@@ -7,18 +7,26 @@
 /**
  * Constructors.
  */
-BlocksMap::BlocksMap(int padding)
-	: _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0)
+BlocksMap::BlocksMap(Vector2D position, int width, int height)
+	: _position(position), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
 {
-	_mapWidth = WIN_WIDTH - 2 * padding;
-	_mapHeight = WIN_HEIGHT / 2 - padding;
 }
 
-BlocksMap::BlocksMap(string path, int padding, Texture *texture)
+BlocksMap::BlocksMap(double x, double y, int width, int height)
+	: _position(x,y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
 {
-	_mapWidth = WIN_WIDTH - 2 * padding;
-	_mapHeight = WIN_HEIGHT / 2 - padding;
-	loadMap(path, padding, texture);
+}
+
+BlocksMap::BlocksMap(Vector2D position, int width, int height, string path, Texture *texture)
+	: _position(position), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
+{
+	loadMap(path, texture);
+}
+
+BlocksMap::BlocksMap(double x, double y, int width, int height, string path, Texture *texture)
+	: _position(x,y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
+{
+	loadMap(path, texture);
 }
 
 /**
@@ -50,7 +58,7 @@ void BlocksMap::_freeBlocks() {
  * Load the map from the file in "path", the blocks are positioned with the
  * padding and a proper texture is assigned.
  */
-void BlocksMap::loadMap(string path, int padding, Texture *texture)
+void BlocksMap::loadMap(string path, Texture *texture)
 {
 	ifstream file;
 	file.open(path);
@@ -71,7 +79,7 @@ void BlocksMap::loadMap(string path, int padding, Texture *texture)
 				file >> aux;
 				if (aux != 0)
 				{
-					_blocks[i][j] = new Block(padding + j * _cellWidth, padding + i * _cellHeight, _cellWidth, _cellHeight, i, j, aux - 1, texture);
+					_blocks[i][j] = new Block(_position.getX() + j * _cellWidth, _position.getY() + i * _cellHeight, _cellWidth, _cellHeight, i, j, aux - 1, texture);
 					_numberOfBlocks++;
 				}
 				else
