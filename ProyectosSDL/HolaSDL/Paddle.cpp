@@ -123,6 +123,9 @@ Vector2D Paddle::setVelocity(const double x, const double y)
 	return _velocity;
 }
 
+/**
+ * Reset the paddle's velocity and movement states.
+ */
 void Paddle::reset()
 {
 	setVelocity(0, 0);

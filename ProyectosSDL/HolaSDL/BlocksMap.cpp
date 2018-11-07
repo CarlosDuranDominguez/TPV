@@ -38,7 +38,7 @@ BlocksMap::~BlocksMap()
 }
 
 /**
- * Deletes all blocks from memory
+ * Deletes all blocks from memory.
  */
 void BlocksMap::_freeBlocks()
 {
@@ -101,7 +101,7 @@ void BlocksMap::loadMap(string path, Texture *texture)
 }
 
 /**
- * Saves the map
+ * Saves the map.
  */
 void BlocksMap::saveMap(string path) const
 {

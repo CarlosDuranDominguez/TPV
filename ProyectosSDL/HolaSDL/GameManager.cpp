@@ -3,7 +3,7 @@
 #include "LoadManager.h"
 
 /**
- * Constructor
+ * Constructor.
  */
 GameManager::GameManager(Game *game)
 	: _game(game)
@@ -12,7 +12,7 @@ GameManager::GameManager(Game *game)
 };
 
 /**
- * Finishes the level and pushes to leaderboard
+ * Finishes the level and pushes to leaderboard.
  */
 void GameManager::finishLevel(double time)
 {
@@ -24,7 +24,7 @@ void GameManager::finishLevel(double time)
 }
 
 /**
- * Set level
+ * Set level.
  */
 void GameManager::setLevel(int level)
 {
@@ -32,7 +32,7 @@ void GameManager::setLevel(int level)
 }
 
 /**
- * Get the level
+ * Get the level.
  */
 int GameManager::level()
 {
@@ -40,7 +40,7 @@ int GameManager::level()
 }
 
 /**
- * Reset the level and time
+ * Reset the level and time.
  */
 void GameManager::reset()
 {

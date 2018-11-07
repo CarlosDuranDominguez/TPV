@@ -4,7 +4,7 @@
 #include "Game.h"
 
 /**
- * Constructors
+ * Constructors.
  */
 Ball::Ball()
 	: _position(), _width(), _height(), _velocity(), _texture(), _game(nullptr), _radius(((double)_width) / 2) {}

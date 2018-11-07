@@ -2,7 +2,7 @@
 #include <fstream>
 
 /**
- * Load a level save file
+ * Load a level save file.
  */
 void LoadManager::load(Game *game, string filename)
 {
@@ -25,7 +25,7 @@ void LoadManager::load(Game *game, string filename)
 }
 
 /**
- * Save a level save file
+ * Save a level save file.
  */
 void LoadManager::save(Game *game, string filename)
 {

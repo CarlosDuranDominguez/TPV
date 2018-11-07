@@ -78,7 +78,7 @@ void Game::run()
 }
 
 /**
- * Change the state of the game(it is needed to exit from the current state)
+ * Change the state of the game(it is needed to exit from the current state).
  */
 void Game::changeState(const States &state)
 {

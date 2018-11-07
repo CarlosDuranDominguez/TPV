@@ -6,7 +6,7 @@ Vector2D::Vector2D() : _x(0), _y(0){};
 Vector2D::Vector2D(const double x, const double y) : _x(x), _y(y){};
 
 /**
- * Get the X component of the Vector
+ * Get the X component of the Vector.
  */
 double Vector2D::getX() const
 {
@@ -14,7 +14,7 @@ double Vector2D::getX() const
 }
 
 /**
- * Get the Y component of the Vector
+ * Get the Y component of the Vector.
  */
 double Vector2D::getY() const
 {
@@ -22,7 +22,7 @@ double Vector2D::getY() const
 }
 
 /**
- * Set the X component of the Vector
+ * Set the X component of the Vector.
  */
 double Vector2D::setX(double x)
 {
@@ -30,7 +30,7 @@ double Vector2D::setX(double x)
 }
 
 /**
- * Set the Y component of the Vector
+ * Set the Y component of the Vector.
  */
 double Vector2D::setY(double y)
 {
@@ -38,7 +38,7 @@ double Vector2D::setY(double y)
 }
 
 /**
- * Calculate modulus of the Vector
+ * Calculate modulus of the Vector.
  */
 double Vector2D::modulus() const
 {
@@ -46,7 +46,7 @@ double Vector2D::modulus() const
 }
 
 /**
- * Calculate the unitary vector of the Vector
+ * Calculate the unitary vector of the Vector.
  */
 Vector2D Vector2D::normalize()
 {
@@ -54,7 +54,7 @@ Vector2D Vector2D::normalize()
 }
 
 /**
- * Calculate the vector proyection on v
+ * Calculate the vector proyection on v.
  */
 Vector2D Vector2D::projectionOn(const Vector2D &v) const
 {
