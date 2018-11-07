@@ -55,7 +55,7 @@ struct TextureInfo
 	uint rows;
 };
 
-const TextureInfo TEXTURES[NUMBER_TEXTURES] {
+const TextureInfo TEXTURES[NUMBER_TEXTURES]{
 	TextureInfo{"../images/ball.png", 1, 1},
 	TextureInfo{"../images/bricks.png", 3, 2},
 	TextureInfo{"../images/paddle.png", 1, 1},
@@ -63,7 +63,7 @@ const TextureInfo TEXTURES[NUMBER_TEXTURES] {
 	TextureInfo{"../images/topside.png", 1, 1},
 };
 
-const string FONTSDIRECTORIES[NUMBER_FONT_STYLES] {
+const string FONTSDIRECTORIES[NUMBER_FONT_STYLES]{
 	"../fonts/Oswald-Bold.ttf",
 	"../fonts/Oswald-BoldItalic.ttf",
 	"../fonts/Oswald-DemiBold.ttf",
@@ -78,25 +78,27 @@ const string FONTSDIRECTORIES[NUMBER_FONT_STYLES] {
 	"../fonts/Oswald-MediumItalic.ttf",
 	"../fonts/Oswald-Regular.ttf",
 	"../fonts/Oswald-RegularItalic.ttf",
-	"../fonts/Oswald-Stencil.ttf"
-};
+	"../fonts/Oswald-Stencil.ttf"};
 
-const string LEVEL[3] {
+const string LEVEL[3]{
 	"../levels/level01.ark",
 	"../levels/level02.ark",
-	"../levels/level03.ark"
-};
+	"../levels/level03.ark"};
 
-enum Fonts { BIGFONT, MEDIUMFONT };
+enum Fonts
+{
+	BIGFONT,
+	MEDIUMFONT
+};
 
 const uint NUMBERFONTS = 2;
 
-const SDL_Color WHITE = { 255, 255, 255, 255 };
-const SDL_Color GREY = { 80, 80, 80, 255 };
+const SDL_Color WHITE = {255, 255, 255, 255};
+const SDL_Color GREY = {80, 80, 80, 255};
 
 class Game
 {
-private:
+  private:
 	SDL_Window *_window = nullptr;
 	SDL_Renderer *_renderer = nullptr;
 	Texture *_textures[NUMBER_TEXTURES];
@@ -107,13 +109,13 @@ private:
 	MenuState *_menu;
 	ScoreBoardState *_scoreboard;
 
-public:
+  public:
 	Game();
 	~Game();
 	Texture **getTextures();
 	Font **getFonts();
-	void changeState(const States& state);
-	void newScore(const string& name, int score, double time);
+	void changeState(const States &state);
+	void newScore(const string &name, int score, double time);
 	void run();
-	GameManager* gameManager();
+	GameManager *gameManager();
 };

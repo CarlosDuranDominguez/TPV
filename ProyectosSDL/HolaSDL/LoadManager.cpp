@@ -10,15 +10,18 @@ void LoadManager::load(Game *game, string filename)
 	fstream file;
 	file.open(filename, fstream::in);
 
-	// Read the level
-	int level;
-	file >> level;
+	if (file.good())
+	{
+		// Read the level
+		int level;
+		file >> level;
 
-	// Set the level to the game manager
-	game->gameManager()->setLevel(level);
+		// Set the level to the game manager
+		game->gameManager()->setLevel(level);
 
-	// Close the file stream
-	file.close();
+		// Close the file stream
+		file.close();
+	}
 }
 
 /**
@@ -30,10 +33,13 @@ void LoadManager::save(Game *game, string filename)
 	fstream file;
 	file.open(filename, fstream::out);
 
-	// Write down the level
-	int level = game->gameManager()->level();
-	file << level;
+	if (file.good())
+	{
+		// Write down the level
+		int level = game->gameManager()->level();
+		file << level;
 
-	// Close the file stream
-	file.close();
+		// Close the file stream
+		file.close();
+	}
 }

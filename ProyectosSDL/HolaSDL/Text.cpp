@@ -50,8 +50,7 @@ SDL_Rect Text::getRect() const
 		(int)_position.getX(),
 		(int)_position.getY(),
 		_width,
-		_height
-	};
+		_height};
 }
 
 /**
@@ -91,7 +90,6 @@ void Text::render() const
 		(int)_position.getX(),
 		(int)_position.getY(),
 		_width,
-		_height
-	};
+		_height};
 	SDL_RenderCopy(_font->getRenderer(), _textTexture, nullptr, &rect);
 }

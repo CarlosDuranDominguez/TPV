@@ -9,7 +9,7 @@ class Game;
 
 class Paddle
 {
-private:
+  private:
 	Game *_game;
 	Vector2D _position;
 	int _width, _height;
@@ -18,7 +18,7 @@ private:
 	Texture *_texture;
 	bool _leftMovement, _rightMovement;
 
-public:
+  public:
 	Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture);
 	Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture);
 	void render() const;

@@ -18,13 +18,13 @@ enum States
 
 class StateManager
 {
-private:
+  private:
 	GameState *game;
 	MenuState *menu;
 	ScoreBoardState *scoreboard;
 	States _currentState;
 
-public:
+  public:
 	StateManager(GameState *game, MenuState *menu, ScoreBoardState *scoreboard);
 	~StateManager();
 	void run();

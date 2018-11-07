@@ -5,11 +5,11 @@
 #include "Vector2D.h"
 class Counter
 {
-private:
+  private:
 	int _score;
 	Text *_text;
 
-public:
+  public:
 	Counter(float x, float y, int width, int height, SDL_Color color, Font *font);
 	Counter(Vector2D position, int width, int height, SDL_Color color, Font *font);
 	~Counter();

@@ -8,14 +8,14 @@ class Ball;
 
 class Block
 {
-private:
+  private:
 	Vector2D _position;
 	int _width, _height;
 	int _column, _row;
 	int _color;
 	Texture *_texture;
 
-public:
+  public:
 	Block();
 	Block(float x, float y, int width, int height, int column, int row, int color, Texture *texture);
 	Block(Vector2D position, int width, int height, int column, int row, int color, Texture *texture);

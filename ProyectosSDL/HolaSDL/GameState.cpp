@@ -35,17 +35,17 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 		textures[TOPSIDE]);
 	_leftWall = new Wall(
 		0,
-		wall_width+50,
+		wall_width + 50,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
 	_rightWall = new Wall(
 		WIN_WIDTH - wall_width,
-		wall_width+50,
+		wall_width + 50,
 		wall_width,
 		wall_height,
 		textures[SIDE]);
-	_blocksmap = new BlocksMap(wall_width, 50 + wall_width, WIN_WIDTH - 2*wall_width,WIN_HEIGHT/2 - wall_width);
+	_blocksmap = new BlocksMap(wall_width, 50 + wall_width, WIN_WIDTH - 2 * wall_width, WIN_HEIGHT / 2 - wall_width);
 }
 
 /**
@@ -73,7 +73,7 @@ void GameState::init()
 	_ball->setPosition((WIN_WIDTH - _game->getTextures()[BALL]->getW() / 4) / 2, WIN_HEIGHT * 14 / 16);
 	_ball->setVelocity(0, 150);
 	_paddle->setPosition((WIN_WIDTH - _game->getTextures()[PADDLE]->getW()) / 2, WIN_HEIGHT * 15 / 16);
-	_blocksmap->loadMap( LEVEL[_game->gameManager()->level()], _game->getTextures()[BRICKS]);
+	_blocksmap->loadMap(LEVEL[_game->gameManager()->level()], _game->getTextures()[BRICKS]);
 	_timer->reset();
 }
 
@@ -109,7 +109,8 @@ void GameState::run()
 	else
 	{
 		_game->gameManager()->finishLevel(_timer->getTime());
-		if (_game->gameManager()->level() == 2) {
+		if (_game->gameManager()->level() == 2)
+		{
 			_game->gameManager()->reset();
 			_game->changeState(SCOREBOARD);
 		}

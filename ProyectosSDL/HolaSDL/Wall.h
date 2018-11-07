@@ -7,12 +7,12 @@
 
 class Wall
 {
-private:
+  private:
 	Vector2D _position;
 	int _width, _height;
 	Texture *_texture;
 
-public:
+  public:
 	Wall(float x, float y, int width, int height, Texture *texture);
 	Wall(Vector2D position, int width, int height, Texture *texture);
 	~Wall();

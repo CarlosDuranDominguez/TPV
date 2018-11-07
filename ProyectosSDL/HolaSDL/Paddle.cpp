@@ -7,23 +7,22 @@
  */
 Paddle::Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture)
 	: _game(game), _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
-	  _leftMovement(false), _rightMovement(false) {};
+	  _leftMovement(false), _rightMovement(false){};
 
 Paddle::Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture)
 	: _game(game), _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
-	  _leftMovement(false), _rightMovement(false) {};
+	  _leftMovement(false), _rightMovement(false){};
 
 /**
  * It renders the paddle in the correct position.
  */
 void Paddle::render() const
 {
-	_texture->render(SDL_Rect {
+	_texture->render(SDL_Rect{
 		(int)_position.getX(),
 		(int)_position.getY(),
 		_width,
-		_height
-	});
+		_height});
 };
 
 /**
@@ -31,7 +30,8 @@ void Paddle::render() const
  */
 void Paddle::update()
 {
-	if (_velocity.getX() != 0) {
+	if (_velocity.getX() != 0)
+	{
 		_position = _position + _velocity * FRAMERATE;
 
 		int wall_width = _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW();
@@ -133,14 +133,12 @@ bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &
 			_position.getX() - object->getRadius(),
 			_position.getY(),
 			_position.getX() + _width + object->getRadius(),
-			_position.getY() + _height
-		) ||
+			_position.getY() + _height) ||
 		object->position().isIn(
 			_position.getX(),
 			_position.getY() - object->getRadius(),
 			_position.getX() + _width,
-			_position.getY() + _height + object->getRadius()
-		) ||
+			_position.getY() + _height + object->getRadius()) ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
@@ -153,8 +151,7 @@ bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(0, object->getRadius()),
 					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
 				reflection = Vector2D((object->position().getX() - position().getX()) / _width, -1);
 				reflection.normalize();
 			}
@@ -164,8 +161,7 @@ bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(object->getRadius(), 0),
 					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
 			}
 		}
 		else
@@ -176,8 +172,7 @@ bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(object->getRadius(), 0),
 					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
 			}
 			else
 			{
@@ -185,8 +180,7 @@ bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(0, object->getRadius()),
 					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
 			}
 		}
 

@@ -5,17 +5,15 @@
 
 using namespace std;
 
-const double PI = 3.141592653589793238463;
-
 class Vector2D
 {
-private:
+  private:
 	double _x, _y;
 
-public:
+  public:
 	Vector2D();
 	Vector2D(const double x, const double y);
-	~Vector2D() {};
+	~Vector2D(){};
 	double getX() const;
 	double getY() const;
 	double setX(double);

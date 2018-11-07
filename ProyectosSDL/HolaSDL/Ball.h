@@ -8,7 +8,7 @@ class GameState;
 
 class Ball
 {
-private:
+  private:
 	Vector2D _position;
 	int _width, _height;
 	double _radius;
@@ -16,7 +16,7 @@ private:
 	Texture *_texture;
 	GameState *_game;
 
-public:
+  public:
 	Ball();
 	Ball(Vector2D position, int width, int heigth, Texture *texture, GameState *game);
 	Ball(double x, double y, int width, int heigth, Texture *texture, GameState *game);

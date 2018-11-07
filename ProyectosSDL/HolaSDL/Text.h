@@ -6,7 +6,7 @@
 
 class Text
 {
-private:
+  private:
 	Font *_font;
 	SDL_Texture *_textTexture;
 	SDL_Renderer *_renderer;
@@ -15,7 +15,7 @@ private:
 	int _width, _height;
 	SDL_Color _color;
 
-public:
+  public:
 	Text(Font *font, float x, float y, int width, int height, const SDL_Color &color, const string &text);
 	Text(Font *font, const Vector2D &position, int width, int height, const SDL_Color &color, const string &text);
 	~Text();

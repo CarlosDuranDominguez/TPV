@@ -20,12 +20,11 @@ Ball::Ball(double x, double y, int width, int heigth, Texture *texture, GameStat
  */
 void Ball::render() const
 {
-	_texture->render(SDL_Rect {
+	_texture->render(SDL_Rect{
 		(int)_position.getX(),
 		(int)_position.getY(),
 		_width,
-		_height
-	});
+		_height});
 }
 
 /**
@@ -41,7 +40,7 @@ void Ball::update()
 	Vector2D centerPosition;
 	// If collides reflect the ball to another position, if it still collides
 	// repeat until it move enought or there is no collision.
-	while (auxVelocity.modulus() != 0.0 &&_game->collides(this, collision, reflection))
+	while (auxVelocity.modulus() != 0.0 && _game->collides(this, collision, reflection))
 	{
 		auxVelocity = (position() - collision).modulus() / length * auxVelocity.reflect(reflection).normalize();
 		setPosition(collision + auxVelocity + reflection.normalize() * _radius);

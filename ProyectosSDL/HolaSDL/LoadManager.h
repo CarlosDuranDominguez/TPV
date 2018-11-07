@@ -8,7 +8,7 @@ using namespace std;
 
 class LoadManager
 {
-public:
+  public:
 	static void load(Game *game, string filename);
 	static void save(Game *game, string filename);
 };

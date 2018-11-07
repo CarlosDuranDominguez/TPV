@@ -12,7 +12,7 @@ typedef unsigned int uint;
 
 class Texture
 {
-private:
+  private:
     SDL_Texture *texture = nullptr;
     SDL_Renderer *renderer = nullptr;
     uint w = 0;
@@ -22,8 +22,8 @@ private:
     uint numCols = 1;
     uint numRows = 1;
 
-public:
-    Texture(SDL_Renderer *r) : renderer(r) {};
+  public:
+    Texture(SDL_Renderer *r) : renderer(r){};
     Texture(SDL_Renderer *r, string filename, uint numRows = 1, uint numCols = 1) : renderer(r) { load(filename, numRows, numCols); };
     ~Texture() { liberate(); };
     void liberate();

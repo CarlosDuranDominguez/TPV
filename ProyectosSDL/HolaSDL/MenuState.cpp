@@ -13,8 +13,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
 		[this, game]() { _exit = true; game->changeState(GAME); },
 		[this, game]() { _exit = true; game->changeState(SCOREBOARD); },
-		[this, game]() { _exit = true; game->changeState(GAMEOVER); }
-	};
+		[this, game]() { _exit = true; game->changeState(GAMEOVER); }};
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{

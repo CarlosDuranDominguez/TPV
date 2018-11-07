@@ -8,14 +8,14 @@
 
 class Timer
 {
-private:
+  private:
 	time_t _firstTime;
 	time_t _currentTime;
 	Vector2D _position;
 	int _width, _height;
 	Text *_text;
 
-public:
+  public:
 	Timer(float x, float y, int width, int height, SDL_Color color, Font *font);
 	Timer(Vector2D position, int width, int height, SDL_Color color, Font *font);
 	~Timer();

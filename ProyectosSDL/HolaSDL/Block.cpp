@@ -24,15 +24,13 @@ Block::~Block() {}
 void Block::render() const
 {
 	_texture->renderFrame(
-		SDL_Rect {
+		SDL_Rect{
 			(int)_position.getX(),
 			(int)_position.getY(),
 			_width,
-			_height
-		},
+			_height},
 		_color / _texture->getNumCols(),
-		_color % _texture->getNumCols()
-	);
+		_color % _texture->getNumCols());
 }
 
 /**
@@ -42,13 +40,13 @@ void Block::render() const
 bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {
 	if (object->position().isIn(_position.getX() - object->getRadius(),
-			_position.getY(),
-			_position.getX() + _width + object->getRadius(),
-			_position.getY() + _height) ||
+								_position.getY(),
+								_position.getX() + _width + object->getRadius(),
+								_position.getY() + _height) ||
 		object->position().isIn(_position.getX(),
-			_position.getY() - object->getRadius(),
-			_position.getX() + _width,
-			_position.getY() + _height + object->getRadius()) ||
+								_position.getY() - object->getRadius(),
+								_position.getX() + _width,
+								_position.getY() + _height + object->getRadius()) ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
@@ -66,8 +64,7 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(0, object->getRadius()),
 					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
 			}
 			else
 			{
@@ -75,8 +72,7 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(object->getRadius(), 0),
 					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
 			}
 		}
 		else
@@ -89,8 +85,7 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(object->getRadius(), 0),
 					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
 			}
 			else
 			{
@@ -98,8 +93,7 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(0, object->getRadius()),
 					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
 			}
 		}
 
@@ -109,6 +103,9 @@ bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &r
 	return false;
 }
 
+/**
+ * Returns the colour
+ */
 int Block::getColor() const
 {
 	return _color;

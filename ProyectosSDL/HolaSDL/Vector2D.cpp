@@ -1,9 +1,9 @@
 #include "Vector2D.h"
 #include <math.h>
 
-Vector2D::Vector2D() : _x(0), _y(0) {};
+Vector2D::Vector2D() : _x(0), _y(0){};
 
-Vector2D::Vector2D(const double x, const double y) : _x(x), _y(y) {};
+Vector2D::Vector2D(const double x, const double y) : _x(x), _y(y){};
 
 /**
  * Get the X component of the Vector

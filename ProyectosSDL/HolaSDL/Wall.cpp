@@ -4,27 +4,26 @@
  * Contructors.
  */
 Wall::Wall(float x, float y, int width, int height, Texture *texture)
-	: _position(x, y), _width(width), _height(height), _texture(texture) {};
+	: _position(x, y), _width(width), _height(height), _texture(texture){};
 
 Wall::Wall(Vector2D position, int width, int height, Texture *texture)
-	: _position(position), _width(width), _height(height), _texture(texture) {};
+	: _position(position), _width(width), _height(height), _texture(texture){};
 
 /**
  * Destructor.
  */
-Wall::~Wall() {};
+Wall::~Wall(){};
 
 /**
  * It renders the wall in the correct position.
  */
 void Wall::render() const
 {
-	_texture->render(SDL_Rect {
+	_texture->render(SDL_Rect{
 		(int)_position.getX(),
 		(int)_position.getY(),
 		_width,
-		_height
-	});
+		_height});
 };
 
 /**
@@ -33,16 +32,15 @@ void Wall::render() const
 bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {
 	if (object->position().isIn(
-		_position.getX() - object->getRadius(),
-		_position.getY(),
-		_position.getX() + _width + object->getRadius(),
-		_position.getY() + _height
-	) || object->position().isIn(
-		_position.getX(),
-		_position.getY() - object->getRadius(),
-		_position.getX() + _width,
-		_position.getY() + _height + object->getRadius()
-	) ||
+			_position.getX() - object->getRadius(),
+			_position.getY(),
+			_position.getX() + _width + object->getRadius(),
+			_position.getY() + _height) ||
+		object->position().isIn(
+			_position.getX(),
+			_position.getY() - object->getRadius(),
+			_position.getX() + _width,
+			_position.getY() + _height + object->getRadius()) ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
 		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
@@ -56,8 +54,7 @@ bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &re
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(0, object->getRadius()),
 					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
 			}
 			else
 			{
@@ -65,8 +62,7 @@ bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &re
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(object->getRadius(), 0),
 					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
 			}
 		}
 		else
@@ -77,8 +73,7 @@ bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &re
 				collisionPosition = Vector2D::cutPoint(
 					object->position() + Vector2D(object->getRadius(), 0),
 					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height)
-				);
+					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
 			}
 			else
 			{
@@ -86,8 +81,7 @@ bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &re
 				collisionPosition = Vector2D::cutPoint(
 					object->position() - Vector2D(0, object->getRadius()),
 					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height)
-				);
+					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
 			}
 		}
 

@@ -7,7 +7,7 @@
 
 class BlocksMap
 {
-private:
+  private:
 	Block ***_blocks;
 	uint _numberOfBlocks;
 	Vector2D _position;
@@ -16,7 +16,7 @@ private:
 	int _cellWidth, _cellHeight;
 	void _freeBlocks();
 
-public:
+  public:
 	BlocksMap(Vector2D position, int width, int height);
 	BlocksMap(double x, double y, int width, int height);
 	BlocksMap(Vector2D position, int width, int height, string path, Texture *texture);

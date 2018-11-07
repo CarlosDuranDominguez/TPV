@@ -69,7 +69,7 @@ void ScoreBoardState::_handleEvents()
 /**
  * It put a new game in the record.
  */
-void ScoreBoardState::pushNewFinishGame(const string& name, int score, int time)
+void ScoreBoardState::pushNewFinishGame(const string &name, int score, int time)
 {
-	_scoreboard->pushGame({ name, score, time });
+	_scoreboard->pushGame({name, score, time});
 }

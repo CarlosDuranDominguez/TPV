@@ -91,7 +91,7 @@ bool ScoreBoard::_comparetime(const PlayerGame &game1, const PlayerGame &game2)
 /**
  * It puts a new finish game.
  */
-void ScoreBoard::pushGame(const PlayerGame& newGame)
+void ScoreBoard::pushGame(const PlayerGame &newGame)
 {
 	_allGames.push_back(newGame);
 	sortByName();

@@ -13,7 +13,7 @@ BlocksMap::BlocksMap(Vector2D position, int width, int height)
 }
 
 BlocksMap::BlocksMap(double x, double y, int width, int height)
-	: _position(x,y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
+	: _position(x, y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
 {
 }
 
@@ -24,7 +24,7 @@ BlocksMap::BlocksMap(Vector2D position, int width, int height, string path, Text
 }
 
 BlocksMap::BlocksMap(double x, double y, int width, int height, string path, Texture *texture)
-	: _position(x,y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
+	: _position(x, y), _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0), _mapWidth(width), _mapHeight(height)
 {
 	loadMap(path, texture);
 }
@@ -37,7 +37,11 @@ BlocksMap::~BlocksMap()
 	_freeBlocks();
 }
 
-void BlocksMap::_freeBlocks() {
+/**
+ * Deletes all blocks from memory
+ */
+void BlocksMap::_freeBlocks()
+{
 	if (_blocks != nullptr)
 	{
 		for (int i = 0; i < _rows; i++)
@@ -96,6 +100,9 @@ void BlocksMap::loadMap(string path, Texture *texture)
 	}
 }
 
+/**
+ * Saves the map
+ */
 void BlocksMap::saveMap(string path) const
 {
 	ofstream file;

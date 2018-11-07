@@ -16,7 +16,7 @@ struct PlayerGame
 
 class ScoreBoard
 {
-private:
+  private:
 	Font *_font;
 	string _filename;
 	std::vector<PlayerGame> _allGames;
@@ -29,10 +29,10 @@ private:
 	bool static _comparetime(const PlayerGame &, const PlayerGame &);
 	void _rewrite();
 
-public:
+  public:
 	ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename);
 	~ScoreBoard();
-	void pushGame(const PlayerGame& newGame);
+	void pushGame(const PlayerGame &newGame);
 	void sortByName();
 	void sortByScore();
 	void sortByTime();

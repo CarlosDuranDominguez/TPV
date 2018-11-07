@@ -8,7 +8,7 @@ class Game;
 
 class ScoreBoardState
 {
-private:
+  private:
 	ScoreBoard *_scoreboard;
 	Button *_button;
 	Game *_game;
@@ -17,9 +17,9 @@ private:
 	void _render();
 	void _handleEvents();
 
-public:
+  public:
 	ScoreBoardState(Game *game, SDL_Renderer *renderer);
 	~ScoreBoardState();
 	void run();
-	void pushNewFinishGame(const string& name, int score, int time);
+	void pushNewFinishGame(const string &name, int score, int time);
 };
