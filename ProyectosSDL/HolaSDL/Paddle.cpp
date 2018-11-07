@@ -5,12 +5,12 @@
 /**
  * Constructors.
  */
-Paddle::Paddle(Vector2D position, int width, int heigth, double speed, Texture *texture)
-	: _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
+Paddle::Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture)
+	: _game(game), _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
 	  _leftMovement(false), _rightMovement(false) {};
 
-Paddle::Paddle(double x, double y, int width, int heigth, double speed, Texture *texture)
-	: _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
+Paddle::Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture)
+	: _game(game), _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
 	  _leftMovement(false), _rightMovement(false) {};
 
 /**
@@ -31,7 +31,16 @@ void Paddle::render() const
  */
 void Paddle::update()
 {
-	_position = _position + _velocity * FRAMERATE;
+	if (_velocity.getX() != 0) {
+		_position = _position + _velocity * FRAMERATE;
+
+		int wall_width = _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW();
+		double x = _position.getX();
+		if (x < wall_width)
+			_position = Vector2D(wall_width, _position.getY());
+		else if (x > WIN_WIDTH - wall_width - _width)
+			_position = Vector2D(WIN_WIDTH - wall_width - _width, _position.getY());
+	}
 };
 
 /**
@@ -63,9 +72,9 @@ void Paddle::handleEvents(SDL_Event event)
 			break;
 		}
 	}
-	_velocity = Vector2D(0, 0);
-	_velocity = _velocity + (_rightMovement ? Vector2D(1, 0) : Vector2D(0, 0));
-	_velocity = _velocity + (_leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
+	double x = (_rightMovement ? 1 : 0) + (_leftMovement ? -1 : 0);
+	double y = 0;
+	_velocity = Vector2D(x, y);
 }
 
 /**

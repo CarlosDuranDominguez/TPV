@@ -20,6 +20,7 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 		textures[BALL],
 		this);
 	_paddle = new Paddle(
+		_game,
 		(WIN_WIDTH - textures[PADDLE]->getW()) / 2,
 		WIN_HEIGHT * 15 / 16,
 		textures[PADDLE]->getW(),

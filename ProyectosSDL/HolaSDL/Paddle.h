@@ -3,9 +3,13 @@
 #include "Vector2D.h"
 #include "Texture.h"
 #include "Ball.h"
+
+class Game;
+
 class Paddle
 {
 private:
+	Game *_game;
 	Vector2D _position;
 	int _width, _height;
 	Vector2D _velocity;
@@ -14,8 +18,8 @@ private:
 	bool _leftMovement, _rightMovement;
 
 public:
-	Paddle(Vector2D position, int width, int heigth, double speed, Texture *texture);
-	Paddle(double x, double y, int width, int heigth, double speed, Texture *texture);
+	Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture);
+	Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture);
 	void render() const;
 	void update();
 	void handleEvents(SDL_Event event);
