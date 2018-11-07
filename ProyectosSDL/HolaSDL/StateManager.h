@@ -8,18 +8,26 @@
 
 using namespace std;
 
+enum States
+{
+	GAMEOVER,
+	SCOREBOARD,
+	GAME,
+	MENU
+};
+
 class StateManager
 {
 private:
 	GameState *game;
 	MenuState *menu;
 	ScoreBoardState *scoreboard;
-	string _currentState;
+	States _currentState;
 
 public:
 	StateManager(GameState *game, MenuState *menu, ScoreBoardState *scoreboard);
 	~StateManager();
 	void run();
-	void changeState(const string &nameState);
-	string currentState() const;
+	void changeState(const States &state);
+	States currentState() const;
 };

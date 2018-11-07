@@ -11,9 +11,9 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 	_buttons = new Button *[NUMBER_BUTTONS_MENU];
 	string nombres[NUMBER_BUTTONS_MENU] = {"Play", "ScoreBoard", "Exit"};
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
-		[this, game]() { _exit = true; game->changeState("game"); },
-		[this, game]() { _exit = true; game->changeState("scoreboard"); },
-		[this, game]() { _exit = true; game->changeState("gameover"); }
+		[this, game]() { _exit = true; game->changeState(GAME); },
+		[this, game]() { _exit = true; game->changeState(SCOREBOARD); },
+		[this, game]() { _exit = true; game->changeState(GAMEOVER); }
 	};
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
@@ -73,7 +73,7 @@ void MenuState::_handleEvents()
 		if (event.type == SDL_QUIT)
 		{
 			_exit = true;
-			_game->changeState("gameover");
+			_game->changeState(GAMEOVER);
 		}
 		else
 		{

@@ -112,7 +112,7 @@ public:
 	~Game();
 	Texture **getTextures();
 	Font **getFonts();
-	void changeState(const string& stateName);
+	void changeState(const States& state);
 	void newScore(const string& name, int score, double time);
 	void run();
 	GameManager* gameManager();

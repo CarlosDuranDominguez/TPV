@@ -9,7 +9,7 @@ ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : _game(gam
 	_scoreboard = new ScoreBoard(game->getFonts()[MEDIUMFONT], 0, 0, 200, 40, WHITE, "../saves/save.save");
 	_button = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this, game]() {
 		_exit = true;
-		game->changeState("menu");
+		game->changeState(MENU);
 	});
 }
 
@@ -57,7 +57,7 @@ void ScoreBoardState::_handleEvents()
 		if (event.type == SDL_QUIT)
 		{
 			_exit = true;
-			_game->changeState("gameover");
+			_game->changeState(GAMEOVER);
 		}
 		else
 		{

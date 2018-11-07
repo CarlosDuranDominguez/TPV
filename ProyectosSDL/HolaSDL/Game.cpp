@@ -80,9 +80,9 @@ void Game::run()
 /**
  * Change the state of the game(it is needed to exit from the current state)
  */
-void Game::changeState(const string& stateName)
+void Game::changeState(const States& state)
 {
-	_statemanager->changeState(stateName);
+	_statemanager->changeState(state);
 }
 
 void Game::newScore(const string& name, int score, double time)

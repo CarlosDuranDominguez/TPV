@@ -6,7 +6,7 @@
 StateManager::StateManager(GameState *game, MenuState *menu, ScoreBoardState *scoreboard)
 	: game(game), menu(menu), scoreboard(scoreboard)
 {
-	_currentState = "menu";
+	_currentState = MENU;
 }
 
 /**
@@ -21,18 +21,18 @@ StateManager::~StateManager()
  */
 void StateManager::run()
 {
-	while (_currentState != "gameover")
+	while (_currentState != GAMEOVER)
 	{
-		if (_currentState == "menu")
+		if (_currentState == MENU)
 		{
 			menu->run();
 		}
-		else if (_currentState == "game")
+		else if (_currentState == GAME)
 		{
 			game->init();
 			game->run();
 		}
-		else if (_currentState == "scoreboard")
+		else if (_currentState == SCOREBOARD)
 		{
 			scoreboard->run();
 		}
@@ -42,22 +42,15 @@ void StateManager::run()
 /**
  * It changes the current state(exit form the current state is necesary).
  */
-void StateManager::changeState(const string &nameState)
+void StateManager::changeState(const States &state)
 {
-	if (nameState != "gameover" && nameState != "menu" && nameState != "game" && nameState != "scoreboard")
-	{
-		throw "Non existing state";
-	}
-	else
-	{
-		_currentState = nameState;
-	}
+	_currentState = state;
 }
 
 /**
  * It gets the name of the current state.
  */
-string StateManager::currentState() const
+States StateManager::currentState() const
 {
 	return _currentState;
 }

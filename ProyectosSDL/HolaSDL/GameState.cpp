@@ -99,23 +99,23 @@ void GameState::run()
 	}
 	if (_exit)
 	{
-		_game->changeState("gameover");
+		_game->changeState(GAMEOVER);
 	}
 	else if (_gameover)
 	{
 		_game->gameManager()->reset();
-		_game->changeState("scoreboard");
+		_game->changeState(SCOREBOARD);
 	}
 	else
 	{
 		_game->gameManager()->finishLevel(_timer->getTime());
 		if (_game->gameManager()->level() == 2) {
 			_game->gameManager()->reset();
-			_game->changeState("scoreboard");
+			_game->changeState(SCOREBOARD);
 		}
 		else
 		{
-			_game->changeState("game");
+			_game->changeState(GAME);
 		}
 	}
 	LoadManager::save(_game, "../saves/level.save");
