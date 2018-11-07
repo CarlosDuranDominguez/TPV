@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "LoadManager.h"
 
-/*
+/**
  * Constructor.
  */
 GameState::GameState(Game *game, SDL_Renderer *renderer)
@@ -47,7 +47,7 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 	_blocksmap = new BlocksMap(wall_width);
 }
 
-/*
+/**
  * Destructor.
  */
 GameState::~GameState()
@@ -61,7 +61,7 @@ GameState::~GameState()
 	delete _timer;
 }
 
-/*
+/**
  * Initialize the varibles of the game.
  */
 void GameState::init()
@@ -76,7 +76,7 @@ void GameState::init()
 	_timer->reset();
 }
 
-/*
+/**
  * Execute the loop of the state.
  */
 void GameState::run()
@@ -120,7 +120,7 @@ void GameState::run()
 	LoadManager::save(_game, "../saves/level.save");
 }
 
-/*
+/**
  * It updates the position of the objects.
  */
 void GameState::_update()
@@ -130,7 +130,7 @@ void GameState::_update()
 	_timer->update();
 }
 
-/*
+/**
  * It renders the objects.
  */
 void GameState::_render() const
@@ -146,7 +146,7 @@ void GameState::_render() const
 	SDL_RenderPresent(_renderer);
 }
 
-/*
+/**
  * It detects user input.
  */
 void GameState::_handleevents()
@@ -160,7 +160,7 @@ void GameState::_handleevents()
 	}
 }
 
-/*
+/**
  * It detects if the circular object collides with any object and return the normal vector and the position of the collision.
  */
 bool GameState::collides(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection) const

@@ -4,10 +4,11 @@
 #include <iostream>
 #include <fstream>
 
-/*
+/**
  * Constructors.
  */
-BlocksMap::BlocksMap(int padding) : _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0)
+BlocksMap::BlocksMap(int padding)
+	: _blocks(nullptr), _numberOfBlocks(0), _cellWidth(0), _cellHeight(0)
 {
 	_mapWidth = WIN_WIDTH - 2 * padding;
 	_mapHeight = WIN_HEIGHT / 2 - padding;
@@ -20,7 +21,7 @@ BlocksMap::BlocksMap(string path, int padding, Texture *texture)
 	loadMap(path, padding, texture);
 }
 
-/*
+/**
  * Destructor.
  */
 BlocksMap::~BlocksMap()
@@ -45,8 +46,9 @@ void BlocksMap::_freeBlocks() {
 		delete[] _blocks;
 	}
 }
-/*
- * Load the map from the file in "path", the blocks are positioned with the padding and a proper texture is assigned.
+/**
+ * Load the map from the file in "path", the blocks are positioned with the
+ * padding and a proper texture is assigned.
  */
 void BlocksMap::loadMap(string path, int padding, Texture *texture)
 {
@@ -86,7 +88,7 @@ void BlocksMap::loadMap(string path, int padding, Texture *texture)
 	}
 }
 
-/*
+/**
  * All blocks are renderized.
  */
 void BlocksMap::render() const
@@ -103,7 +105,7 @@ void BlocksMap::render() const
 	}
 }
 
-/*
+/**
  * Get the number of the remaining number of blocks.
  */
 int BlocksMap::numberOfBlocks() const
@@ -111,8 +113,9 @@ int BlocksMap::numberOfBlocks() const
 	return _numberOfBlocks;
 }
 
-/*
- * It detects if the circular object collides with any blocks and return the normal vector and the position of the collision.
+/**
+ * It detects if the circular object collides with any blocks and return the
+ * normal vector and the position of the collision.
  */
 bool BlocksMap::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {

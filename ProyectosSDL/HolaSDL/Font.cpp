@@ -1,6 +1,6 @@
 #include "Font.h"
 
-/*
+/**
  * Constructor.
  */
 Font::Font(SDL_Renderer *renderer, string filename, int size)
@@ -9,7 +9,7 @@ Font::Font(SDL_Renderer *renderer, string filename, int size)
 	load(filename);
 }
 
-/*
+/**
  * Destructor.
  */
 Font::~Font()
@@ -17,7 +17,7 @@ Font::~Font()
 	liberate();
 }
 
-/*
+/**
  * It gets the created font.
  */
 TTF_Font *Font::getFont() const
@@ -25,7 +25,7 @@ TTF_Font *Font::getFont() const
 	return _font;
 }
 
-/*
+/**
  * It gets the renderer of the font.
  */
 SDL_Renderer *Font::getRenderer() const
@@ -33,7 +33,7 @@ SDL_Renderer *Font::getRenderer() const
 	return _renderer;
 }
 
-/*
+/**
  * It frees memory of the font.
  */
 void Font::liberate()
@@ -42,7 +42,7 @@ void Font::liberate()
 	_font = nullptr;
 }
 
-/*
+/**
  * It loads the font from the filename.
  */
 void Font::load(string filename)

@@ -1,7 +1,7 @@
 #include "Game.h"
 #include "LoadManager.h"
 
-/*
+/**
  * Constructor.
  */
 Game::Game()
@@ -30,7 +30,7 @@ Game::Game()
 	LoadManager::load(this, "../saves/level.save");
 }
 
-/*
+/**
  * Destructor.
  */
 Game::~Game()
@@ -51,7 +51,7 @@ Game::~Game()
 	SDL_Quit();
 }
 
-/*
+/**
  * It gets all the textures of the game.
  */
 Texture **Game::getTextures()
@@ -59,7 +59,7 @@ Texture **Game::getTextures()
 	return _textures;
 }
 
-/*
+/**
  * It gets all the fonts of the game.
  */
 Font **Game::getFonts()
@@ -67,7 +67,7 @@ Font **Game::getFonts()
 	return _fonts;
 }
 
-/*
+/**
  * Execute the main loop.
  */
 void Game::run()
@@ -75,7 +75,7 @@ void Game::run()
 	_statemanager->run();
 }
 
-/*
+/**
  * Change the state of the game(it is needed to exit from the current state)
  */
 void Game::changeState(const string& stateName)

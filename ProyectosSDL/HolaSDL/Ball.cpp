@@ -3,10 +3,11 @@
 #include "Texture.h"
 #include "Game.h"
 
-/*
+/**
  * Constructors
  */
-Ball::Ball() : _position(), _width(), _height(), _velocity(), _texture(), _game(nullptr), _radius(((double)_width) / 2) {}
+Ball::Ball()
+	: _position(), _width(), _height(), _velocity(), _texture(), _game(nullptr), _radius(((double)_width) / 2) {}
 
 Ball::Ball(Vector2D position, int width, int heigth, Texture *texture, GameState *game)
 	: _position(position), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
@@ -14,7 +15,7 @@ Ball::Ball(Vector2D position, int width, int heigth, Texture *texture, GameState
 Ball::Ball(double x, double y, int width, int heigth, Texture *texture, GameState *game)
 	: _position(x, y), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
 
-/*
+/**
  * Ball's texture is renderized in the correct position.
  */
 void Ball::render() const
@@ -27,7 +28,7 @@ void Ball::render() const
 	});
 }
 
-/*
+/**
  * Update the position and detects the collisions.
  */
 void Ball::update()
@@ -38,7 +39,8 @@ void Ball::update()
 	double length = auxVelocity.modulus();
 	Vector2D reflection;
 	Vector2D centerPosition;
-	// If collides reflect the ball to another position, if it still collides repeat until it move enought or there is no collision.
+	// If collides reflect the ball to another position, if it still collides
+	// repeat until it move enought or there is no collision.
 	while (auxVelocity.modulus() != 0.0 &&_game->collides(this, collision, reflection))
 	{
 		auxVelocity = (position() - collision).modulus() / length * auxVelocity.reflect(reflection).normalize();
@@ -47,7 +49,7 @@ void Ball::update()
 	}
 }
 
-/*
+/**
  * Get the radius of the ball.
  */
 double Ball::getRadius() const
@@ -55,7 +57,7 @@ double Ball::getRadius() const
 	return _radius;
 }
 
-/*
+/**
  * Get the center's position.
  */
 Vector2D Ball::position() const
@@ -63,7 +65,7 @@ Vector2D Ball::position() const
 	return Vector2D(_width / 2 + _position.getX(), _height / 2 + _position.getY());
 }
 
-/*
+/**
  * Set the center's position.
  */
 Vector2D Ball::setPosition(const double x, const double y)
@@ -73,7 +75,7 @@ Vector2D Ball::setPosition(const double x, const double y)
 	return pos;
 }
 
-/*
+/**
  * Set the center's position.
  */
 Vector2D Ball::setPosition(const Vector2D pos)
@@ -82,7 +84,7 @@ Vector2D Ball::setPosition(const Vector2D pos)
 	return pos;
 }
 
-/*
+/**
  * Get the vector of the velocity.
  */
 Vector2D Ball::velocity() const
@@ -90,7 +92,7 @@ Vector2D Ball::velocity() const
 	return _velocity;
 }
 
-/*
+/**
  * Set the vector of the velocity.
  */
 Vector2D Ball::setVelocity(const double x, const double y)

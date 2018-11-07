@@ -3,7 +3,7 @@
 #include "Game.h"
 #include <functional>
 
-/*
+/**
  * Constructor.
  */
 MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
@@ -23,7 +23,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 	_menu = new Menu(_buttons, NUMBER_BUTTONS_MENU);
 }
 
-/*
+/**
  * Destructor.
  */
 MenuState::~MenuState()
@@ -36,7 +36,7 @@ MenuState::~MenuState()
 	delete _menu;
 }
 
-/*
+/**
  * It executes the main loop of the state.
  */
 void MenuState::run()
@@ -49,7 +49,7 @@ void MenuState::run()
 	}
 }
 
-/*
+/**
  * It renders every button of the state.
  */
 void MenuState::_render()
@@ -62,7 +62,7 @@ void MenuState::_render()
 	SDL_RenderPresent(_renderer);
 }
 
-/*
+/**
  * It detects user input and change the state.
  */
 void MenuState::_handleEvents()

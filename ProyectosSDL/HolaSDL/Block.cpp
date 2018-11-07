@@ -2,7 +2,7 @@
 #include "Ball.h"
 #include "Texture.h"
 
-/*
+/**
  * Constructors.
  */
 Block::Block() : _position(), _width(), _height(), _column(), _row(), _color(), _texture() {}
@@ -13,12 +13,12 @@ Block::Block(float x, float y, int width, int height, int column, int row, int c
 Block::Block(Vector2D position, int width, int height, int column, int row, int color, Texture *texture)
 	: _position(position), _width(width), _height(height), _column(column), _row(row), _color(color), _texture(texture) {}
 
-/*
+/**
  * Destructor.
  */
 Block::~Block() {}
 
-/*
+/**
  * Block's texture is renderized in the correct position.
  */
 void Block::render() const
@@ -35,8 +35,9 @@ void Block::render() const
 	);
 }
 
-/*
- * Detects if the circular object collides with the block and return the position of the collision and the reflection vector(normal vector of the side).
+/**
+ * Detects if the circular object collides with the block and return the position
+ * of the collision and the reflection vector(normal vector of the side).
  */
 bool Block::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {

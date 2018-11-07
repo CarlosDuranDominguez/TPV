@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-/*
+/**
  * Constructor.
  */
 ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename)
@@ -45,7 +45,7 @@ ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SD
 	throw "Error loading scoreboard";
 }
 
-/*
+/**
  * Destructor.
  */
 ScoreBoard::~ScoreBoard()
@@ -64,7 +64,7 @@ ScoreBoard::~ScoreBoard()
 	}
 }
 
-/*
+/**
  * The comparing function depending on the player's name.
  */
 bool ScoreBoard::_comparename(const PlayerGame &game1, const PlayerGame &game2)
@@ -72,7 +72,7 @@ bool ScoreBoard::_comparename(const PlayerGame &game1, const PlayerGame &game2)
 	return game1.name < game2.name;
 }
 
-/*
+/**
  * The comparing function depending on the player's score.
  */
 bool ScoreBoard::_comparescore(const PlayerGame &game1, const PlayerGame &game2)
@@ -80,7 +80,7 @@ bool ScoreBoard::_comparescore(const PlayerGame &game1, const PlayerGame &game2)
 	return game1.score < game2.score;
 }
 
-/*
+/**
  * The comparing function depending on the player's time.
  */
 bool ScoreBoard::_comparetime(const PlayerGame &game1, const PlayerGame &game2)
@@ -88,7 +88,7 @@ bool ScoreBoard::_comparetime(const PlayerGame &game1, const PlayerGame &game2)
 	return game1.time > game2.time;
 }
 
-/*
+/**
  * It puts a new finish game.
  */
 void ScoreBoard::pushGame(const PlayerGame& newGame)
@@ -97,7 +97,7 @@ void ScoreBoard::pushGame(const PlayerGame& newGame)
 	sortByName();
 }
 
-/*
+/**
  * It sorts the scoreboard depending on the name.
  */
 void ScoreBoard::sortByName()
@@ -106,7 +106,7 @@ void ScoreBoard::sortByName()
 	_rewrite();
 }
 
-/*
+/**
  * It sorts the scoreboard depending on the score.
  */
 void ScoreBoard::sortByScore()
@@ -115,7 +115,7 @@ void ScoreBoard::sortByScore()
 	_rewrite();
 }
 
-/*
+/**
  * It sorts the scoreboard depending on the time.
  */
 void ScoreBoard::sortByTime()
@@ -124,7 +124,7 @@ void ScoreBoard::sortByTime()
 	_rewrite();
 }
 
-/*
+/**
  * It creates the first ten games.
  */
 void ScoreBoard::_rewrite()
@@ -142,7 +142,7 @@ void ScoreBoard::_rewrite()
 	}
 }
 
-/*
+/**
  * It renders the first ten score's games.
  */
 void ScoreBoard::render() const
@@ -153,7 +153,7 @@ void ScoreBoard::render() const
 	}
 }
 
-/*
+/**
  * It inserts the the PlayerGamer on a stream.
  */
 ostream &operator<<(ostream &os, const PlayerGame &v)
@@ -161,7 +161,7 @@ ostream &operator<<(ostream &os, const PlayerGame &v)
 	return os << v.name << ' ' << v.score << ' ' << v.time;
 }
 
-/*
+/**
  * It reads a Player game from the stream.
  */
 istream &operator>>(istream &os, PlayerGame &v)

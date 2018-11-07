@@ -1,6 +1,9 @@
 #include "LoadManager.h"
 #include <fstream>
 
+/**
+ * Load a level save file
+ */
 void LoadManager::load(Game *game, string filename)
 {
 	// Open a readonly file stream
@@ -18,6 +21,9 @@ void LoadManager::load(Game *game, string filename)
 	file.close();
 }
 
+/**
+ * Save a level save file
+ */
 void LoadManager::save(Game *game, string filename)
 {
 	// Open a writeonly file stream

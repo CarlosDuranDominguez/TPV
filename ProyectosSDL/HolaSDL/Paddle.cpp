@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "SDL.h"
 
-/*
+/**
  * Constructors.
  */
 Paddle::Paddle(Vector2D position, int width, int heigth, double speed, Texture *texture)
@@ -13,7 +13,7 @@ Paddle::Paddle(double x, double y, int width, int heigth, double speed, Texture 
 	: _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
 	  _leftMovement(false), _rightMovement(false) {};
 
-/*
+/**
  * It renders the paddle in the correct position.
  */
 void Paddle::render() const
@@ -26,7 +26,7 @@ void Paddle::render() const
 	});
 };
 
-/*
+/**
  * Update the position of the paddle.
  */
 void Paddle::update()
@@ -34,7 +34,7 @@ void Paddle::update()
 	_position = _position + _velocity * FRAMERATE;
 };
 
-/*
+/**
  * It moves the paddle acording with the user's input.
  */
 void Paddle::handleEvents(SDL_Event event)
@@ -68,7 +68,7 @@ void Paddle::handleEvents(SDL_Event event)
 	_velocity = _velocity + (_leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
 }
 
-/*
+/**
  * Get the center's position.
  */
 Vector2D Paddle::position() const
@@ -78,7 +78,7 @@ Vector2D Paddle::position() const
 	return Vector2D(x, y);
 }
 
-/*
+/**
  * Set the center's position.
  */
 Vector2D Paddle::setPosition(const double x, const double y)
@@ -87,7 +87,7 @@ Vector2D Paddle::setPosition(const double x, const double y)
 	return setPosition(pos);
 }
 
-/*
+/**
  * Set the center's position.
  */
 Vector2D Paddle::setPosition(const Vector2D pos)
@@ -96,7 +96,7 @@ Vector2D Paddle::setPosition(const Vector2D pos)
 	return pos;
 }
 
-/*
+/**
  * Get the vector of the velocity.
  */
 Vector2D Paddle::velocity() const
@@ -104,7 +104,7 @@ Vector2D Paddle::velocity() const
 	return _velocity;
 }
 
-/*
+/**
  * Set the vector of the velocity.
  */
 Vector2D Paddle::setVelocity(const double x, const double y)
@@ -114,7 +114,7 @@ Vector2D Paddle::setVelocity(const double x, const double y)
 	return _velocity;
 }
 
-/*
+/**
  * Detects if the circular object collides with the paddle and return the position of the collision and the reflection vector(normal vector of the side).
  * If the collision happends int the top the reflection vector depends on the distance between the centers.
  */

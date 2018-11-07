@@ -1,6 +1,6 @@
 #include "StateManager.h"
 
-/*
+/**
  * Constructor.
  */
 StateManager::StateManager(GameState *game, MenuState *menu, ScoreBoardState *scoreboard)
@@ -9,14 +9,14 @@ StateManager::StateManager(GameState *game, MenuState *menu, ScoreBoardState *sc
 	_currentState = "menu";
 }
 
-/*
+/**
  * Destructor.
  */
 StateManager::~StateManager()
 {
 }
 
-/*
+/**
  * Executes the loop of the selected state or exit.
  */
 void StateManager::run()
@@ -39,7 +39,7 @@ void StateManager::run()
 	}
 }
 
-/*
+/**
  * It changes the current state(exit form the current state is necesary).
  */
 void StateManager::changeState(const string &nameState)
@@ -54,7 +54,7 @@ void StateManager::changeState(const string &nameState)
 	}
 }
 
-/*
+/**
  * It gets the name of the current state.
  */
 string StateManager::currentState() const

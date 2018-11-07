@@ -1,7 +1,7 @@
 #include "ScoreBoardState.h"
 #include "Game.h"
 
-/*
+/**
  * Constructor.
  */
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
@@ -13,7 +13,7 @@ ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : _game(gam
 	});
 }
 
-/*
+/**
  * Destructor.
  */
 ScoreBoardState::~ScoreBoardState()
@@ -22,7 +22,7 @@ ScoreBoardState::~ScoreBoardState()
 	delete _button;
 }
 
-/*
+/**
  * It executes the loop of the state.
  */
 void ScoreBoardState::run()
@@ -35,7 +35,7 @@ void ScoreBoardState::run()
 	}
 }
 
-/*
+/**
  * It renders the button and the scoreboard.
  */
 void ScoreBoardState::_render()
@@ -46,7 +46,7 @@ void ScoreBoardState::_render()
 	SDL_RenderPresent(_renderer);
 }
 
-/*
+/**
  * It detects the user's input.
  */
 void ScoreBoardState::_handleEvents()
@@ -66,7 +66,7 @@ void ScoreBoardState::_handleEvents()
 	}
 }
 
-/*
+/**
  * It put a new game in the record.
  */
 void ScoreBoardState::pushNewFinishGame(const string& name, int score, int time)
