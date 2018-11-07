@@ -1,6 +1,9 @@
 #include "GameState.h"
 #include "Game.h"
 
+/*
+ * Constructor.
+ */
 GameState::GameState(Game *game, SDL_Renderer *renderer)
 	: _renderer(renderer), _game(game), _exit(false), _gameover(false), _win(false)
 {
@@ -43,6 +46,9 @@ GameState::GameState(Game *game, SDL_Renderer *renderer)
 	_blocksmap = new BlocksMap(wall_width);
 }
 
+/*
+ * Destructor.
+ */
 GameState::~GameState()
 {
 	delete _ball;
@@ -54,6 +60,9 @@ GameState::~GameState()
 	delete _timer;
 }
 
+/*
+ * Initialize the varibles of the game.
+ */
 void GameState::init()
 {
 	_exit = false;
@@ -66,6 +75,9 @@ void GameState::init()
 	_timer->reset();
 }
 
+/*
+ * Execute the loop of the state.
+ */
 void GameState::run()
 {
 	uint32_t startTime, frameTime;
@@ -89,6 +101,9 @@ void GameState::run()
 		_game->changeState("scoreboard");
 }
 
+/*
+ * It updates the position of the objects.
+ */
 void GameState::_update()
 {
 	_ball->update();
@@ -96,6 +111,9 @@ void GameState::_update()
 	_timer->update();
 }
 
+/*
+ * It renders the objects.
+ */
 void GameState::_render() const
 {
 	SDL_RenderClear(_renderer);
@@ -109,6 +127,9 @@ void GameState::_render() const
 	SDL_RenderPresent(_renderer);
 }
 
+/*
+ * It detects user input.
+ */
 void GameState::_handleevents()
 {
 	SDL_Event event;
@@ -120,6 +141,9 @@ void GameState::_handleevents()
 	}
 }
 
+/*
+ * It detects if the circular object collides with any object and return the normal vector and the position of the collision.
+ */
 bool GameState::collides(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection) const
 {
 	return _blocksmap->collide(object, collisionPosition, reflection) ||

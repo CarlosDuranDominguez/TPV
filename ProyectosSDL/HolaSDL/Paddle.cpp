@@ -2,6 +2,9 @@
 #include "Game.h"
 #include "SDL.h"
 
+/*
+ * Constructors.
+ */
 Paddle::Paddle(Vector2D position, int width, int heigth, double speed, Texture *texture)
 	: _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
 	  _leftMovement(false), _rightMovement(false) {};
@@ -10,6 +13,9 @@ Paddle::Paddle(double x, double y, int width, int heigth, double speed, Texture 
 	: _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
 	  _leftMovement(false), _rightMovement(false) {};
 
+/*
+ * It renders the paddle in the correct position.
+ */
 void Paddle::render() const
 {
 	_texture->render(SDL_Rect {
@@ -20,11 +26,17 @@ void Paddle::render() const
 	});
 };
 
+/*
+ * Update the position of the paddle.
+ */
 void Paddle::update()
 {
 	_position = _position + _velocity * FRAMERATE;
 };
 
+/*
+ * It moves the paddle acording with the user's input.
+ */
 void Paddle::handleEvents(SDL_Event event)
 {
 	switch (event.type)
@@ -56,11 +68,17 @@ void Paddle::handleEvents(SDL_Event event)
 	_velocity = _velocity + (_leftMovement ? Vector2D(-1, 0) : Vector2D(0, 0));
 }
 
+/*
+ * Get the center's position.
+ */
 Vector2D Paddle::position() const
 {
 	return Vector2D(((double)_width) / 2 + _position.getX(), ((double)_height) / 2 + _position.getY());
 }
 
+/*
+ * Set the center's position.
+ */
 Vector2D Paddle::setPosition(const double x, const double y)
 {
 	Vector2D pos(x, y);
@@ -68,17 +86,26 @@ Vector2D Paddle::setPosition(const double x, const double y)
 	return pos;
 }
 
+/*
+ * Set the center's position.
+ */
 Vector2D Paddle::setPosition(const Vector2D pos)
 {
 	_position = pos - Vector2D(_width / 2, _height / 2);
 	return pos;
 }
 
+/*
+ * Get the vector of the velocity.
+ */
 Vector2D Paddle::velocity() const
 {
 	return _velocity;
 }
 
+/*
+ * Set the vector of the velocity.
+ */
 Vector2D Paddle::setVelocity(const double x, const double y)
 {
 	_velocity.setX(x);
@@ -86,6 +113,10 @@ Vector2D Paddle::setVelocity(const double x, const double y)
 	return _velocity;
 }
 
+/*
+ * Detects if the circular object collides with the paddle and return the position of the collision and the reflection vector(normal vector of the side).
+ * If the collision happends int the top the reflection vector depends on the distance between the centers.
+ */
 bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {
 	if (object->position().isIn(

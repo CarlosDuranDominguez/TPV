@@ -22,7 +22,7 @@ double Vector2D::getY() const
 }
 
 /*
- * Get the X component of the Vector
+ * Set the X component of the Vector
  */
 double Vector2D::setX(double _x)
 {
@@ -30,7 +30,7 @@ double Vector2D::setX(double _x)
 }
 
 /*
- * Get the Y component of the Vector
+ * Set the Y component of the Vector
  */
 double Vector2D::setY(double _y)
 {
@@ -54,48 +54,72 @@ Vector2D Vector2D::normalize()
 }
 
 /*
- * Calculate the vector proyection
+ * Calculate the vector proyection on v
  */
 Vector2D Vector2D::projectionOn(const Vector2D &v) const
 {
 	return v * ((*this * v) / (v * v));
 }
 
+/*
+ * Calculate the reflection of the vector against the normal.
+ */
 Vector2D Vector2D::reflect(const Vector2D &normal) const
 {
 	return (*this) - 2.0 * (*this * normal) * normal;
 }
 
+/*
+ * Vector's sum.
+ */
 Vector2D Vector2D::operator+(const Vector2D &v) const
 {
 	return Vector2D(_x + v._x, _y + v._y);
 }
 
+/*
+ * Vector's subtraction.
+ */
 Vector2D Vector2D::operator-(const Vector2D &v) const
 {
 	return Vector2D(_x - v._x, _y - v._y);
 }
 
+/*
+ * Vector's negative.
+ */
 Vector2D Vector2D::operator-() const
 {
 	return Vector2D(-_x, -_y);
 }
 
+/*
+ * Vector's multiplication by another vector.
+ */
 double Vector2D::operator*(const Vector2D &v) const
 {
 	return _x * v._x + _y * v._y;
 }
 
+/*
+ * Vector's multiplication by scalar.
+ */
 Vector2D Vector2D::operator*(const double &k) const
 {
 	return Vector2D(k * _x, k * _y);
 }
 
+/*
+ * Vector's multiplication by scalar.
+ */
 Vector2D operator*(const double &k, const Vector2D &v)
 {
 	return Vector2D(k * v._x, k * v._y);
 }
 
+/*
+ * It determines if the vector is in the rect created by tho vectors.
+ */
 bool Vector2D::isIn(const Vector2D &leftInferior, const Vector2D &rightSuperior) const
 {
 	return (_x >= leftInferior._x) &&
@@ -104,6 +128,9 @@ bool Vector2D::isIn(const Vector2D &leftInferior, const Vector2D &rightSuperior)
 		   (_y <= rightSuperior._y);
 }
 
+/*
+ * It determines if the vector is in the rect created by four scalars.
+ */
 bool Vector2D::isIn(const double minX, const double minY, const double maxX, const double maxY) const
 {
 	return (_x >= minX) &&
@@ -112,16 +139,25 @@ bool Vector2D::isIn(const double minX, const double minY, const double maxX, con
 		   (_y <= maxY);
 }
 
+/*
+ * Vector's division.
+ */
 Vector2D Vector2D::operator/(const double &k) const
 {
 	return Vector2D(_x / k, _y / k);
 }
 
+/*
+ * Insertion of the vector in a stream.
+ */
 ostream &operator<<(ostream &os, const Vector2D &v)
 {
 	return os << "(" << v._x << "," << v._y << ")";
 }
 
+/*
+ * It determines where the lines created by two points cut, if it doesn't cut it return the first point.
+ */
 Vector2D Vector2D::cutPoint(const Vector2D &p1, const Vector2D &p2, const Vector2D &pp1, const Vector2D &pp2)
 {
 	double a1 = p2._y - p1._y;
@@ -146,11 +182,17 @@ Vector2D Vector2D::cutPoint(const Vector2D &p1, const Vector2D &p2, const Vector
 	}
 }
 
+/*
+ * It return the unitary vector with the giveng angle.
+ */
 Vector2D Vector2D::unitary(const double angle)
 {
 	return Vector2D(cos(angle), sin(angle));
 }
 
+/*
+ * It determines the angle between vectors.
+ */
 double Vector2D::angleBetween(const Vector2D v1, const Vector2D v2)
 {
 	return acos(v1 * v2 / (v1.modulus() + v2.modulus()));

@@ -1,5 +1,8 @@
 #include "Game.h"
 
+/*
+ * Constructor.
+ */
 Game::Game()
 	: _window(nullptr), _renderer(nullptr)
 {
@@ -25,6 +28,9 @@ Game::Game()
 	_gamemanager = new GameManager();
 }
 
+/*
+ * Destructor.
+ */
 Game::~Game()
 {
 	delete _game;
@@ -43,21 +49,33 @@ Game::~Game()
 	SDL_Quit();
 }
 
+/*
+ * It gets all the textures of the game.
+ */
 Texture **Game::getTextures()
 {
 	return _textures;
 }
 
+/*
+ * It gets all the fonts of the game.
+ */
 Font **Game::getFonts()
 {
 	return _fonts;
 }
 
+/*
+ * Execute the main loop.
+ */
 void Game::run()
 {
 	_statemanager->run();
 }
 
+/*
+ * Change the state of the game(it is needed to exit from the current state)
+ */
 void Game::changeState(string stateName)
 {
 	_statemanager->changeState(stateName);

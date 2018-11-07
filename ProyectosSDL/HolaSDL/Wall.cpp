@@ -1,13 +1,22 @@
 #include "Wall.h"
 
+/*
+ * Contructors.
+ */
 Wall::Wall(float x, float y, int width, int height, Texture *texture)
 	: _position(x, y), _width(width), _height(height), _texture(texture) {};
 
 Wall::Wall(Vector2D position, int width, int height, Texture *texture)
 	: _position(position), _width(width), _height(height), _texture(texture) {};
 
+/*
+ * Destructor.
+ */
 Wall::~Wall() {};
 
+/*
+ * It renders the wall in the correct position.
+ */
 void Wall::render() const
 {
 	_texture->render(SDL_Rect {
@@ -18,6 +27,9 @@ void Wall::render() const
 	});
 };
 
+/*
+ * Detects if the circular object collides with the Wall and return the position of the collision and the reflection vector(normal vector of the side).
+ */
 bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
 {
 	if (object->position().isIn(
