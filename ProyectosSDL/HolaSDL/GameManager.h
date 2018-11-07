@@ -2,7 +2,7 @@
 
 class Game;
 
-class GameManager 
+class GameManager
 {
 private:
 	int _currentLevel;
@@ -12,5 +12,6 @@ public:
 	GameManager(Game* game);
 	void finishLevel(double time);
 	int level();
+	void setLevel(int);
 	void reset();
 };

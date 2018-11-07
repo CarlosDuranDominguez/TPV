@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "LoadManager.h"
 
 /*
  * Constructor.
@@ -26,6 +27,7 @@ Game::Game()
 	_scoreboard = new ScoreBoardState(this, _renderer);
 	_statemanager = new StateManager(_game, _menu, _scoreboard);
 	_gamemanager = new GameManager(this);
+	LoadManager::load(this, "../saves/level.save");
 }
 
 /*
@@ -85,7 +87,7 @@ void Game::newScore(const string& name, int score, double time)
 {
 	_scoreboard->pushNewFinishGame(name, score, time);
 }
-GameManager* Game::gameManager() 
+GameManager* Game::gameManager()
 {
 	return _gamemanager;
 }

@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include "Game.h"
+#include "LoadManager.h"
 
 /*
  * Constructor.
@@ -96,25 +97,27 @@ void GameState::run()
 		_gameover = _ball->position().getY() > WIN_HEIGHT;
 	}
 	if (_exit)
+	{
 		_game->changeState("gameover");
+	}
 	else if (_gameover)
 	{
-		_game->changeState("scoreboard");
 		_game->gameManager()->reset();
+		_game->changeState("scoreboard");
 	}
 	else
 	{
+		_game->gameManager()->finishLevel(_timer->getTime());
 		if (_game->gameManager()->level() == 2) {
-			_game->gameManager()->finishLevel(_timer->getTime());
+			_game->gameManager()->reset();
 			_game->changeState("scoreboard");
 		}
-		else 
+		else
 		{
-			_game->gameManager()->finishLevel(_timer->getTime());
 			_game->changeState("game");
 		}
-		
 	}
+	LoadManager::save(_game, "../saves/level.save");
 }
 
 /*

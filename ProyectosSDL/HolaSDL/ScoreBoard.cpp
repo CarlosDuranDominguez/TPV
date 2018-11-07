@@ -5,7 +5,8 @@
 /*
  * Constructor.
  */
-ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename) : _font(font), _position(x, y), _width(width), _height(height), _color(color), _filename(filename)
+ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename)
+	: _font(font), _position(x, y), _width(width), _height(height), _color(color), _filename(filename)
 {
 	fstream file;
 	file.open(filename, fstream::in | fstream::out);
