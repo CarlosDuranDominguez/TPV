@@ -73,7 +73,9 @@ void Paddle::handleEvents(SDL_Event event)
  */
 Vector2D Paddle::position() const
 {
-	return Vector2D(((double)_width) / 2 + _position.getX(), ((double)_height) / 2 + _position.getY());
+	double x = ((double)_width) / 2 + _position.getX();
+	double y = ((double)_height) / 2 + _position.getY();
+	return Vector2D(x, y);
 }
 
 /*
@@ -82,8 +84,7 @@ Vector2D Paddle::position() const
 Vector2D Paddle::setPosition(const double x, const double y)
 {
 	Vector2D pos(x, y);
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
+	return setPosition(pos);
 }
 
 /*
