@@ -6,7 +6,7 @@
  */
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
 {
-	_scoreboard = new ScoreBoard(game->getFonts()[0], 0, 0, 200, 40, WHITE, "../saves/save.save");
+	_scoreboard = new ScoreBoard(game->getFonts()[MEDIUMFONT], 0, 0, 200, 40, WHITE, "../saves/save.save");
 	_button = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this, game]() {
 		_exit = true;
 		game->changeState("menu");

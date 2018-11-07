@@ -8,7 +8,7 @@
 GameState::GameState(Game *game, SDL_Renderer *renderer)
 	: _renderer(renderer), _game(game), _exit(false), _gameover(false), _win(false)
 {
-	_timer = new Timer(0, 0, 300, 50, WHITE, _game->getFonts()[0]);
+	_timer = new Timer(0, 0, 300, 50, WHITE, _game->getFonts()[BIGFONT]);
 	Texture **textures = _game->getTextures();
 	int wall_width = textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();
 	int wall_height = WIN_HEIGHT - textures[TOPSIDE]->getH() * WIN_WIDTH / textures[TOPSIDE]->getW();

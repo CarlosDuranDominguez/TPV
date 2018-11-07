@@ -20,7 +20,8 @@ Game::Game()
 	{
 		_textures[i] = new Texture(_renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
 	}
-	_fonts[0] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
+	_fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
+	_fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
 
 	_game = new GameState(this, _renderer);
 	_menu = new MenuState(this, _renderer);
@@ -42,7 +43,8 @@ Game::~Game()
 	{
 		delete _textures[i];
 	}
-	delete _fonts[0];
+	delete _fonts[BIGFONT];
+	delete _fonts[MEDIUMFONT];
 	delete _gamemanager;
 	delete _statemanager;
 	SDL_DestroyRenderer(_renderer);

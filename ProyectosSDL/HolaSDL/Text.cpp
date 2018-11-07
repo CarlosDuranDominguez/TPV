@@ -6,6 +6,7 @@
 Text::Text(Font *font, float x, float y, int width, int height, const SDL_Color &color, const string &text)
 	: _font(font), _position(x, y), _width(width), _height(height), _color(color), _text(text)
 {
+	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
 	_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
 	SDL_FreeSurface(textSurface);
@@ -14,6 +15,7 @@ Text::Text(Font *font, float x, float y, int width, int height, const SDL_Color 
 Text::Text(Font *font, const Vector2D &position, int width, int height, const SDL_Color &color, const string &text)
 	: _font(font), _position(position), _width(width), _height(height), _color(color), _text(text)
 {
+	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
 	_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
 	SDL_FreeSurface(textSurface);
@@ -33,6 +35,7 @@ Text::~Text()
 void Text::setText(const string newText)
 {
 	SDL_DestroyTexture(_textTexture);
+	TTF_SizeText(_font->getFont(), newText.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), newText.c_str(), _color);
 	_textTexture = SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface);
 	SDL_FreeSurface(textSurface);

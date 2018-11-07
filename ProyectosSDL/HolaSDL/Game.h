@@ -87,6 +87,10 @@ const string LEVEL[3] {
 	"../levels/level03.ark"
 };
 
+enum Fonts { BIGFONT, MEDIUMFONT };
+
+const uint NUMBERFONTS = 2;
+
 const SDL_Color WHITE = { 255, 255, 255, 255 };
 const SDL_Color GREY = { 80, 80, 80, 255 };
 
@@ -96,7 +100,7 @@ private:
 	SDL_Window *_window = nullptr;
 	SDL_Renderer *_renderer = nullptr;
 	Texture *_textures[NUMBER_TEXTURES];
-	Font *_fonts[1];
+	Font *_fonts[NUMBERFONTS];
 	GameManager *_gamemanager;
 	StateManager *_statemanager;
 	GameState *_game;

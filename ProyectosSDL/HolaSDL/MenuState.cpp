@@ -18,7 +18,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{
-		_buttons[i] = new Button(game->getFonts()[0], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
+		_buttons[i] = new Button(game->getFonts()[BIGFONT], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
 	}
 	_menu = new Menu(_buttons, NUMBER_BUTTONS_MENU);
 }
