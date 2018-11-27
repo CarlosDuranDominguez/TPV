@@ -2,6 +2,7 @@
 #include "Ball.h"
 #include "Texture.h"
 #include "Game.h"
+#include <Box2D\Box2D.h>
 
 /**
  * Constructors.
