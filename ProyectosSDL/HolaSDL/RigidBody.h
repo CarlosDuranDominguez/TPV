@@ -4,6 +4,8 @@
 class RigidBody {
 protected:
 	b2Body *_body;
+	b2Fixture* _fixture;
+	virtual void SetUp(b2World& world) = 0;
 public:
 	~RigidBody() {};
 	const b2Body* getBody() const { return _body; };

@@ -67,6 +67,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArkanoidObject.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlocksMap.cpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArkanoidObject.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlocksMap.h" />
@@ -98,12 +100,14 @@
     <ClInclude Include="Counter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="LoadManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="ScoreBoardState.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="Text.h" />

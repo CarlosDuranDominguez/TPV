@@ -1,26 +1,26 @@
 #pragma once
 
 #include "checkML.h"
-#include "Vector2D.h"
-#include "Texture.h"
+#include "ArkanoidObject.h"
+#include "RigidBody.h"
 
 class Ball;
 
-class Block
+class Block: public ArkanoidObject, public RigidBody
 {
+protected:
+	virtual void SetUp(b2World world);
   private:
-	Vector2D _position;
-	int _width, _height;
 	int _column, _row;
 	int _color;
-	Texture *_texture;
-
   public:
-	Block();
-	Block(float x, float y, int width, int height, int column, int row, int color, Texture *texture);
-	Block(Vector2D position, int width, int height, int column, int row, int color, Texture *texture);
+	Block(float x, float y, int width, int height, int column, int row, int color, Texture *texture, b2World& world)
+		:ArkanoidObject(x, y, width, height, texture), _column(column), _row(row), _color(color) {
+		SetUp(world);
+	};
 	~Block();
-	void render() const;
-	bool collide(const Ball *, Vector2D &, Vector2D &);
-	int getColor() const;
+	virtual void update();
+	virtual std::ostream& toOutStream(std::ostream& out);
+	virtual std::istream& fromInStream(std::istream& is);
+	int getColor() const { return _color; };
 };
