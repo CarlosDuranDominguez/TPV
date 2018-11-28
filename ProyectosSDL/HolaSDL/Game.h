@@ -7,10 +7,8 @@
 #include "Texture.h"
 #include "Font.h"
 #include "GameManager.h"
-#include "StateManager.h"
-#include "GameState.h"
-#include "MenuState.h"
-#include "ScoreBoardState.h"
+#include "State.h"
+#include <map>
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
@@ -96,6 +94,15 @@ const uint NUMBERFONTS = 2;
 const SDL_Color WHITE = {255, 255, 255, 255};
 const SDL_Color GREY = {80, 80, 80, 255};
 
+
+enum States
+{
+	GAMEOVER,
+	SCOREBOARD,
+	GAME,
+	MENU
+};
+
 class Game
 {
   private:
@@ -104,10 +111,7 @@ class Game
 	Texture *_textures[NUMBER_TEXTURES];
 	Font *_fonts[NUMBERFONTS];
 	GameManager *_gamemanager;
-	StateManager *_statemanager;
-	GameState *_game;
-	MenuState *_menu;
-	ScoreBoardState *_scoreboard;
+	map<States, State> *_states;
 
   public:
 	Game();

@@ -1,20 +1,18 @@
-#include "GameState.h"
 #include "Ball.h"
 #include "Texture.h"
-#include "Game.h"
 #include <Box2D\Box2D.h>
 
 /**
  * Constructors.
  */
 Ball::Ball()
-	: _position(), _width(), _height(), _velocity(), _texture(), _game(nullptr), _radius(((double)_width) / 2) {}
+	: _position(), _width(), _height(), _velocity(), _texture(), _radius(((double)_width) / 2) {}
 
-Ball::Ball(Vector2D position, int width, int heigth, Texture *texture, GameState *game)
-	: _position(position), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
+Ball::Ball(Vector2D position, int width, int heigth, Texture *texture)
+	: _position(position), _width(width), _height(heigth), _velocity(), _texture(texture), _radius(((double)width) / 2) {}
 
-Ball::Ball(double x, double y, int width, int heigth, Texture *texture, GameState *game)
-	: _position(x, y), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
+Ball::Ball(double x, double y, int width, int heigth, Texture *texture)
+	: _position(x, y), _width(width), _height(heigth), _velocity(), _texture(texture), _radius(((double)width) / 2) {}
 
 /**
  * Ball's texture is renderized in the correct position.
@@ -33,20 +31,6 @@ void Ball::render() const
  */
 void Ball::update()
 {
-	_position = _position + _velocity / FRAMERATE;
-	Vector2D collision;
-	Vector2D auxVelocity = _velocity / FRAMERATE;
-	double length = auxVelocity.modulus();
-	Vector2D reflection;
-	Vector2D centerPosition;
-	// If collides reflect the ball to another position, if it still collides
-	// repeat until it move enought or there is no collision.
-	while (auxVelocity.modulus() != 0.0 && _game->collides(this, collision, reflection))
-	{
-		auxVelocity = (position() - collision).modulus() / length * auxVelocity.reflect(reflection).normalize();
-		setPosition(collision + auxVelocity + reflection.normalize() * _radius);
-		_velocity = auxVelocity.normalize() * _velocity.modulus();
-	}
 }
 
 /**

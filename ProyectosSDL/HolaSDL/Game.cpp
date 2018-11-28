@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "LoadManager.h"
+#include "GameState.h"
 
 /**
  * Constructor.
@@ -23,10 +24,7 @@ Game::Game()
 	_fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
 	_fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
 
-	_game = new GameState(this, _renderer);
-	_menu = new MenuState(this, _renderer);
-	_scoreboard = new ScoreBoardState(this, _renderer);
-	_statemanager = new StateManager(_game, _menu, _scoreboard);
+	_states->insert ( std::pair<States, State> (States::GAME, GameState(this, _renderer)) ) ;
 	_gamemanager = new GameManager(this);
 	LoadManager::load(this, "../saves/level.save");
 }
@@ -36,9 +34,10 @@ Game::Game()
  */
 Game::~Game()
 {
-	delete _game;
-	delete _menu;
-	delete _scoreboard;
+	for (auto state : *_states) {
+		delete &state;
+	}
+	delete _states;
 	for (uint i = 0; i < NUMBER_TEXTURES; i++)
 	{
 		delete _textures[i];
@@ -46,7 +45,6 @@ Game::~Game()
 	delete _fonts[BIGFONT];
 	delete _fonts[MEDIUMFONT];
 	delete _gamemanager;
-	delete _statemanager;
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
 	TTF_Quit();
@@ -74,7 +72,9 @@ Font **Game::getFonts()
  */
 void Game::run()
 {
-	_statemanager->run();
+	State cur = (*_states)[States::GAME];
+	cur.init();
+	cur.run();
 }
 
 /**
@@ -82,12 +82,12 @@ void Game::run()
  */
 void Game::changeState(const States &state)
 {
-	_statemanager->changeState(state);
+	
 }
 
 void Game::newScore(const string &name, int score, double time)
 {
-	_scoreboard->pushNewFinishGame(name, score, time);
+	
 }
 GameManager *Game::gameManager()
 {

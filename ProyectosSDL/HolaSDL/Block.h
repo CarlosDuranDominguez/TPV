@@ -3,24 +3,26 @@
 #include "checkML.h"
 #include "ArkanoidObject.h"
 #include "RigidBody.h"
+#include "Texture.h"
 
-class Ball;
+class ArkanoidObject;
 
 class Block: public ArkanoidObject, public RigidBody
 {
 protected:
-	virtual void SetUp(b2World world);
+	virtual void SetUp(b2World& world);
   private:
-	int _column, _row;
 	int _color;
   public:
-	Block(float x, float y, int width, int height, int column, int row, int color, Texture *texture, b2World& world)
-		:ArkanoidObject(x, y, width, height, texture), _column(column), _row(row), _color(color) {
+	Block() {};
+	Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture, b2World& world)
+		:ArkanoidObject(x, y, width, height, texture), _color(color) {
 		SetUp(world);
 	};
 	~Block();
+	virtual void Init(b2World& world, Texture *texture);
 	virtual void update();
-	virtual std::ostream& toOutStream(std::ostream& out);
-	virtual std::istream& fromInStream(std::istream& is);
+	virtual std::istream& deserialize(std::istream& out);
+	virtual std::ostream& serialize(std::ostream& is) const;
 	int getColor() const { return _color; };
 };

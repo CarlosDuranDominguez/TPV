@@ -4,8 +4,6 @@
 #include "Vector2D.h"
 #include "Texture.h"
 
-class GameState;
-
 class Ball
 {
   private:
@@ -14,12 +12,11 @@ class Ball
 	double _radius;
 	Vector2D _velocity;
 	Texture *_texture;
-	GameState *_game;
 
   public:
 	Ball();
-	Ball(Vector2D position, int width, int heigth, Texture *texture, GameState *game);
-	Ball(double x, double y, int width, int heigth, Texture *texture, GameState *game);
+	Ball(Vector2D position, int width, int heigth, Texture *texture);
+	Ball(double x, double y, int width, int heigth, Texture *texture);
 	void render() const;
 	void update();
 	double getRadius() const;
