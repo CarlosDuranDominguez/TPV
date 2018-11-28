@@ -12,6 +12,8 @@
 /**
  * Constructor.
  */
+
+
 void State::_render() const {
 	SDL_RenderClear(_renderer);
 	for (auto gameObject : _renderableGameObjects) {
@@ -42,7 +44,8 @@ void State::_fixUpdate(float32 time) {
 	_world->Step(time, 8, 3);
 }
 
-State::State(Game *game, SDL_Renderer *renderer) { 
+State::State(Game *game, SDL_Renderer *renderer) 
+	: _game(game), _renderer(renderer) {
 	_world = new b2World(b2Vec2(0.0f, 0.0f));
 }
 

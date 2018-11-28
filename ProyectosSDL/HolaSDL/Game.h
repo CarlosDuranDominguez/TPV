@@ -111,7 +111,7 @@ class Game
 	Texture *_textures[NUMBER_TEXTURES];
 	Font *_fonts[NUMBERFONTS];
 	GameManager *_gamemanager;
-	map<States, State> *_states;
+	map<States, State*> _states;
 
   public:
 	Game();

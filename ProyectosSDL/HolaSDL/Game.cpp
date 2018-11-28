@@ -24,7 +24,7 @@ Game::Game()
 	_fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
 	_fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
 
-	_states->insert ( std::pair<States, State> (States::GAME, GameState(this, _renderer)) ) ;
+	_states.insert ( std::pair<States, State*> (States::GAME, new GameState(this, _renderer)) ) ;
 	_gamemanager = new GameManager(this);
 	LoadManager::load(this, "../saves/level.save");
 }
@@ -34,10 +34,10 @@ Game::Game()
  */
 Game::~Game()
 {
-	for (auto state : *_states) {
-		delete &state;
+	for (auto state : _states) {
+		delete state.second;
 	}
-	delete _states;
+
 	for (uint i = 0; i < NUMBER_TEXTURES; i++)
 	{
 		delete _textures[i];
@@ -72,9 +72,9 @@ Font **Game::getFonts()
  */
 void Game::run()
 {
-	State cur = (*_states)[States::GAME];
-	cur.init();
-	cur.run();
+	State* cur = _states[States::GAME];
+	cur->init();
+	cur->run();
 }
 
 /**
