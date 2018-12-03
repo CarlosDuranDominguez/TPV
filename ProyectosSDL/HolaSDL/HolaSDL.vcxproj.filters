@@ -90,6 +90,21 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Archivos de código fuente\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBody.h">
+      <Filter>Archivos de encabezado\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBody.cpp">
+      <Filter>Archivos de código fuente\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicBody.cpp">
+      <Filter>Archivos de código fuente\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadZone.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2D.h">
@@ -169,6 +184,15 @@
     </ClInclude>
     <ClInclude Include="Controllable.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicBody.h">
+      <Filter>Archivos de encabezado\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionLogic.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadZone.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 #include "LoadManager.h"
 #include "GameState.h"
 
+GameManager* Game:: _gamemanager = nullptr;
+b2World* Game::_world = nullptr;
 /**
  * Constructor.
  */
@@ -89,7 +91,16 @@ void Game::newScore(const string &name, int score, double time)
 {
 	
 }
+
 GameManager *Game::gameManager()
 {
 	return _gamemanager;
 }
+
+b2World* Game::getWorld() {
+	return _world;
+}
+void Game::setWorld(b2World& world){
+	_world = &world;
+}
+

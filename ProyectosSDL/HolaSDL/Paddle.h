@@ -1,34 +1,27 @@
 #pragma once
 
 #include "checkML.h"
-#include "Vector2D.h"
-#include "Texture.h"
-#include "Ball.h"
+#include "ArkanoidObject.h"
+#include "RigidBody.h"
+#include "Controllable.h"
 
 class Game;
 
-class Paddle
+class Paddle : public ArkanoidObject, public RigidBody, public Controllable
 {
-  private:
-	Game *_game;
-	Vector2D _position;
-	int _width, _height;
-	Vector2D _velocity;
-	double _speed;
-	Texture *_texture;
-	bool _leftMovement, _rightMovement;
-
-  public:
-	Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture);
-	Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture);
-	void render() const;
-	void update();
-	void handleEvents(SDL_Event event);
-	void reset();
-	bool collide(const Ball *, Vector2D &, Vector2D &);
-	Vector2D position() const;
-	Vector2D setPosition(const double x, const double y);
-	Vector2D setPosition(const Vector2D pos);
-	Vector2D velocity() const;
-	Vector2D setVelocity(const double x, const double y);
+private:
+	bool _rightMovement, _leftMovement;
+	float32 _speed;
+	b2Joint* _joint;
+	b2Body* _anchor;
+	void setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit, b2World& world);
+public:
+	Paddle();
+	Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit, float32 maxSpeed, Texture *texture);
+	~Paddle();
+	virtual void update();
+	virtual void render() const;
+	virtual void handleEvents(SDL_Event event);
+	virtual std::istream& deserialize(std::istream& out);
+	virtual std::ostream& serialize(std::ostream& is) const;
 };

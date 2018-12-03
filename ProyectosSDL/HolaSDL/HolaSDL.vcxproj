@@ -125,10 +125,14 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Counter.cpp" />
+    <ClCompile Include="DeadZone.cpp" />
+    <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="StaticBody.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -137,6 +141,7 @@
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="ScoreBoardState.cpp" />
+    <ClCompile Include="StaticBody.h" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -149,8 +154,11 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CollisionLogic.h" />
     <ClInclude Include="Controllable.h" />
     <ClInclude Include="Counter.h" />
+    <ClInclude Include="DeadZone.h" />
+    <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />

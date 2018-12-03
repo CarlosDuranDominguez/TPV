@@ -10,6 +10,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 {
 	_buttons = new Button *[NUMBER_BUTTONS_MENU];
 	string nombres[NUMBER_BUTTONS_MENU] = {"Play", "ScoreBoard", "Exit"};
+	int patata;
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
 		[this, game]() { _exit = true; game->changeState(GAME); },
 		[this, game]() { _exit = true; game->changeState(SCOREBOARD); },

@@ -1,87 +1,67 @@
 #include "Ball.h"
-#include "Texture.h"
-#include <Box2D\Box2D.h>
+#include "Game.h"
+#include "Block.h"
+#include "GameState.h"
 
-/**
- * Constructors.
- */
-Ball::Ball()
-	: _position(), _width(), _height(), _velocity(), _texture(), _radius(((double)_width) / 2) {}
-
-Ball::Ball(Vector2D position, int width, int heigth, Texture *texture)
-	: _position(position), _width(width), _height(heigth), _velocity(), _texture(texture), _radius(((double)width) / 2) {}
-
-Ball::Ball(double x, double y, int width, int heigth, Texture *texture)
-	: _position(x, y), _width(width), _height(heigth), _velocity(), _texture(texture), _radius(((double)width) / 2) {}
-
-/**
- * Ball's texture is renderized in the correct position.
- */
-void Ball::render() const
-{
-	_texture->render(SDL_Rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height});
+/*
+* Constructor
+*/
+Ball::Ball(float32 x, float32 y, float32 radius, Texture *texture)
+	:ArkanoidObject(x, y, radius * 2, radius * 2, texture) {
+	setBody(x, y, radius, *Game::getWorld());
+	Game::gameManager()->addBalls(1);
 }
 
-/**
- * Update the position and detects the collisions.
- */
-void Ball::update()
-{
+Ball::~Ball() {
 }
 
-/**
- * Get the radius of the ball.
- */
-double Ball::getRadius() const
-{
-	return _radius;
+void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.bullet = true;
+	bodyDef.fixedRotation = true;
+	bodyDef.position.x = x;
+	bodyDef.position.y = y;
+	bodyDef.linearDamping = 0.0f;
+	bodyDef.userData = static_cast<RigidBody*>(this);
+	b2CircleShape shape;
+	shape.m_p.Set(0.0f, 0.0f);
+	shape.m_radius = radius;
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 0.1f;
+	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0010;
+	fixtureDef.filter.maskBits = 0b0000'0000'0000'0000'1111;
+	fixtureDef.friction = 0.0f;
+	//fixtureDef.isSensor = false;
+	fixtureDef.restitution = 1.0f;
+	fixtureDef.shape = &shape;
+	setUp(bodyDef, shape, fixtureDef, world);
 }
 
-/**
- * Get the center's position.
- */
-Vector2D Ball::position() const
-{
-	return Vector2D(_width / 2 + _position.getX(), _height / 2 + _position.getY());
+void Ball::update() {}
+
+void Ball::render() const {
+	b2Vec2 pos = _body->GetPosition();
+	_texture->renderFrame({ (int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, 
+		(int)_fixture->GetShape()->m_radius * 2, (int)_fixture->GetShape()->m_radius*2 }, 0, 0);
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Ball::setPosition(const double x, const double y)
-{
-	Vector2D pos(x, y);
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
+void Ball::onEndContact(RigidBody* rigidBody) {
+	Block* block = dynamic_cast<Block*>(rigidBody);
+	if (block) { block->destroy(); }
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Ball::setPosition(const Vector2D pos)
-{
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
+std::istream& Ball::deserialize(std::istream& is) {
+	is >> _position.x >> _position.y >> _size.x >> _fixture->GetShape()->m_radius;
+	setBody(_position.x, _position.y, _size.x/2, *Game::getWorld());
+	return is;
 }
 
-/**
- * Get the vector of the velocity.
- */
-Vector2D Ball::velocity() const
-{
-	return _velocity;
+std::ostream& Ball::serialize(std::ostream& out) const {
+	return out << "Ball " << _body->GetPosition().x << " " << _body->GetPosition().y << " " << _fixture->GetShape()->m_radius;
 }
 
-/**
- * Set the vector of the velocity.
- */
-Vector2D Ball::setVelocity(const double x, const double y)
-{
-	_velocity.setX(x);
-	_velocity.setY(y);
-	return _velocity;
+void Ball::destroy() {
+	GameObject::destroy();
+	Game::gameManager()->deleteBall();
 }

@@ -9,15 +9,15 @@
 #include "Updatable.h"
 
 class Game;
+class CollisionLogic;
 
 class State
 {
   protected:
 	SDL_Renderer *_renderer = nullptr;
 	list<GameObject*> _gameObjects;
-	list<Renderable*> _renderableGameObjects;
-	list<Controllable*> _controllableGameObjects;
-	list<Updatable*> _updatableGameObjects;
+	list<list<GameObject*>::iterator> _pendingOnDestroy;
+	CollisionLogic* _listenerLogic;
 	b2World *_world;
 	bool _exit = false;
 	Game *_game;
@@ -25,13 +25,18 @@ class State
 	void _update();
 	void _handleEvents();
 	void _fixUpdate(float32 time);
+	virtual void _destroy();
 	virtual void _end() {};
   public:
 	State() {};
 	State(Game *game, SDL_Renderer *renderer);
-	~State();
-	virtual void init() {};
+	virtual ~State();
+	static State* current;
+	virtual void reset() {};
+	virtual void init() { current = this; };
+	void destroy(list<GameObject*>::iterator& gameObjectId);
 	void run();
+	void add(GameObject& gameObject);
 	virtual void load(string& filename);
 	virtual void save(string& filename);
 };

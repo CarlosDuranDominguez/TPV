@@ -1,53 +1,70 @@
 #include "Paddle.h"
 #include "Game.h"
-#include "SDL.h"
 
-/**
- * Constructors.
- */
-Paddle::Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture)
-	: _game(game), _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
-	  _leftMovement(false), _rightMovement(false){};
+void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit, b2World& world) {
+	b2BodyDef center;
+	center.type = b2_staticBody;
+	center.position.x = anchorX;
+	center.position.y = anchorY;
+	_anchor = world.CreateBody(&center);
 
-Paddle::Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture)
-	: _game(game), _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
-	  _leftMovement(false), _rightMovement(false){};
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.fixedRotation = true;
+	bodyDef.position.x = x;
+	bodyDef.position.y = y;
+	bodyDef.linearDamping = 0.0f;
+	bodyDef.userData = static_cast<RigidBody*>(this);
+	b2Vec2 vs[6];
+	vs[0].Set(-width/2.0f, height/2.0f);
+	vs[1].Set(-width*3.0/8.0f, -height / 4.0f);
+	vs[2].Set(-width / 8.0f, -height / 2.0f);
+	vs[3].Set(width / 8.0f, -height / 2.0f);
+	vs[4].Set(width*3.0 / 8.0f, -height / 4.0f);
+	vs[5].Set(width / 2.0f, height / 2.0f);
+	b2ChainShape shape;
+	shape.CreateChain(vs, 6);
+	b2FixtureDef fixtureDef;
+	fixtureDef.density = 1.0f;
+	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
+	fixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0010;
+	fixtureDef.friction = 0.0f;
+	//fixtureDef.isSensor = false;
+	fixtureDef.restitution = 1.0f;
+	fixtureDef.shape = &shape;
+	setUp(bodyDef, shape, fixtureDef, world);
 
-/**
- * It renders the paddle in the correct position.
- */
-void Paddle::render() const
-{
-	_texture->render(SDL_Rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height});
-};
+	b2PrismaticJointDef joint;
+	joint.bodyA = _anchor;
+	joint.bodyB = _body;
+	joint.localAxisA.Set( 1,0 );
+	joint.enableLimit = true;
+	joint.lowerTranslation = -limit;
+	joint.upperTranslation = limit;
+	_joint = world.CreateJoint(&joint);
+}
 
-/**
- * Update the position of the paddle.
- */
-void Paddle::update()
-{
-	if (_velocity.getX() != 0)
-	{
-		_position = _position + _velocity * FRAMERATE;
+Paddle::Paddle() {};
 
-		int wall_width = _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW();
-		double x = _position.getX();
-		if (x < wall_width)
-			_position = Vector2D(wall_width, _position.getY());
-		else if (x > WIN_WIDTH - wall_width - _width)
-			_position = Vector2D(WIN_WIDTH - wall_width - _width, _position.getY());
-	}
-};
+Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit,float32 maxSpeed, Texture *texture)
+	:ArkanoidObject(x,y,width,height,texture), _rightMovement(false), _leftMovement(false), _speed(maxSpeed){
+	setBody(x, y, width, height,anchorX,anchorY,limit, *Game::getWorld());
+}
 
-/**
- * It moves the paddle acording with the user's input.
- */
-void Paddle::handleEvents(SDL_Event event)
-{
+Paddle::~Paddle() {
+	Game::getWorld()->DestroyJoint(_joint);
+	Game::getWorld()->DestroyBody(_anchor);
+}
+
+void Paddle::update() {
+}
+
+void Paddle::render() const {
+	b2Vec2 pos = _body->GetPosition();
+	_texture->render({ (int)pos.x - (int)_size.x / 2, (int)pos.y - (int)_size.y / 2, (int)_size.x, (int)_size.y });
+}
+
+void Paddle::handleEvents(SDL_Event event) {
 	switch (event.type)
 	{
 	case SDL_KEYDOWN:
@@ -72,130 +89,20 @@ void Paddle::handleEvents(SDL_Event event)
 			break;
 		}
 	}
-	double x = (_rightMovement ? 1 : 0) + (_leftMovement ? -1 : 0);
-	double y = 0;
-	_velocity = Vector2D(x, y);
-}
-
-/**
- * Get the center's position.
- */
-Vector2D Paddle::position() const
-{
-	double x = ((double)_width) / 2 + _position.getX();
-	double y = ((double)_height) / 2 + _position.getY();
-	return Vector2D(x, y);
-}
-
-/**
- * Set the center's position.
- */
-Vector2D Paddle::setPosition(const double x, const double y)
-{
-	Vector2D pos(x, y);
-	return setPosition(pos);
-}
-
-/**
- * Set the center's position.
- */
-Vector2D Paddle::setPosition(const Vector2D pos)
-{
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
-}
-
-/**
- * Get the vector of the velocity.
- */
-Vector2D Paddle::velocity() const
-{
-	return _velocity;
-}
-
-/**
- * Set the vector of the velocity.
- */
-Vector2D Paddle::setVelocity(const double x, const double y)
-{
-	_velocity.setX(x);
-	_velocity.setY(y);
-	return _velocity;
-}
-
-/**
- * Reset the paddle's velocity and movement states.
- */
-void Paddle::reset()
-{
-	setVelocity(0, 0);
-	_rightMovement = false;
-	_leftMovement = false;
-}
-
-/**
- * Detects if the circular object collides with the paddle and return the position of the collision and the reflection vector(normal vector of the side).
- * If the collision happends int the top the reflection vector depends on the distance between the centers.
- */
-bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
-{
-	if (object->position().isIn(
-			_position.getX() - object->getRadius(),
-			_position.getY(),
-			_position.getX() + _width + object->getRadius(),
-			_position.getY() + _height) ||
-		object->position().isIn(
-			_position.getX(),
-			_position.getY() - object->getRadius(),
-			_position.getX() + _width,
-			_position.getY() + _height + object->getRadius()) ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY())).modulus() < object->getRadius())
-	{
-		if ((object->position().getY() - _position.getY()) * (_width) - (object->position().getX() - _position.getX()) * (_height) < 0.0)
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(0, object->getRadius()),
-					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
-				reflection = Vector2D((object->position().getX() - position().getX()) / _width, -1);
-				reflection.normalize();
-			}
-			else
-			{
-				reflection = Vector2D(1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(object->getRadius(), 0),
-					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
-			}
-		}
-		else
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				reflection = Vector2D(-1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(object->getRadius(), 0),
-					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
-			}
-			else
-			{
-				reflection = Vector2D(0, 1);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(0, object->getRadius()),
-					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
-			}
-		}
-
-		return true;
+	if ((_leftMovement&&_rightMovement) || (!_leftMovement && !_rightMovement)) {
+		_body->SetLinearDamping(1000.0f);
 	}
+	else {
+		_body->SetLinearDamping(0.0f);
+	}
+	b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
+	applyForceToCenter(v);
+}
 
-	return false;
+std::istream& Paddle::deserialize(std::istream& out) {
+	return out;
+}
+
+std::ostream& Paddle::serialize(std::ostream& is) const {
+	return is;
 }

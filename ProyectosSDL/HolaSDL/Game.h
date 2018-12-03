@@ -13,7 +13,7 @@
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
 const uint NUM_TEXTURES = 3;
-const uint FRAMERATE = 30;
+const uint FRAMERATE = 60;
 const uint NUMBER_TEXTURES = 5;
 const uint NUMBER_FONT_STYLES = 15;
 const double PADDLESPEED = 5;
@@ -110,9 +110,9 @@ class Game
 	SDL_Renderer *_renderer = nullptr;
 	Texture *_textures[NUMBER_TEXTURES];
 	Font *_fonts[NUMBERFONTS];
-	GameManager *_gamemanager;
+	static GameManager *_gamemanager;
 	map<States, State*> _states;
-
+	static b2World* _world;
   public:
 	Game();
 	~Game();
@@ -121,5 +121,7 @@ class Game
 	void changeState(const States &state);
 	void newScore(const string &name, int score, double time);
 	void run();
-	GameManager *gameManager();
+	static GameManager *gameManager();
+	static b2World* getWorld();
+	static void setWorld(b2World& world);
 };

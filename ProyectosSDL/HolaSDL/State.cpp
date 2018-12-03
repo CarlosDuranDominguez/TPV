@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Counter.h"
 #include <fstream>
+#include "CollisionLogic.h"
 
 
 /**
@@ -16,14 +17,14 @@
 
 void State::_render() const {
 	SDL_RenderClear(_renderer);
-	for (auto gameObject : _renderableGameObjects) {
+	for (auto gameObject : _gameObjects) {
 		gameObject->render();
 	}
 	SDL_RenderPresent(_renderer);
 }
 
 void State::_update() { 
-	for (auto gameObject : _updatableGameObjects) {
+	for (auto gameObject : _gameObjects) {
 		gameObject->update();
 	}
 }
@@ -34,7 +35,7 @@ void State::_handleEvents() {
 	{
 		if (event.type == SDL_QUIT)
 			_exit = true;
-		for (auto gameObject : _controllableGameObjects) {
+		for (auto gameObject : _gameObjects) {
 			gameObject->handleEvents(event);
 		}
 	}
@@ -44,35 +45,60 @@ void State::_fixUpdate(float32 time) {
 	_world->Step(time, 8, 3);
 }
 
+void State::_destroy() {
+	for (list<GameObject*>::iterator object : _pendingOnDestroy) {
+		delete *object;
+		*object = nullptr;
+		_gameObjects.erase(object);
+	}
+	_pendingOnDestroy.clear();
+}
+
+State* State::current = nullptr;
+
+void State::destroy(list<GameObject*>::iterator& gameObjectId) {
+	_pendingOnDestroy.push_back(gameObjectId);
+}
+
 State::State(Game *game, SDL_Renderer *renderer) 
 	: _game(game), _renderer(renderer) {
 	_world = new b2World(b2Vec2(0.0f, 0.0f));
+	_listenerLogic = new CollisionLogic();
+	_world->SetContactListener(_listenerLogic);
 }
 
 State::~State() { 
 	for (auto gameObject : _gameObjects) {
 		delete gameObject;
 	}
+	_pendingOnDestroy.clear();
+	_gameObjects.clear();
 	delete _world;
+	delete _listenerLogic;
 }
 
 void State::run() { 
-	uint32_t startTime, frameTime;
-	startTime = SDL_GetTicks();
+
+	b2Timer startTime;
 	while (!_exit)
 	{
 		_handleEvents();
 		_update();
-		frameTime = SDL_GetTicks() - startTime;
-		if (frameTime >= FRAMERATE)
+		if (startTime.GetMilliseconds() >= 0.001f/(FRAMERATE))
 		{
-			_fixUpdate(frameTime);
+			_fixUpdate(startTime.GetMilliseconds());
+			startTime.Reset();
 		}
 		_render();
+		_destroy();
 	}
 	_end();
 }
 
+void State::add(GameObject& gameObject) {
+	_gameObjects.push_front(&gameObject);
+	gameObject.setId(_gameObjects.begin());
+}
 
 void State::load(string& filename) {
 	// Open a readonly file stream
@@ -88,9 +114,8 @@ void State::load(string& filename) {
 			case block:
 				gameObject = new Block();
 				file >> *gameObject;
-				static_cast<Block*>(gameObject)->Init(*_world, _game->getTextures()[BRICKS]);
+				//static_cast<Block*>(gameObject)->Init(*_world, _game->getTextures()[BRICKS]);
 				_gameObjects.push_back(gameObject);
-				_renderableGameObjects.push_back(dynamic_cast<Renderable*>(gameObject));
 				break;/*
 			case wall: 
 				Wall wall;
