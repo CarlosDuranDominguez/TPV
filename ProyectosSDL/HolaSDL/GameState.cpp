@@ -6,14 +6,16 @@
 #include "Paddle.h"
 #include "DeadZone.h"
 #include "Enemy.h"
+#include "Text.h"
+#include "Timer.h"
+#include "Scoremarker.h"
 #include <algorithm>
 
 GameState::GameState(Game *game, SDL_Renderer *renderer) 
-	:State(game, renderer), timer(new b2Timer()) {
+	:State(game, renderer) {
 };
 
 GameState::~GameState() {
-	delete timer; 
 }
 
 void GameState::reset() {
@@ -31,7 +33,7 @@ void GameState::_reset() {
 	addCreation(GAME_OBJECTS::ball, b2Vec2{ 100, 100 });
 	addCreation(GAME_OBJECTS::paddle, b2Vec2{ 200,400 });
 	_isReseting = false;
-	timer->Reset();
+	_stateTime->Reset();
 }
 
 void GameState::init()
@@ -41,7 +43,13 @@ void GameState::init()
 	Game::gameManager()->newGame();
 	Game::gameManager()->addLives(3);
 
-	GameObject *gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);
+	GameObject *gameObject = new Timer(0, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
+	add(*gameObject); 
+
+	gameObject = new ScoreMarker(400, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
+	add(*gameObject);
+	
+	gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);
 	add(*gameObject);
 	
 	gameObject = new Wall(10, 600, 20, 1200, _game->getTextures()[SIDE]);
@@ -64,7 +72,8 @@ void GameState::init()
 	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, _game->getTextures()[BALL]);
 	add(*gameObject);
 
-	timer->Reset();
+	
+	_stateTime->Reset();
 	_isReseting = false;
 }
 void GameState::_end(){
@@ -74,10 +83,6 @@ void GameState::_end(){
 		run();
 	}
 	
-}
-
-float32 GameState::getTime() {
-	return timer->GetMilliseconds();
 }
 
 void GameState::_destroy() {

@@ -1,60 +1,31 @@
 #include "Timer.h"
 #include <math.h>
+#include "State.h"
 
 /**
  * Constructors.
  */
 Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
-{
-	_text = new Text(font, x, y, width, height, color, "0");
-	time(&_firstTime);
-	time(&_currentTime);
+	:Text(font, x, y, width, height, color, "HOLA"){
+	time = State::current->getTime();
 };
 
-Timer::Timer(Vector2D position, int width, int height, SDL_Color color, Font *font)
-{
-	_text = new Text(font, position, width, height, color, "0");
-	time(&_firstTime);
-	time(&_currentTime);
-};
-
-/**
- * Destructor.
- */
-Timer::~Timer()
-{
-	delete _text;
-}
-
-/**
- * It renders the timer text.
- */
-void Timer::render() const
-{
-	_text->setText(to_string((int)getTime()));
-	_text->render();
-}
 
 /**
  * It updates the current time.
  */
 void Timer::update()
 {
-	time(&_currentTime);
+	if (time != State::current->getTime()) {
+		time = State::current->getTime();
+		setText(to_string(time));
+	}
+	
 }
 
-/**
- * It resets the timer to zero.
- */
-void Timer::reset()
-{
-	time(&_firstTime);
+std::istream& Timer::deserialize(std::istream& out) {
+	return out;
 }
-
-/**
- * It gets the time since the timer was created or reseted.
- */
-double Timer::getTime() const
-{
-	return difftime(_currentTime, _firstTime);
+std::ostream& Timer::serialize(std::ostream& is) const {
+	return is;
 }

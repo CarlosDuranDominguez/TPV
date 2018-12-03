@@ -135,6 +135,8 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="ScoreMarker.cpp" />
+    <ClCompile Include="Scoremarker.h" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="main.cpp" />

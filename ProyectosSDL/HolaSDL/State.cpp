@@ -81,7 +81,7 @@ void State::destroy(list<GameObject*>::iterator& gameObjectId) {
 }
 
 State::State(Game *game, SDL_Renderer *renderer) 
-	: _game(game), _renderer(renderer) {
+	: _game(game), _renderer(renderer), _stateTime(new b2Timer()){
 	_world = new b2World(b2Vec2(0.0f, 0.0f));
 	_listenerLogic = new CollisionLogic();
 	_world->SetContactListener(_listenerLogic);
@@ -93,6 +93,7 @@ State::~State() {
 	}
 	_pendingOnDestroy.clear();
 	_gameObjects.clear();
+	delete _stateTime;
 	delete _world;
 	delete _listenerLogic;
 }
@@ -226,4 +227,8 @@ void State::save(string& filename) {
 		}
 		file.close();
 	}
+}
+
+float32 State::getTime() const {
+	return _stateTime->GetMilliseconds()*0.001f;
 }

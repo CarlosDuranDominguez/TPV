@@ -71,6 +71,10 @@ void GameManager::addScore(int score) {
 	_score += score;
 }
 
+int GameManager::getScore() const {
+	return _score;
+}
+
 void GameManager::setBalls(int ballsLenght) {
 	_currentBalls = ballsLenght;
 }

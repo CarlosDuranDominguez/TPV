@@ -41,7 +41,7 @@ Enemy::Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpe
 }
 
 Enemy::~Enemy(){
-	
+	delete _timer;
 }
 
 void Enemy::update(){

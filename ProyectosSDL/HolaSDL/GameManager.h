@@ -26,6 +26,7 @@ class GameManager
 	void addBlock();
 	void deleteBlock();
 	void addScore(int score);
+	int getScore() const;
 	void setBalls(int ballsLenght);
 	void deleteBall();
 	void addBalls(int balls);
