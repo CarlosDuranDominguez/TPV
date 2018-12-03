@@ -13,7 +13,7 @@
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
 const uint NUM_TEXTURES = 3;
-const uint FRAMERATE = 60;
+const float32 FRAMERATE = 60;
 const uint NUMBER_TEXTURES = 5;
 const uint NUMBER_FONT_STYLES = 15;
 const double PADDLESPEED = 5;

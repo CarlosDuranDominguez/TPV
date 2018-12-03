@@ -34,6 +34,7 @@ class State
 	void _update();
 	void _handleEvents();
 	void _fixUpdate(float32 time);
+	void _afterUpdate();
 	virtual void _destroy();
 	virtual void _end() {};
   public:

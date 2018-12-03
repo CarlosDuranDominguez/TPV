@@ -9,7 +9,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	
 
 	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
+	bodyDef.type = b2_kinematicBody;
 	bodyDef.fixedRotation = true;
 	bodyDef.position.x = x;
 	bodyDef.position.y = y;
@@ -25,7 +25,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	b2ChainShape shape;
 	shape.CreateChain(vs, 6);
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = 1000000.0f;
 	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
 	fixtureDef.filter.maskBits = 0b0000'0000'0000'0001'0010;
 	fixtureDef.friction = 0.0f;
@@ -34,33 +34,32 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	fixtureDef.shape = &shape;
 
 	// Add to world
-	_anchor = world.CreateBody(&center);
 	_body = world.CreateBody(&bodyDef);
 	setUp(shape, fixtureDef);
-
-	b2PrismaticJointDef joint;
-	joint.bodyA = _anchor;
-	joint.bodyB = _body;
-	joint.localAxisA.Set( 1,0 );
-	joint.enableLimit = true;
-	joint.lowerTranslation = -limit;
-	joint.upperTranslation = limit;
-	_joint = world.CreateJoint(&joint);
+	
 }
 
 Paddle::Paddle() {};
 
 Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit,float32 maxSpeed, Texture *texture)
-	:ArkanoidObject(x,y,width,height,texture), _rightMovement(false), _leftMovement(false), _speed(maxSpeed){
+	:ArkanoidObject(x,y,width,height,texture), _rightMovement(false), _leftMovement(false), 
+	_leftAnchor(anchorX-limit),_rightAnchor(anchorX+limit), _speed(maxSpeed) {
 	setBody(x, y, width, height,anchorX,anchorY,limit, *Game::getWorld());
 }
 
 Paddle::~Paddle() {
-	Game::getWorld()->DestroyJoint(_joint);
-	Game::getWorld()->DestroyBody(_anchor);
 }
 
 void Paddle::update() {
+}
+void Paddle::afterUpdate() {
+	b2Vec2 pos = _body->GetPosition();
+	if (pos.x - _size.x / 2.0f < _leftAnchor) {
+		setPosition(b2Vec2{ _leftAnchor + _size.x / 2.0f,pos.y });
+	}
+	else if (pos.x + _size.x / 2.0f > _rightAnchor){
+		setPosition(b2Vec2{ _rightAnchor - _size.x / 2.0f,pos.y });
+	}
 }
 
 void Paddle::render() const {
@@ -100,7 +99,7 @@ void Paddle::handleEvents(SDL_Event event) {
 		_body->SetLinearDamping(0.0f);
 	}
 	b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
-	applyForceToCenter(v);
+	setVelocity(v);
 }
 
 std::istream& Paddle::deserialize(std::istream& out) {

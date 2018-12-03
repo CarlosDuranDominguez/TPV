@@ -17,6 +17,7 @@ Ball::~Ball() {
 
 void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
 	b2BodyDef bodyDef;
+	bodyDef.allowSleep = false;
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.bullet = true;
 	bodyDef.fixedRotation = true;

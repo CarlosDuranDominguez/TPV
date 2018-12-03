@@ -52,6 +52,12 @@ void State::_fixUpdate(float32 time) {
 	_world->Step(time, 8, 3);
 }
 
+void State::_afterUpdate() {
+	for (auto gameObject : _gameObjects) {
+		gameObject->afterUpdate();
+	}
+}
+
 void State::_destroy() {
 	for (list<GameObject*>::iterator object : _pendingOnDestroy) {
 		delete *object;
@@ -92,11 +98,12 @@ void State::run() {
 		_create();
 		_handleEvents();
 		_update();
-		if (startTime.GetMilliseconds() >= 0.001f/(FRAMERATE))
+		if (startTime.GetMilliseconds()/1000.0f >= 1.0f/(FRAMERATE))
 		{
-			_fixUpdate(startTime.GetMilliseconds());
+			_fixUpdate(startTime.GetMilliseconds()/1000.0f);
 			startTime.Reset();
 		}
+		_afterUpdate();
 		_render();
 		_destroy();
 	}
@@ -105,6 +112,7 @@ void State::run() {
 void State::addCreation(GAME_OBJECTS type, b2Vec2& position) {
 	_pendingOnCreate.push_back(new newInstance(type, position));
 }
+
 void State::create(GAME_OBJECTS type, b2Vec2& position) {
 	GameObject* gameObject;
 	switch (type)
@@ -117,19 +125,21 @@ void State::create(GAME_OBJECTS type, b2Vec2& position) {
 	case GAME_OBJECTS::ball:
 		gameObject = new Ball(position.x, position.y, 5, _game->getTextures()[BALL]);
 		add(*gameObject);
+		dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0.0f, 500.0f });
 		break;
 	case GAME_OBJECTS::block:
 		gameObject = new Block(position.x, position.y, 40, 30, 1, _game->getTextures()[BRICKS]);
 		add(*gameObject);
 		break;
 	case GAME_OBJECTS::paddle:
-		gameObject = new Paddle(position.x, position.y, 100, 5, 400, 550, 300, 2.f, _game->getTextures()[PADDLE]);
+		gameObject = new Paddle(position.x, position.y, 100, 5, 400, 550, 300, 2000.f, _game->getTextures()[PADDLE]);
 		add(*gameObject);
 		break;
 	default:
 		break;
 	}
 }
+
 void State::add(GameObject& gameObject) {
 	_gameObjects.push_front(&gameObject);
 	gameObject.setId(_gameObjects.begin());

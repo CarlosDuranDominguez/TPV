@@ -28,6 +28,7 @@ public:
 	virtual void destroy();
 	virtual void render() const {};
 	virtual void update() {};
+	virtual void afterUpdate() {};
 	virtual void handleEvents(SDL_Event event) {};
 	virtual b2Vec2 getPosition() const;
 	virtual b2Vec2 getSize() const;

@@ -23,19 +23,12 @@ void GameState::reset() {
 void GameState::_reset() {
 
 	for (auto paddle : _paddles) {
-		delete *paddle;
-		_gameObjects.erase(paddle);
+		destroy(paddle);
 	}
 
 	_paddles.clear();
-	GameObject *gameObject = new Ball(100, 100, 5, _game->getTextures()[BALL]);
-	add(*gameObject);
-	_balls.push_back(gameObject->getId());
-	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,2 });
-
-	gameObject = new Paddle(200, 400, 100, 5, 400, 550, 300, 2.f, _game->getTextures()[PADDLE]);
-	add(*gameObject);
-	_paddles.push_back(gameObject->getId());
+	addCreation(GAME_OBJECTS::ball, b2Vec2{ 100, 100 });
+	addCreation(GAME_OBJECTS::paddle, b2Vec2{ 200,400 });
 	_isReseting = false;
 	timer->Reset();
 }
@@ -57,10 +50,10 @@ void GameState::init()
 
 	gameObject = new Ball(100,100,5, _game->getTextures()[BALL]);
 	add(*gameObject);
-	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,2 });
+	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,500 });
 	_balls.push_back(gameObject->getId());
 
-	gameObject = new Paddle(200, 400, 100, 5, 400,550,300,2.f, _game->getTextures()[PADDLE]);
+	gameObject = new Paddle(200, 400, 100, 5, 400,550,300,2000.f, _game->getTextures()[PADDLE]);
 	add(*gameObject);
 	_paddles.push_back(gameObject->getId());
 
