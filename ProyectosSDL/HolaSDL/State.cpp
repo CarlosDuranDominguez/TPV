@@ -6,6 +6,7 @@
 #include "Paddle.h"
 #include "Button.h"
 #include "Counter.h"
+#include "Award.h"
 #include <fstream>
 #include "CollisionLogic.h"
 
@@ -14,7 +15,13 @@
  * Constructor.
  */
 
-
+void State::_create() {
+	for (auto instance : _pendingOnCreate) {
+		create(instance->type, instance->position);
+		delete instance;
+	}
+	_pendingOnCreate.clear();
+}
 void State::_render() const {
 	SDL_RenderClear(_renderer);
 	for (auto gameObject : _gameObjects) {
@@ -82,6 +89,7 @@ void State::run() {
 	b2Timer startTime;
 	while (!_exit)
 	{
+		_create();
 		_handleEvents();
 		_update();
 		if (startTime.GetMilliseconds() >= 0.001f/(FRAMERATE))
@@ -94,7 +102,34 @@ void State::run() {
 	}
 	_end();
 }
-
+void State::addCreation(GAME_OBJECTS type, b2Vec2& position) {
+	_pendingOnCreate.push_back(new newInstance(type, position));
+}
+void State::create(GAME_OBJECTS type, b2Vec2& position) {
+	GameObject* gameObject;
+	switch (type)
+	{
+	case GAME_OBJECTS::award:
+		gameObject = new Award(position.x, position.y, 200, 100, 60, _game->getTextures()[BRICKS]);
+		dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,5000 });
+		add(*gameObject);
+		break;
+	case GAME_OBJECTS::ball:
+		gameObject = new Ball(position.x, position.y, 5, _game->getTextures()[BALL]);
+		add(*gameObject);
+		break;
+	case GAME_OBJECTS::block:
+		gameObject = new Block(position.x, position.y, 40, 30, 1, _game->getTextures()[BRICKS]);
+		add(*gameObject);
+		break;
+	case GAME_OBJECTS::paddle:
+		gameObject = new Paddle(position.x, position.y, 100, 5, 400, 550, 300, 2.f, _game->getTextures()[PADDLE]);
+		add(*gameObject);
+		break;
+	default:
+		break;
+	}
+}
 void State::add(GameObject& gameObject) {
 	_gameObjects.push_front(&gameObject);
 	gameObject.setId(_gameObjects.begin());

@@ -44,13 +44,13 @@ void GameState::init()
 {
 	State::init();
 	Game::setWorld(*_world);
-	/*GameObject *gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);
-	_gameObjects.push_back(gameObject);
-	_renderableGameObjects.push_back(dynamic_cast<Renderable*>(gameObject));
-	_updatableGameObjects.push_back(dynamic_cast<Updatable*>(gameObject));*/
 	Game::gameManager()->newGame();
 	Game::gameManager()->addLives(3);
-	GameObject *gameObject = new Wall(10, 600, 20, 1200, _game->getTextures()[SIDE]);
+
+	GameObject *gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);
+	add(*gameObject);
+	
+	gameObject = new Wall(10, 600, 20, 1200, _game->getTextures()[SIDE]);
 	add(*gameObject);
 	gameObject = new Wall(600, 10, 1200, 20, _game->getTextures()[TOPSIDE]);
 	add(*gameObject);

@@ -1,18 +1,14 @@
 #include "Block.h"
 #include "Game.h"
+#include "Award.h"
 
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture) 
 	:ArkanoidObject(x, y, width, height, texture), _color(color) {
 	SetBody(x, y, width, height, *Game::getWorld());
+	Game::gameManager()->addBlock();
 }
 
 Block::~Block() {
-	_body->DestroyFixture(_fixture);
-	_body=nullptr;
-}
-
-void Block::destroy() {
-	GameObject::destroy();
 
 }
 
@@ -42,7 +38,19 @@ void Block::SetBody(float32 x, float32 y, float32 width, float32 height, b2World
 	//fixtureDef.isSensor = false;
 	fixtureDef.restitution = 1.0f;
 	fixtureDef.shape = &shape;
-	setUp(bodyDef, shape, fixtureDef, world);
+
+	_body = world.CreateBody(&bodyDef);
+	setUp(shape, fixtureDef);
+}
+
+void Block::contact() {
+	destroy();
+	State::current->addCreation(GAME_OBJECTS::award, _position);
+}
+
+void Block::destroy() {
+	GameObject::destroy();
+	Game::gameManager()->deleteBlock();
 }
 
 std::istream& Block::deserialize(std::istream&  is) {

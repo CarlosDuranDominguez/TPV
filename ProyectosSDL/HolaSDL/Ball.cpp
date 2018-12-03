@@ -35,7 +35,9 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
 	//fixtureDef.isSensor = false;
 	fixtureDef.restitution = 1.0f;
 	fixtureDef.shape = &shape;
-	setUp(bodyDef, shape, fixtureDef, world);
+
+	_body = world.CreateBody(&bodyDef);
+	setUp(shape, fixtureDef);
 }
 
 void Ball::update() {}
@@ -48,7 +50,7 @@ void Ball::render() const {
 
 void Ball::onEndContact(RigidBody* rigidBody) {
 	Block* block = dynamic_cast<Block*>(rigidBody);
-	if (block) { block->destroy(); }
+	if (block) { block->contact(); }
 }
 
 std::istream& Ball::deserialize(std::istream& is) {

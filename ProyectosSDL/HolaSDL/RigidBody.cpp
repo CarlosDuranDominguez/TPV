@@ -5,7 +5,7 @@
 
 RigidBody::RigidBody(b2BodyDef& body, b2Shape& shape, b2FixtureDef& fixtureDef, b2World& world) {
 	// Set the fixture definition
-	setUp( body, shape, fixtureDef, world );
+	setUp( shape, fixtureDef );
 }
 
 RigidBody::~RigidBody() {
@@ -13,9 +13,8 @@ RigidBody::~RigidBody() {
 	Game::getWorld()->DestroyBody(_body);
 };
 
-void RigidBody::setUp( b2BodyDef& body, b2Shape& shape, b2FixtureDef& fixture, b2World& world ) {
-	// Add to world
-	_body = world.CreateBody(&body);
+void RigidBody::setUp( b2Shape& shape, b2FixtureDef& fixture ) {
+	
 	// Join the fixture to the shape
 	fixture.shape = &shape;
 	// Create the fixture

@@ -1,6 +1,6 @@
 #include "StaticBody.h"
 
-void StaticBody::setUp(b2World& world) {
+void StaticBody::(b2World& world) {
 	// Create the body
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_staticBody;
@@ -23,7 +23,7 @@ void StaticBody::setUp(b2World& world) {
 
 void StaticBody::Init(b2World& world, Texture *texture) {
 	_texture = texture;
-	setUp(world);
+	(world);
 }
 
 StaticBody::~StaticBody() {

@@ -57,6 +57,10 @@ void GameManager::setBlocks(int blocksLenght) {
 	_currentBlocks = blocksLenght;
 }
 
+void GameManager::addBlock() {
+	++_currentBlocks;
+}
+
 void GameManager::deleteBlock() {
 	if (--_currentBlocks == 0) {
 		finishLevel(static_cast<GameState*>(State::current)->getTime());
@@ -87,9 +91,11 @@ void GameManager::setLives(int livesLenght) {
 
 void GameManager::deleteLive() {
 	if (--_lives == 0) {
-		_game->changeState(States::MENU);
+ 		_game->changeState(States::MENU);
 	}
-	State::current->reset();
+	else {
+		State::current->reset();
+	}
 }
 
 void GameManager::addLives(int lives){

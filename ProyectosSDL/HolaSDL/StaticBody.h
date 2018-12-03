@@ -10,7 +10,7 @@ class ArkanoidObject;
 class StaticBody : public ArkanoidObject, public RigidBody
 {
 protected:
-	virtual void setUp(b2World& world);
+	virtual void (b2World& world);
 public:
 	//StaticBody() {};
 	StaticBody(float32 x, float32 y, float32 width, float32 height, Texture *texture, b2World& world);

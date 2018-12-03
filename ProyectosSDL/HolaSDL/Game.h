@@ -116,6 +116,7 @@ class Game
   public:
 	Game();
 	~Game();
+	static Game* current;
 	Texture **getTextures();
 	Font **getFonts();
 	void changeState(const States &state);

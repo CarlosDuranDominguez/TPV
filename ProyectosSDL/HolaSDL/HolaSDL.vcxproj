@@ -121,6 +121,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArkanoidObject.cpp" />
+    <ClCompile Include="Award.cpp" />
+    <ClCompile Include="Award.h" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -132,7 +134,6 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="RigidBody.cpp" />
-    <ClCompile Include="StaticBody.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -141,7 +142,6 @@
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="ScoreBoardState.cpp" />
-    <ClCompile Include="StaticBody.h" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />

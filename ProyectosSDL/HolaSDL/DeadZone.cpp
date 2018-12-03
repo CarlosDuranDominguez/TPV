@@ -24,7 +24,8 @@ void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height, b2Wo
 	fixtureDef.isSensor = false;
 	fixtureDef.restitution = 0.0f;
 	fixtureDef.shape = &shape;
-	setUp(bodyDef, shape, fixtureDef, world);
+	_body = world.CreateBody(&bodyDef);
+	setUp(shape, fixtureDef);
 }
 
 void DeadZone::onBeginContact(RigidBody* rigidBody) {

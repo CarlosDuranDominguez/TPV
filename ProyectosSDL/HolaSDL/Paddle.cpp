@@ -6,7 +6,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	center.type = b2_staticBody;
 	center.position.x = anchorX;
 	center.position.y = anchorY;
-	_anchor = world.CreateBody(&center);
+	
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -27,12 +27,16 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1.0f;
 	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
-	fixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0010;
+	fixtureDef.filter.maskBits = 0b0000'0000'0000'0001'0010;
 	fixtureDef.friction = 0.0f;
 	//fixtureDef.isSensor = false;
 	fixtureDef.restitution = 1.0f;
 	fixtureDef.shape = &shape;
-	setUp(bodyDef, shape, fixtureDef, world);
+
+	// Add to world
+	_anchor = world.CreateBody(&center);
+	_body = world.CreateBody(&bodyDef);
+	setUp(shape, fixtureDef);
 
 	b2PrismaticJointDef joint;
 	joint.bodyA = _anchor;

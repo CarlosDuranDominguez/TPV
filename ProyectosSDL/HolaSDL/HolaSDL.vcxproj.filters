@@ -93,16 +93,16 @@
     <ClCompile Include="RigidBody.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="StaticBody.h">
-      <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticBody.cpp">
-      <Filter>Archivos de código fuente\GameObjects</Filter>
-    </ClCompile>
     <ClCompile Include="DynamicBody.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="DeadZone.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Award.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClCompile>
+    <ClCompile Include="Award.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>

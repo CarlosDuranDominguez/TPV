@@ -4,12 +4,14 @@
 
 GameManager* Game:: _gamemanager = nullptr;
 b2World* Game::_world = nullptr;
+Game* Game::current = nullptr;
 /**
  * Constructor.
  */
 Game::Game()
 	: _window(nullptr), _renderer(nullptr)
 {
+	current = this;
 	SDL_Init(SDL_INIT_EVERYTHING);
 	if (TTF_Init() < 0)
 	{

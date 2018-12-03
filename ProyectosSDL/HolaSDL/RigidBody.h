@@ -5,7 +5,7 @@ class RigidBody {
 protected:
 	b2Body *_body;
 	b2Fixture* _fixture;
-	void setUp( b2BodyDef& body, b2Shape& shape, b2FixtureDef& fixture, b2World& world);
+	void setUp( b2Shape& shape, b2FixtureDef& fixture);
 public:
 	RigidBody() {};
 	RigidBody(b2BodyDef& body, b2Shape& shape, b2FixtureDef& fixtureDef, b2World& world);
