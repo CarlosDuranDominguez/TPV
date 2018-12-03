@@ -1,12 +1,7 @@
 #include "Paddle.h"
 #include "Game.h"
 
-void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit, b2World& world) {
-	b2BodyDef center;
-	center.type = b2_staticBody;
-	center.position.x = anchorX;
-	center.position.y = anchorY;
-	
+void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, b2World& world) {	
 
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_kinematicBody;
@@ -41,10 +36,10 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 
 Paddle::Paddle() {};
 
-Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 anchorY, float32 limit,float32 maxSpeed, Texture *texture)
+Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit,float32 maxSpeed, Texture *texture)
 	:ArkanoidObject(x,y,width,height,texture), _rightMovement(false), _leftMovement(false), 
 	_leftAnchor(anchorX-limit),_rightAnchor(anchorX+limit), _speed(maxSpeed) {
-	setBody(x, y, width, height,anchorX,anchorY,limit, *Game::getWorld());
+	setBody(x, y, width, height,anchorX,limit, *Game::getWorld());
 }
 
 Paddle::~Paddle() {

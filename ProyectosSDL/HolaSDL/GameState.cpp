@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Paddle.h"
 #include "DeadZone.h"
+#include "Enemy.h"
 #include <algorithm>
 
 GameState::GameState(Game *game, SDL_Renderer *renderer) 
@@ -53,11 +54,14 @@ void GameState::init()
 	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,500 });
 	_balls.push_back(gameObject->getId());
 
-	gameObject = new Paddle(200, 400, 100, 5, 400,550,300,2000.f, _game->getTextures()[PADDLE]);
+	gameObject = new Paddle(200, 400, 100, 5, 400,400,2000.f, _game->getTextures()[PADDLE]);
 	add(*gameObject);
 	_paddles.push_back(gameObject->getId());
 
 	gameObject = new DeadZone(200, 600, 1000, 5);
+	add(*gameObject);
+
+	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, _game->getTextures()[BALL]);
 	add(*gameObject);
 
 	timer->Reset();

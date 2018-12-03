@@ -60,9 +60,11 @@ void State::_afterUpdate() {
 
 void State::_destroy() {
 	for (list<GameObject*>::iterator object : _pendingOnDestroy) {
-		delete *object;
-		*object = nullptr;
-		_gameObjects.erase(object);
+		if (*object != nullptr) {
+			delete *object;
+			*object = nullptr;
+			_gameObjects.erase(object);
+		}
 	}
 	_pendingOnDestroy.clear();
 }
@@ -70,6 +72,11 @@ void State::_destroy() {
 State* State::current = nullptr;
 
 void State::destroy(list<GameObject*>::iterator& gameObjectId) {
+	for (auto it = _pendingOnDestroy.begin(); it != _pendingOnDestroy.end(); ++it) {
+		if (*it == gameObjectId) {
+			return;
+		}
+	}
 	_pendingOnDestroy.push_back(gameObjectId);
 }
 
@@ -119,7 +126,7 @@ void State::create(GAME_OBJECTS type, b2Vec2& position) {
 	{
 	case GAME_OBJECTS::award:
 		gameObject = new Award(position.x, position.y, 200, 100, 60, _game->getTextures()[BRICKS]);
-		dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,5000 });
+		dynamic_cast<RigidBody*>(gameObject)->setVelocity(b2Vec2{ 0,500.0f });
 		add(*gameObject);
 		break;
 	case GAME_OBJECTS::ball:
@@ -132,7 +139,7 @@ void State::create(GAME_OBJECTS type, b2Vec2& position) {
 		add(*gameObject);
 		break;
 	case GAME_OBJECTS::paddle:
-		gameObject = new Paddle(position.x, position.y, 100, 5, 400, 550, 300, 2000.f, _game->getTextures()[PADDLE]);
+		gameObject = new Paddle(position.x, position.y, 100, 5, 400, 400, 2000.f, _game->getTextures()[PADDLE]);
 		add(*gameObject);
 		break;
 	default:

@@ -129,6 +129,7 @@
     <ClCompile Include="Counter.cpp" />
     <ClCompile Include="DeadZone.cpp" />
     <ClCompile Include="DynamicBody.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Counter.h" />
     <ClInclude Include="DeadZone.h" />
     <ClInclude Include="DynamicBody.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
