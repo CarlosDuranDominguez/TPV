@@ -107,6 +107,6 @@ std::istream& Paddle::deserialize(std::istream& out) {
 }
 
 std::ostream& Paddle::serialize(std::ostream& is) const {
-  return is << "Paddle" << textureIndex() << _position.x << _position.y << _size.x << _size.y
+  return is << "Paddle " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
     << _speed;
 }

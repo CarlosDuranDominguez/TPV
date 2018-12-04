@@ -64,8 +64,8 @@ std::istream& Ball::deserialize(std::istream& out) {
 }
 
 std::ostream& Ball::serialize(std::ostream& is) const {
-  return is << "Ball" << textureIndex() << _position.x << _position.y
-    << _fixture->GetShape()->m_radius << getVelocity().x << getVelocity().y;
+  return is << "Ball " << textureIndex() << " " << _position.x << " " << _position.y << " "
+    << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
 }
 
 void Ball::destroy() {

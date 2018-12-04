@@ -106,6 +106,6 @@ std::istream& Award::deserialize(std::istream& out){
 }
 
 std::ostream& Award::serialize(std::ostream& is) const {
-  return is << typeid(*this).name() << textureIndex() << _position.x << _position.y << _size.x << _size.y
+  return is << typeid(*this).name() << " " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
     << _framerate;
 }

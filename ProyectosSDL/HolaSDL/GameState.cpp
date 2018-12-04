@@ -178,7 +178,7 @@ void GameState::saveLevel(const string& path) {
 	}
 	for (auto gameObject : _gameObjects) {
 		if(dynamic_cast<ArkanoidObject*>(gameObject))
-			file << *gameObject;
+			file << *gameObject << "\n";
 	}
 }
 
