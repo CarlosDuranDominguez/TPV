@@ -85,6 +85,7 @@ std::istream& Enemy::deserialize(std::istream& out){
 	return out;
 }
 
-std::ostream& Enemy::serialize(std::ostream& is) const{
-	return is;
+std::ostream& Enemy::serialize(std::ostream& is) const {
+  return is << "Enemy" << textureIndex() << _position.x << _position.y << _size.x << _size.y
+    << _speed << _halfLife << _changeProbability << _framerate << _frame;
 }

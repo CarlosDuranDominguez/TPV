@@ -14,7 +14,7 @@ class GameManager
 	int _currentBalls;
 	int _score;
 	int _lives;
-	Game *_game;
+	static Game *_game;
 
   public:
 	GameManager(Game *game);
@@ -35,4 +35,6 @@ class GameManager
 	void addLives(int lives);
 	int getLives() const;
 	void newGame();
+	static Game* getGame() { return _game; }
+	static void setGame(Game* game) { _game = game; }
 };

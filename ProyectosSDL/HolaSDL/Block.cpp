@@ -90,7 +90,6 @@ std::istream& Block::deserialize(std::istream&  is) {
 	return is;
 }
 
-std::ostream& Block::serialize(std::ostream& out) const {
-	return out << "Block " << _color << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;
+std::ostream& Block::serialize(std::ostream& is) const {
+  return is << "Block" << textureIndex() << _position.x << _position.y << _size.x << _size.y;
 }
-

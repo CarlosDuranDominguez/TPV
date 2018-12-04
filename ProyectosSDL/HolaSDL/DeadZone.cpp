@@ -37,5 +37,5 @@ std::istream& DeadZone::deserialize(std::istream& out) {
 }
 
 std::ostream& DeadZone::serialize(std::ostream& is) const {
-	return is;
+  return is << "DeadZone" << 0 << _position.x << _position.y << _size.x << _size.y;
 }

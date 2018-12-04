@@ -6,6 +6,8 @@
 #include "Updatable.h"
 
 class ArkanoidObject : public GameObject, public Renderable, public Updatable {
+protected:
+    uint textureIndex() const;
 public:
 	ArkanoidObject() {};
 	ArkanoidObject(float32 x, float32 y, float32 width, float32 height, Texture* texture)

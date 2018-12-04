@@ -7,10 +7,12 @@
  * Constructor.
  */
 GameManager::GameManager(Game *game)
-	: _game(game)
 {
-	reset();
+  GameManager::setGame(game);
+  reset();
 };
+
+Game* GameManager::_game = nullptr;
 
 /**
  * Finishes the level and pushes to leaderboard.

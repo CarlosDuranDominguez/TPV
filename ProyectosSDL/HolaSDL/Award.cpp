@@ -2,7 +2,6 @@
 #include "Game.h"
 #include "Paddle.h"
 
-
 void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World& world) {
 
 	float32 radius = height / 2.0f;
@@ -98,6 +97,7 @@ std::istream& Award::deserialize(std::istream& out){
 	return out;
 }
 
-std::ostream& Award::serialize(std::ostream& is) const{
-	return is;
+std::ostream& Award::serialize(std::ostream& is) const {
+  return is << typeid(*this).name() << textureIndex() << _position.x << _position.y << _size.x << _size.y
+    << _framerate;
 }

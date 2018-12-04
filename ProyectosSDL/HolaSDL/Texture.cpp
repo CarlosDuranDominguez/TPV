@@ -50,5 +50,3 @@ void Texture::renderFrame(const SDL_Rect &destRect, int row, int col, int angle,
 	srcRect.h = _fh;
 	SDL_RenderCopyEx(_renderer, _texture, &srcRect, &destRect, angle, 0, flip);
 }
-
-

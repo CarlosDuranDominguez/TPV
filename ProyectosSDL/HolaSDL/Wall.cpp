@@ -19,8 +19,8 @@ std::istream& Wall::deserialize(std::istream&  is) {
 	return is;
 }
 
-std::ostream& Wall::serialize(std::ostream& out) const {
-	return out << "Wall " << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;
+std::ostream& Wall::serialize(std::ostream& is) const {
+  return is << "Wall" << textureIndex() << _position.x << _position.y << _size.x << _size.y;
 }
 
 void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World& world) {
