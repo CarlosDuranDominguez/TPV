@@ -151,7 +151,6 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
-    <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +194,6 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ScoreBoard.h" />
     <ClInclude Include="Updatable.h" />
-    <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

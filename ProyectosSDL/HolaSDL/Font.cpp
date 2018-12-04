@@ -1,4 +1,5 @@
 #include "Font.h"
+#include "FileNotFoundError.h"
 
 /**
  * Constructor.
@@ -50,6 +51,6 @@ void Font::load(string filename)
 	_font = TTF_OpenFont(filename.c_str(), _size);
 	if (_font == nullptr)
 	{
-		throw "Error loading font";
+		throw new FileNotFoundError(filename);
 	}
 }

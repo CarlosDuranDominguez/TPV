@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include <iostream>
+#include "SDLError.h"
 
 using namespace std;
 
@@ -17,11 +18,11 @@ void Texture::load(string filename, uint nRows, uint nCols)
 {
 	SDL_Surface *tempSurface = IMG_Load(filename.c_str());
 	if (tempSurface == nullptr)
-		throw "Error loading surface from " + filename;
+		throw new SDLError("Error loading surface from " + filename);
 	liberate();
 	_texture = SDL_CreateTextureFromSurface(_renderer, tempSurface);
 	if (_texture == nullptr)
-		throw "Error loading texture from " + filename;
+		throw new SDLError("Error loading texture from " + filename);
 	_numRows = nRows;
 	_numCols = nCols;
 	_w = tempSurface->w;

@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "GameState.h"
 #include "MenuState.h"
+#include "SDLError.h"
 
 GameManager* Game:: _gamemanager = nullptr;
 b2World* Game::_world = nullptr;
@@ -16,12 +17,12 @@ Game::Game()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	if (TTF_Init() < 0)
 	{
-		throw "Error loading the SDL font";
+		throw new SDLError("Error loading the SDL font");
 	}
 	_window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 	if (_window == nullptr || _renderer == nullptr)
-		throw "Error loading the SDL window or renderer";
+		throw new SDLError("Error loading the SDL window or renderer");
 	for (uint i = 0; i < NUMBER_TEXTURES; i++)
 	{
 		_textures[i] = new Texture(_renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
