@@ -260,9 +260,6 @@
     <ClInclude Include="LaserAward.h">
       <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
     </ClInclude>
-    <ClInclude Include="ArkanoidSettings.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Award.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -270,6 +267,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Scoremarker.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ArkanoidSettings.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
