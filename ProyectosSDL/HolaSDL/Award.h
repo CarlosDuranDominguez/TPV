@@ -15,7 +15,7 @@ private:
 
 public:
   Award(){};
-  Award(float32 x, float32 y, float32 width, float32 height, float32 speed,float32 framerate, Texture *texture);
+  Award(float32 x, float32 y, float32 width, float32 height, float32 speed, float32 framerate, Texture *texture);
   ~Award();
   virtual void update();
   virtual void render() const;
