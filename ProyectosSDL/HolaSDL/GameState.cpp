@@ -55,7 +55,10 @@ void GameState::init()
 	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[LIFE]);
 	add(*gameObject);
 
-	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "HOLA", []() {cout << "NANANA"; });
+	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "HOLA", [this]() {
+		auto call = [this]() {dynamic_cast<Paddle*>(**_paddles.begin())->setWidth(100); };
+		addEvent(call);
+	});
 	add(*gameObject);
 	
 	gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);

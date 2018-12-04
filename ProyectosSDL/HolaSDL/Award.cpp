@@ -55,11 +55,12 @@ void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World
 }
 
 Award::Award(float32 x, float32 y, float32 width, float32 height, float32 framerate, Texture *texture)
-	:ArkanoidObject(x,y,width,height,texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0) {
+	:ArkanoidObject(x,y,width,height,texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false) {
 	SetBody(x, y, width, height, *Game::getWorld());
 }
 
 Award::~Award(){
+	delete _animationTimer;
 }
 
 void Award::update(){
@@ -75,7 +76,7 @@ void Award::render() const{
 	b2Vec2 pos = _body->GetPosition();
 
 	_texture->renderFrame({ (int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-		(int)_fixture->GetShape()->m_radius * 2, (int)_fixture->GetShape()->m_radius * 2 },
+		(int)getSize().x, (int)getSize().y },
 		_frame / (_texture->getNumCols() + 1), _frame%_texture->getNumCols());
 }
 
@@ -88,7 +89,8 @@ void Award::destroy(){
 }
 
 void Award::onBeginContact(RigidBody* rigidbody) {
-	if (dynamic_cast<Paddle*>(rigidbody)) {
+	if (!_contacted && dynamic_cast<Paddle*>(rigidbody)) {
+		_contacted = true;
 		contact();
 	}
 }

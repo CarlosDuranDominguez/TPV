@@ -37,6 +37,15 @@
     <Filter Include="Archivos de encabezado\GameObjects\Interface">
       <UniqueIdentifier>{f31dc831-530a-4847-86e2-b4e139d2e9c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\GameObjects\ArkanoidObjects\Awards">
+      <UniqueIdentifier>{cc7c77e4-078b-4d97-b22d-c9ca7a7557ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\GameObjects\ArkanoidObjects\Awards">
+      <UniqueIdentifier>{169118cd-1e32-4a4e-986b-16c9534b927b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\GameObjects\ArkanoidObjects\Enemies">
+      <UniqueIdentifier>{b62c76ef-637a-436b-bda4-f92a0a70eb16}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -68,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="ArkanoidObject.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
@@ -131,6 +137,30 @@
     </ClCompile>
     <ClCompile Include="Scoremarker.h">
       <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ShortenAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiBallAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="StickyAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="EnlargenAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="ShortenAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="NextLevelAward.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Archivos de código fuente\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +256,21 @@
     </ClInclude>
     <ClInclude Include="ScoreBoardState.h">
       <Filter>Archivos de encabezado\States</Filter>
+    </ClInclude>
+    <ClInclude Include="NextLevelAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClInclude>
+    <ClInclude Include="EnlargenAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClInclude>
+    <ClInclude Include="StickyAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiBallAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserAward.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

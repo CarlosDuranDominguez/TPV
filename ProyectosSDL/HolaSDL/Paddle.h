@@ -22,6 +22,7 @@ public:
 	virtual void afterUpdate();
 	virtual void render() const;
 	virtual void handleEvents(SDL_Event event);
+	virtual void setWidth(float32 width);
 	virtual std::istream& deserialize(std::istream& out);
 	virtual std::ostream& serialize(std::ostream& is) const;
 };

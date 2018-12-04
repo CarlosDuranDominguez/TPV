@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Paddle.h"
 
 class GameState : public State {
 protected:
@@ -15,4 +16,5 @@ public:
 	virtual ~GameState();
 	virtual void reset();
 	virtual void init();
+	Paddle* paddle() { return dynamic_cast<Paddle*>(**(_paddles.begin())); };
 };

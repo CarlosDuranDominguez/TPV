@@ -1,6 +1,8 @@
 #pragma once
 
 #include <list>
+#include <stack>
+#include <functional>
 #include "SDL.h"
 #include<Box2D/Box2D.h>
 #include "GameObject.h"
@@ -25,6 +27,7 @@ class State
 	list<GameObject*> _gameObjects;
 	list<list<GameObject*>::iterator> _pendingOnDestroy;
 	list<newInstance*> _pendingOnCreate;
+	stack < function<void()>> _pendingEvents;
 	CollisionLogic* _listenerLogic;
 	b2World *_world;
 	b2Timer* _stateTime;
@@ -36,6 +39,7 @@ class State
 	void _handleEvents();
 	void _fixUpdate(float32 time);
 	void _afterUpdate();
+	void _events();
 	virtual void _destroy();
 	virtual void _end() {};
   public:
@@ -48,8 +52,9 @@ class State
 	void destroy(list<GameObject*>::iterator& gameObjectId);
 	void run();
 	void addCreation(GAME_OBJECTS type, b2Vec2& position);
-	void create(GAME_OBJECTS type, b2Vec2& position);
+	GameObject* create(GAME_OBJECTS type, b2Vec2& position);
 	void add(GameObject& gameObject);
+	void addEvent(function<void()>);
 	virtual void load(string& filename);
 	virtual void save(string& filename);
 	float32 getTime() const;

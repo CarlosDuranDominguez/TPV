@@ -7,6 +7,12 @@
 #include "Button.h"
 #include "Counter.h"
 #include "Award.h"
+#include "EnlargenAward.h"
+#include "LaserAward.h"
+#include "MultiBallAward.h"
+#include "NextLevelAward.h"
+#include "ShortenAward.h"
+#include "StickyAward.h"
 #include <fstream>
 #include "CollisionLogic.h"
 
@@ -68,6 +74,13 @@ void State::_destroy() {
 	_pendingOnDestroy.clear();
 }
 
+void State::_events() {
+	while (!_pendingEvents.empty()) {
+		_pendingEvents.top()();
+		_pendingEvents.pop();
+	}
+}
+
 State* State::current = nullptr;
 
 void State::destroy(list<GameObject*>::iterator& gameObjectId) {
@@ -112,6 +125,7 @@ void State::run() {
 		}
 		_afterUpdate();
 		_render();
+		_events();
 		_destroy();
 	}
 	_end();
@@ -120,12 +134,12 @@ void State::addCreation(GAME_OBJECTS type, b2Vec2& position) {
 	_pendingOnCreate.push_back(new newInstance(type, position));
 }
 
-void State::create(GAME_OBJECTS type, b2Vec2& position) {
-	GameObject* gameObject;
+GameObject* State::create(GAME_OBJECTS type, b2Vec2& position) {
+	GameObject* gameObject = nullptr;
 	switch (type)
 	{
 	case GAME_OBJECTS::award:
-		gameObject = new Award(position.x, position.y, 30, 10, 10, _game->getTextures()[REWARD1]);
+		gameObject = new MultiBallAward(position.x, position.y, 40, 10, 10, _game->getTextures()[REWARD1]);
 		dynamic_cast<RigidBody*>(gameObject)->setVelocity(b2Vec2{ 0,500.0f });
 		add(*gameObject);
 		break;
@@ -145,11 +159,16 @@ void State::create(GAME_OBJECTS type, b2Vec2& position) {
 	default:
 		break;
 	}
+	return gameObject;
 }
 
 void State::add(GameObject& gameObject) {
 	_gameObjects.push_front(&gameObject);
 	gameObject.setId(_gameObjects.begin());
+}
+
+void State::addEvent(function<void()> callback) {
+	_pendingEvents.push(callback);
 }
 
 void State::load(string& filename) {

@@ -97,6 +97,17 @@ void Paddle::handleEvents(SDL_Event event) {
 	setVelocity(v);
 }
 
+void Paddle::setWidth(float32 width) {
+	b2Vec2 pos = _body->GetPosition();
+	b2Vec2 vel = _body->GetLinearVelocity();
+	_body->DestroyFixture(_fixture);
+	Game::getWorld()->DestroyBody(_body);
+	_size.x = width;
+	setBody(pos.x, pos.y, width, _size.y, _leftAnchor - _rightAnchor, 
+		(_rightAnchor - _leftAnchor) / 2.0f, *Game::getWorld());
+	setVelocity(vel);
+}
+
 std::istream& Paddle::deserialize(std::istream& out) {
 	return out;
 }
