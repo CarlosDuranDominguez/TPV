@@ -287,5 +287,8 @@
     <ClInclude Include="State.h">
       <Filter>Archivos de encabezado\States</Filter>
     </ClInclude>
+    <ClInclude Include="ArkanoidTimer.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

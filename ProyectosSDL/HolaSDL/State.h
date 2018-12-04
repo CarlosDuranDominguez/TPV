@@ -9,6 +9,7 @@
 #include "Renderable.h"
 #include "Controllable.h"
 #include "Updatable.h"
+#include "ArkanoidTimer.h"
 
 class Game;
 class CollisionLogic;
@@ -30,7 +31,7 @@ class State
 	stack < function<void()>> _pendingEvents;
 	CollisionLogic* _listenerLogic;
 	b2World *_world;
-	b2Timer* _stateTime;
+	ArkanoidTimer* _stateTime;
 	bool _exit = false;
 	Game *_game;
 	void _create();
@@ -48,7 +49,7 @@ class State
 	virtual ~State();
 	static State* current;
 	virtual void reset() {};
-	virtual void init() { current = this; _stateTime->Reset(); };
+	virtual void init() { current = this; _stateTime->reset(); };
 	void destroy(list<GameObject*>::iterator& gameObjectId);
 	void run();
 	void addCreation(GAME_OBJECTS type, b2Vec2& position);

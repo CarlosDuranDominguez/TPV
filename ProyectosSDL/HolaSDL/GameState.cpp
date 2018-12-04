@@ -45,7 +45,7 @@ void GameState::_reset() {
 	addCreation(GAME_OBJECTS::ball, b2Vec2{ 100, 100 });
 	addCreation(GAME_OBJECTS::paddle, b2Vec2{ 200,400 });
 	_isReseting = false;
-	_stateTime->Reset();
+	_stateTime->reset();
 }
 
 void GameState::init()
@@ -128,7 +128,7 @@ void GameState::init()
 	add(*gameObject);
 
 	
-	_stateTime->Reset();
+	_stateTime->reset();
 	_isReseting = false;
 }
 
@@ -141,9 +141,23 @@ void GameState::loadLevel(const string& path) {
 
 	if (!file.eof())
 	{
+		int level;
+		file >> level;
+		Game::gameManager()->setLevel(level);
+	}
+
+	if (!file.eof() && !file.fail())
+	{
 		int score;
 		file >> score;
 		Game::gameManager()->setScore(score);
+	}
+
+	if (!file.eof() && !file.fail())
+	{
+		double time;
+		file >> time;
+		_stateTime->delay(time);
 	}
 
 	GameObject* gameObject;
@@ -176,6 +190,7 @@ void GameState::saveLevel(const string& path) {
 	if (file.fail()) {
 		throw new FileNotFoundError(path);
 	}
+	file << Game::gameManager()->level()<<' '<<Game::gameManager()->getScore() << ' ' << _stateTime->getSeconds() << '\n';
 	for (auto gameObject : _gameObjects) {
 		if(dynamic_cast<ArkanoidObject*>(gameObject))
 			file << *gameObject << "\n";

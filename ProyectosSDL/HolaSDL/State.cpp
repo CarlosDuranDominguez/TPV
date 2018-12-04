@@ -93,7 +93,7 @@ void State::destroy(list<GameObject*>::iterator& gameObjectId) {
 }
 
 State::State(Game *game, SDL_Renderer *renderer) 
-	: _game(game), _renderer(renderer), _stateTime(new b2Timer()){
+	: _game(game), _renderer(renderer), _stateTime(new ArkanoidTimer()){
 	_world = new b2World(b2Vec2(0.0f, 0.0f));
 	_listenerLogic = new CollisionLogic();
 	_world->SetContactListener(_listenerLogic);
@@ -172,5 +172,5 @@ void State::addEvent(function<void()> callback) {
 }
 
 float32 State::getTime() const {
-	return _stateTime->GetMilliseconds()*0.001f;
+	return _stateTime->getSeconds();
 }
