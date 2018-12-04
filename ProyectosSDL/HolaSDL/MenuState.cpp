@@ -6,11 +6,10 @@
 /**
  * Constructor.
  */
-MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _renderer(renderer)
+MenuState::MenuState(Game *game, SDL_Renderer *renderer) :State(game, renderer)
 {
-	_buttons = new Button *[NUMBER_BUTTONS_MENU];
+	auto _buttons = new Button *[NUMBER_BUTTONS_MENU];
 	string nombres[NUMBER_BUTTONS_MENU] = {"Play", "ScoreBoard", "Exit"};
-	int patata;
 	function<void()> callbacks[NUMBER_BUTTONS_MENU] = {
 		[this, game]() { _exit = true; game->changeState(GAME); },
 		[this, game]() { _exit = true; game->changeState(SCOREBOARD); },
@@ -19,8 +18,8 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
 	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
 	{
 		_buttons[i] = new Button(game->getFonts()[BIGFONT], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
+		add(*_buttons[i]);
 	}
-	_menu = new Menu(_buttons, NUMBER_BUTTONS_MENU);
 }
 
 /**
@@ -28,59 +27,4 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : _game(game), _rendere
  */
 MenuState::~MenuState()
 {
-	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
-	{
-		delete _buttons[i];
-	}
-	delete[] _buttons;
-	delete _menu;
-}
-
-/**
- * It executes the main loop of the state.
- */
-void MenuState::run()
-{
-	_exit = false;
-	while (!_exit)
-	{
-		_handleEvents();
-		_render();
-	}
-}
-
-/**
- * It renders every button of the state.
- */
-void MenuState::_render()
-{
-	SDL_RenderClear(_renderer);
-	for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
-	{
-		_buttons[i]->render();
-	}
-	SDL_RenderPresent(_renderer);
-}
-
-/**
- * It detects user input and change the state.
- */
-void MenuState::_handleEvents()
-{
-	SDL_Event event;
-	while (!_exit && SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-		{
-			_exit = true;
-			_game->changeState(GAMEOVER);
-		}
-		else
-		{
-			for (int i = 0; i < NUMBER_BUTTONS_MENU; i++)
-			{
-				_buttons[i]->handleEvents(event);
-			}
-		}
-	}
 }

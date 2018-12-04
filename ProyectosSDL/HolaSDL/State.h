@@ -49,7 +49,7 @@ class State
 	virtual ~State();
 	static State* current;
 	virtual void reset() {};
-	virtual void init() { current = this; _stateTime->reset(); };
+	virtual void init() { current = this; _stateTime->reset(); _exit = false; };
 	void destroy(list<GameObject*>::iterator& gameObjectId);
 	void run();
 	void addCreation(GAME_OBJECTS type, b2Vec2& position);

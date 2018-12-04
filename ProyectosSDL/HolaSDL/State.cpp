@@ -43,15 +43,18 @@ void State::_update() {
 }
 
 void State::_handleEvents() { 
-	SDL_Event event;
-	while (!_exit && SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-			_exit = true;
-		for (auto gameObject : _gameObjects) {
-			gameObject->handleEvents(event);
-		}
-	}
+  SDL_Event event;
+  while (!_exit && SDL_PollEvent(&event))
+  {
+    if (event.type == SDL_QUIT)
+    {
+      _exit = true;
+      _game->changeState(States::GAMEOVER);
+    }
+    for (auto gameObject : _gameObjects) {
+	    gameObject->handleEvents(event);
+    }
+  }
 }
 
 void State::_fixUpdate(float32 time) { 

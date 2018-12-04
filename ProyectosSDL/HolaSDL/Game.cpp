@@ -1,6 +1,6 @@
 #include "Game.h"
-#include "LoadManager.h"
 #include "GameState.h"
+#include "MenuState.h"
 
 GameManager* Game:: _gamemanager = nullptr;
 b2World* Game::_world = nullptr;
@@ -29,9 +29,9 @@ Game::Game()
 	_fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
 	_fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
 
-	_states.insert ( std::pair<States, State*> (States::GAME, new GameState(this, _renderer)) ) ;
+	_states.insert(std::pair<States, State*> (States::GAME, new GameState(this, _renderer)));
+	_states.insert(std::pair<States, State*> (States::MENU, new MenuState(this, _renderer)));
 	_gamemanager = new GameManager(this);
-	LoadManager::load(this, "../saves/level.save");
 }
 
 /**
@@ -77,9 +77,11 @@ Font **Game::getFonts()
  */
 void Game::run()
 {
-	State* cur = _states[States::GAME];
-	cur->init();
-	cur->run();
+  while (_state != GAMEOVER) {
+    State* cur = _states[_state];
+    cur->init();
+    cur->run();
+  }
 }
 
 /**
@@ -87,7 +89,7 @@ void Game::run()
  */
 void Game::changeState(const States &state)
 {
-	
+  _state = state;
 }
 
 void Game::newScore(const string &name, int score, double time)
@@ -103,6 +105,7 @@ GameManager *Game::gameManager()
 b2World* Game::getWorld() {
 	return _world;
 }
+
 void Game::setWorld(b2World& world){
 	_world = &world;
 }

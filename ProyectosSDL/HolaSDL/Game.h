@@ -194,6 +194,7 @@ class Game
 	Font *_fonts[NUMBERFONTS];
 	static GameManager *_gamemanager;
 	map<States, State*> _states;
+	States _state = States::MENU;
 	static b2World* _world;
   public:
 	Game();
@@ -204,6 +205,7 @@ class Game
 	void changeState(const States &state);
 	void newScore(const string &name, int score, double time);
 	void run();
+	States getState() { return _state; };
 	static GameManager *gameManager();
 	static b2World* getWorld();
 	static void setWorld(b2World& world);
