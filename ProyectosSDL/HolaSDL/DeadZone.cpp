@@ -39,6 +39,12 @@ void DeadZone::onBeginContact(RigidBody *rigidBody)
 /// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &DeadZone::deserialize(std::istream &out)
 {
+	readTexture(out);
+	float32 posx, posy, sizex, sizey;
+	out >> posx >> posy >> sizex >> sizey;
+	setBody(posx, posy, sizex, sizey, *Game::getWorld());
+	setPosition(posx, posy);
+	_size.Set(sizex, sizey);
 	return out;
 }
 

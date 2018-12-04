@@ -21,18 +21,22 @@ void Wall::render() const
 
 /// Public Virtual
 /// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &Wall::deserialize(std::istream &is)
+std::istream &Wall::deserialize(std::istream &out)
 {
-	is >> _position.x >> _position.y >> _size.x >> _size.y;
-	setBody(_position.x, _position.y, _size.x, _size.y, *Game::getWorld());
-	return is;
+	_texture = readTexture(out);
+	float32 posx, posy, sizex, sizey;
+	out >> posx >> posy >> sizex >> sizey;
+	setBody(posx, posy, sizex, sizey, *Game::getWorld());
+	setPosition(posx, posy);
+	_size.Set(sizex, sizey);
+	return out;
 }
 
 /// Public Virtual
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Wall::serialize(std::ostream &is) const
 {
-	return is << "Wall " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;
+	return is << "Wall " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y;
 }
 
 void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)

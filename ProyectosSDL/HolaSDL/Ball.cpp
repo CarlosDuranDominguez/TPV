@@ -73,9 +73,11 @@ std::istream &Ball::deserialize(std::istream &out)
 {
 	_texture = readTexture(out);
 	float32 posx, posy, radius, velx, vely;
-	out >> posx >> posy >> radius;
+	out >> posx >> posy >> radius >> velx >> vely;
 	setBody(posx, posy, radius, *Game::getWorld());
-	_position.Set(posx, posy);
+	setPosition(posx, posy);
+	setVelocity(b2Vec2{velx, vely});
+	_size.Set(radius * 2, radius * 2);
 	return out;
 }
 
@@ -83,7 +85,7 @@ std::istream &Ball::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Ball::serialize(std::ostream &is) const
 {
-	return is << "Ball " << textureIndex() << " " << _position.x << " " << _position.y << " "
+	return is << "Ball " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
 			  << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
 }
 

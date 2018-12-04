@@ -15,6 +15,12 @@ class Wall : public ArkanoidObject, public RigidBody
 	~Wall(){};
 	virtual void update();
 	virtual void render() const;
+	virtual b2Vec2 getPosition() const { return RigidBody::getPosition(); };
+	virtual void setPosition(float32 x, float32 y)
+	{
+		RigidBody::setPosition(b2Vec2{x, y});
+		GameObject::setPosition(x, y);
+	};
 	virtual std::istream &deserialize(std::istream &out);
 	virtual std::ostream &serialize(std::ostream &is) const;
 };

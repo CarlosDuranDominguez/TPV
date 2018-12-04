@@ -124,6 +124,17 @@ void Paddle::setWidth(float32 width)
 /// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Paddle::deserialize(std::istream &out)
 {
+	_texture = readTexture(out);
+	float32 posx, posy, sizex, sizey;
+	out >> posx >> posy >> sizex >> sizey >> _speed;
+	setBody(posx, posy, sizex, sizey, ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+			(ArkanoidSettings::sceneWidth) / 2 - ArkanoidSettings::wallWidth, *Game::getWorld());
+	setPosition(posx, posy);
+	_size.Set(sizex, sizey);
+	_leftAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth;
+	_rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
+	_leftMovement = false;
+	_rightMovement = false;
 	return out;
 }
 
@@ -131,6 +142,6 @@ std::istream &Paddle::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Paddle::serialize(std::ostream &is) const
 {
-	return is << "Paddle " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
+	return is << "Paddle " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
 			  << _speed;
 }

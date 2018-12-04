@@ -27,6 +27,11 @@ public:
 	virtual void update();
 	virtual void onBeginContact(RigidBody *rigidBody);
 	virtual void render() const;
+	virtual void setPosition(float32 x, float32 y)
+	{
+		RigidBody::setPosition(b2Vec2{x, y});
+		GameObject::setPosition(x, y);
+	};
 	virtual std::istream &deserialize(std::istream &out);
 	virtual std::ostream &serialize(std::ostream &is) const;
 };

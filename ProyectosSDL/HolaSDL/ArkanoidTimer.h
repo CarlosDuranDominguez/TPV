@@ -15,7 +15,7 @@ public:
 		return difftime(now, *_firstTime);
 	}
 	void delay(double time) {
-		*_firstTime -= time;
+		*_firstTime -= (long long)time;
 	}
 	void reset() {
 		time(_firstTime);

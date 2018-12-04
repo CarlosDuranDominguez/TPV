@@ -77,9 +77,12 @@ std::istream &Enemy::deserialize(std::istream &out)
 {
 	_texture = readTexture(out);
 	float32 posx, posy, radius, velx, vely;
-	out >> posx >> posy >> radius >> _halfLife >> _changeProbability >> _framerate >> _frame;
+	out >> posx >> posy >> radius >> velx >> vely >> _speed >> _halfLife >> _changeProbability >> _framerate >> _frame;
 	setBody(posx, posy, radius, *Game::getWorld());
-	_position.Set(posx, posy);
+	setPosition(posx, posy);
+	setVelocity(b2Vec2{velx, vely});
+	_timer = new b2Timer();
+	_animationTimer = new b2Timer();
 	return out;
 }
 

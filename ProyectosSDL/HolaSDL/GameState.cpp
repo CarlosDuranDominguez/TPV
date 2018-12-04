@@ -19,11 +19,11 @@
 #include "Button.h"
 #include <iostream>
 #include <algorithm>
-#include <fstream>  
+#include <fstream>
 #include "FileNotFoundError.h"
 #include "FileFormatError.h"
 
-GameState::GameState(Game *game, SDL_Renderer *renderer) 
+GameState::GameState(Game *game, SDL_Renderer *renderer)
 	:State(game, renderer),_isNewGame(false) {
 };
 
@@ -57,7 +57,7 @@ void GameState::init()
 
 	GameObject *gameObject = new Timer(ArkanoidSettings::sceneUpperLeftCorner.x, ArkanoidSettings::sceneUpperLeftCorner.y,
 		ArkanoidSettings::sceneWidth/2.0f, ArkanoidSettings::sceneHeight/20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
-	add(*gameObject); 
+	add(*gameObject);
 
 	gameObject = new ScoreMarker(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneUpperLeftCorner.y,
 		ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneHeight / 20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
@@ -72,7 +72,6 @@ void GameState::init()
 		addEvent(call);
 	});
 	add(*gameObject);
-
 	if (_isNewGame) {
 		loadLevel("../levels/level01.ark");
 	}
@@ -86,33 +85,33 @@ void GameState::init()
 	}
 	_isNewGame = false;
 	/*
-	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x +ArkanoidSettings::wallWidth/2.0f, 
+	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x +ArkanoidSettings::wallWidth/2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::wallHeight / 2.0f + ArkanoidSettings::sceneHeight / 20.0f,
-		ArkanoidSettings::wallWidth, 
-		ArkanoidSettings::wallHeight, 
+		ArkanoidSettings::wallWidth,
+		ArkanoidSettings::wallHeight,
 		_game->getTextures()[SIDE]);
 	add(*gameObject);
 
 	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth / 2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::wallHeight / 2.0f + ArkanoidSettings::sceneHeight / 20.0f,
 		ArkanoidSettings::wallWidth,
-		ArkanoidSettings::wallHeight, 
+		ArkanoidSettings::wallHeight,
 		_game->getTextures()[SIDE]);
 	add(*gameObject);
 	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x+ArkanoidSettings::sceneWidth/2.0f,
-		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f  + ArkanoidSettings::sceneHeight / 20.0f, 
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f  + ArkanoidSettings::sceneHeight / 20.0f,
 		ArkanoidSettings::wallHeight,
 		ArkanoidSettings::wallWidth, _game->getTextures()[TOPSIDE]);
 	add(*gameObject);
 
-	gameObject = new Block(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth+ArkanoidSettings::blockWidth/2.0f, 
+	gameObject = new Block(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth+ArkanoidSettings::blockWidth/2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::sceneHeight / 20.0f +ArkanoidSettings::blockHeight/2.0f,
-		ArkanoidSettings::blockWidth, 
+		ArkanoidSettings::blockWidth,
 		ArkanoidSettings::blockHeight,
 		1,_game->getTextures()[BRICKS]);
 	add(*gameObject);
-	
-	
+
+
 
 	gameObject = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f + ArkanoidSettings::ballRadius*2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f,
@@ -123,7 +122,7 @@ void GameState::init()
 
 	gameObject = new Paddle(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f +ArkanoidSettings::wallHeight,
-		ArkanoidSettings::paddleWidth, 
+		ArkanoidSettings::paddleWidth,
 		ArkanoidSettings::paddleHeight,
 		ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
 		(ArkanoidSettings::sceneWidth)/2 - ArkanoidSettings::wallWidth,
@@ -131,18 +130,15 @@ void GameState::init()
 	add(*gameObject);
 	_paddles.push_back(gameObject->getId());
 
-	gameObject = new DeadZone(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, 
+	gameObject = new DeadZone(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight +ArkanoidSettings::paddleHeight,
-		ArkanoidSettings::sceneWidth, 
+		ArkanoidSettings::sceneWidth,
 		10.0f);
 	add(*gameObject);
 
 	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, 10.0f,_game->getTextures()[ENEMY1]);
 	add(*gameObject);
 	*/
-
-	
-	_stateTime->reset();
 	_isReseting = false;
 }
 
@@ -178,6 +174,7 @@ void GameState::loadLevel(const string& path) {
 	while (!file.eof() && !file.fail()) {
 		string name;
 		file >> name;
+		if (name == "") continue;
 		GameObject* gameObject = nullptr;
 		if (name == "Wall") { gameObject = new Wall(); }
 		else if (name == "Paddle") { gameObject = new Paddle(); }
@@ -192,8 +189,8 @@ void GameState::loadLevel(const string& path) {
 		else if (name == "NextLevelAward") { gameObject = new NextLevelAward();	}
 		else if (name == "ShortenAward") { gameObject = new ShortenAward();	}
 		else if (name == "StickyAward") { gameObject = new StickyAward(); }
-		else { 
-			throw (FileFormatError)(path); 
+		else {
+			throw (FileFormatError)(path);
 		}
 		file >> *gameObject;
 		add(*gameObject);
@@ -219,7 +216,7 @@ void GameState::_end(){
 		_exit = false;
 		run();
 	}
-	
+
 }
 
 void GameState::_destroy() {

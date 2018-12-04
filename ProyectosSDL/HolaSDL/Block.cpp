@@ -109,8 +109,11 @@ void Block::destroy()
 std::istream &Block::deserialize(std::istream &out)
 {
 	_texture = readTexture(out);
-	out >> _position.x >> _position.y >> _size.x >> _size.y;
-	setBody(_position.x, _position.y, _size.x, _size.y, *Game::getWorld());
+	float32 posx, posy, sizex, sizey;
+	out >> posx >> posy >> sizex >> sizey >> _color;
+	setBody(posx, posy, sizex, sizey, *Game::getWorld());
+	setPosition(posx, posy);
+	_size.Set(sizex, sizey);
 	return out;
 }
 
@@ -118,5 +121,6 @@ std::istream &Block::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Block::serialize(std::ostream &is) const
 {
-	return is << "Block " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;
+	return is << "Block " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y
+			  << " " << _color;
 }
