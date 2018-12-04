@@ -7,14 +7,20 @@ Wall::Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture
 	setBody(x, y, width, height, *Game::getWorld());
 }
 
+/// Public Victual
+/// Updates the update behaviour
 void Wall::update() {}
 
+/// Public Virtual
+/// Defines the render behaviour
 void Wall::render() const
 {
 	b2Vec2 pos = _body->GetPosition();
 	_texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, 0, 0);
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Wall::deserialize(std::istream &is)
 {
 	is >> _position.x >> _position.y >> _size.x >> _size.y;
@@ -22,6 +28,8 @@ std::istream &Wall::deserialize(std::istream &is)
 	return is;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Wall::serialize(std::ostream &is) const
 {
 	return is << "Wall " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;

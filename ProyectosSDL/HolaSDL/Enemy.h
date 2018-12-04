@@ -9,7 +9,7 @@ class Game;
 
 class Enemy : public ArkanoidObject, public RigidBody
 {
-  private:
+private:
 	float32 _speed;
 	float32 _halfLife;
 	float32 _changeProbability;
@@ -19,10 +19,10 @@ class Enemy : public ArkanoidObject, public RigidBody
 	uint _frame;
 	void setBody(float32 x, float32 y, float32 radius, b2World &world);
 
-  public:
-	Enemy();
+public:
+	Enemy(){};
 	Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpeed,
-		  float32 halfLife, float32 changeProbability, float32 framerate, Texture *texture);
+				float32 halfLife, float32 changeProbability, float32 framerate, Texture *texture);
 	~Enemy();
 	virtual void update();
 	virtual void onBeginContact(RigidBody *rigidBody);

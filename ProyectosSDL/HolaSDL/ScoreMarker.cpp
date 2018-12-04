@@ -8,6 +8,8 @@ ScoreMarker::ScoreMarker(float x, float y, int width, int height, SDL_Color colo
 	setText(to_string(_score));
 }
 
+/// Public Victual
+/// Updates the update behaviour
 void ScoreMarker::update()
 {
 	if (_score != Game::gameManager()->getScore())
@@ -17,11 +19,15 @@ void ScoreMarker::update()
 	}
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &ScoreMarker::deserialize(std::istream &out)
 {
 	return out;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &ScoreMarker::serialize(std::ostream &is) const
 {
 	return is;

@@ -5,7 +5,6 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Button.h"
-#include "Counter.h"
 #include "Award.h"
 #include "EnlargenAward.h"
 #include "LaserAward.h"

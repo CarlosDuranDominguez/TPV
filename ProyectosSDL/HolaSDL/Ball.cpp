@@ -44,8 +44,12 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world)
 	setUp(shape, fixtureDef);
 }
 
+/// Public Victual
+/// Updates the update behaviour
 void Ball::update() {}
 
+/// Public Virtual
+/// Defines the render behaviour
 void Ball::render() const
 {
 	b2Vec2 pos = _body->GetPosition();
@@ -63,6 +67,8 @@ void Ball::onEndContact(RigidBody *rigidBody)
 	}
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Ball::deserialize(std::istream &out)
 {
 	_texture = readTexture(out);
@@ -73,6 +79,8 @@ std::istream &Ball::deserialize(std::istream &out)
 	return out;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Ball::serialize(std::ostream &is) const
 {
 	return is << "Ball " << textureIndex() << " " << _position.x << " " << _position.y << " "

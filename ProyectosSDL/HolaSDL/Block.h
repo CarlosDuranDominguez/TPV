@@ -8,7 +8,7 @@ class Block : public ArkanoidObject, public RigidBody
 {
 private:
 	int _color;
-	void SetBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+	void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
 
 public:
 	Block(){};

@@ -32,6 +32,8 @@ void Texture::load(string filename, uint nRows, uint nCols)
 	SDL_FreeSurface(tempSurface);
 }
 
+/// Public Virtual
+/// Defines the render behaviour
 void Texture::render(const SDL_Rect &destRect, SDL_RendererFlip flip) const
 {
 	SDL_Rect srcRect;

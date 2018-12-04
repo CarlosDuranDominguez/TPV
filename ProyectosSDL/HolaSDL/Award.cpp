@@ -17,6 +17,80 @@ Award::~Award()
 	delete _animationTimer;
 }
 
+/// Public Victual
+/// Updates the update behaviour
+void Award::update()
+{
+	if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate)
+	{
+		if ((++_frame) > _texture->getNumCols() * _texture->getNumRows())
+		{
+			_frame = 0;
+		}
+		_animationTimer->Reset();
+	}
+}
+
+/// Public Virtual
+/// Defines the render behaviour
+void Award::render() const
+{
+	b2Vec2 pos = _body->GetPosition();
+
+	_texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
+						   (int)getSize().x, (int)getSize().y},
+						  _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
+}
+
+/// Public Virtual
+/// Defines behaviour when the instance gets in contact with the ball
+void Award::contact()
+{
+	destroy();
+}
+
+/// Public Virtual
+/// Defines behaviour when the instance is to be destroyed
+void Award::destroy()
+{
+	// Calls GameObject's destroy method
+	GameObject::destroy();
+}
+
+/// Public Virtual
+/// Defines behaviour when the instance starts to have contact with an element
+void Award::onBeginContact(RigidBody *rigidbody)
+{
+	// If the contact was done with the paddle, set _contacted to true
+	if (!_contacted && dynamic_cast<Paddle *>(rigidbody))
+	{
+		_contacted = true;
+		contact();
+	}
+}
+
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Award::deserialize(std::istream &out)
+{
+	_texture = readTexture(out);
+	float32 posx, posy, sizex, sizey;
+	out >> posx >> posy >> sizex >> sizey;
+	_position.Set(posx, posy);
+	setBody(posx, posy, sizex, sizey, *Game::getWorld());
+	_size.Set(sizex, sizey);
+	out >> _framerate;
+	return out;
+}
+
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Award::serialize(std::ostream &is) const
+{
+	return is << typeid(*this).name() << " " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
+			  << _framerate;
+}
+
 /// Private
 /// setBody method, creates a dynamic polygon shape with Box2D's API
 void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
@@ -78,85 +152,11 @@ void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World
 	rightfixtureDef.restitution = 0.0f;
 	rightfixtureDef.shape = &leftshape;
 
-	// Add body definition to world
+	// Add the body definition to world
 	_body = world.CreateBody(&bodyDef);
 
 	// Set up the shapes
 	setUp(shape, fixtureDef);
 	setUp(rightshape, rightfixtureDef);
 	setUp(leftshape, leftfixtureDef);
-}
-
-/// Public Victual
-/// Updates the award sprite every second
-void Award::update()
-{
-	if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate)
-	{
-		if ((++_frame) > _texture->getNumCols() * _texture->getNumRows())
-		{
-			_frame = 0;
-		}
-		_animationTimer->Reset();
-	}
-}
-
-/// Public Virtual
-/// Renders the award sprite
-void Award::render() const
-{
-	b2Vec2 pos = _body->GetPosition();
-
-	_texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-						   (int)getSize().x, (int)getSize().y},
-						  _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
-}
-
-/// Public Virtual
-/// Defines behaviour when the instance gets in contact with the ball
-void Award::contact()
-{
-	destroy();
-}
-
-/// Public Virtual
-/// Defines behaviour when the instance is to be destroyed
-void Award::destroy()
-{
-	// Calls GameObject's destroy method
-	GameObject::destroy();
-}
-
-/// Public Virtual
-/// Defines behaviour when the instance starts to have contact with an element
-void Award::onBeginContact(RigidBody *rigidbody)
-{
-	// If the contact was done with the paddle, set _contacted to true
-	if (!_contacted && dynamic_cast<Paddle *>(rigidbody))
-	{
-		_contacted = true;
-		contact();
-	}
-}
-
-/// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &Award::deserialize(std::istream &out)
-{
-	_texture = readTexture(out);
-	float32 posx, posy, sizex, sizey;
-	out >> posx >> posy >> sizex >> sizey;
-	_position.Set(posx, posy);
-	setBody(posx, posy, sizex, sizey, *Game::getWorld());
-	_size.Set(sizex, sizey);
-	out >> _framerate;
-	return out;
-}
-
-/// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
-std::ostream &Award::serialize(std::ostream &is) const
-{
-	return is << typeid(*this).name() << " " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
-			  << _framerate;
 }

@@ -57,9 +57,8 @@ SDL_Color Text::setColor(const SDL_Color &color)
 	return this->_color = color;
 }
 
-/**
- * It renders the text in the corrent position.
- */
+/// Public Virtual
+/// Defines the render behaviour
 void Text::render() const
 {
 	SDL_Rect rect{
@@ -70,11 +69,15 @@ void Text::render() const
 	SDL_RenderCopy(_font->getRenderer(), _texture->getTexture(), nullptr, &rect);
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Text::deserialize(std::istream &out)
 {
 	return out;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Text::serialize(std::ostream &is) const
 {
 	return is;

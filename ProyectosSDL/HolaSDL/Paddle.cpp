@@ -47,6 +47,8 @@ Paddle::~Paddle()
 {
 }
 
+/// Public Victual
+/// Updates the update behaviour
 void Paddle::update()
 {
 }
@@ -63,6 +65,8 @@ void Paddle::afterUpdate()
 	}
 }
 
+/// Public Virtual
+/// Defines the render behaviour
 void Paddle::render() const
 {
 	b2Vec2 pos = _body->GetPosition();
@@ -116,11 +120,15 @@ void Paddle::setWidth(float32 width)
 	setVelocity(vel);
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Paddle::deserialize(std::istream &out)
 {
 	return out;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Paddle::serialize(std::ostream &is) const
 {
 	return is << "Paddle " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "

@@ -35,11 +35,15 @@ void DeadZone::onBeginContact(RigidBody *rigidBody)
 	dynamic_cast<GameObject *>(rigidBody)->destroy();
 }
 
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &DeadZone::deserialize(std::istream &out)
 {
 	return out;
 }
 
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
 std::ostream &DeadZone::serialize(std::ostream &is) const
 {
 	return is << "DeadZone " << 0 << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;

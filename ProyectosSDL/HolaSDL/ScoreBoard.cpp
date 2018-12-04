@@ -142,11 +142,11 @@ void ScoreBoard::_rewrite()
 	}
 }
 
-/**
- * It renders the first ten score's games.
- */
+/// Public Virtual
+/// Defines the render behaviour
 void ScoreBoard::render() const
 {
+	// Render the first 10 elements
 	for (unsigned int j = 0; j < 10; j++)
 	{
 		_texts[j]->render();
