@@ -9,11 +9,11 @@ class Game;
 
 class ScoreBoardState : public State
 {
-  private:
-	  ScoreBoard* _scoreboard;
-  public:
-	ScoreBoardState(Game *game, SDL_Renderer *renderer);
-	~ScoreBoardState();
-	void pushNewFinishGame(const string &name, int score, int time);
+private:
+  ScoreBoard *_scoreboard;
 
+public:
+  ScoreBoardState(Game *game, SDL_Renderer *renderer);
+  ~ScoreBoardState();
+  void pushNewFinishGame(const string &name, int score, int time);
 };

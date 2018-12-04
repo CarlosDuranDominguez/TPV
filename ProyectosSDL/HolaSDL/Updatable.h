@@ -3,9 +3,10 @@
 /*
  *Updatable interface
  */
-class Updatable {
+class Updatable
+{
 public:
-	Updatable() {};
-	~Updatable() {};
-	virtual void update() = 0;
+  Updatable(){};
+  ~Updatable(){};
+  virtual void update() = 0;
 };

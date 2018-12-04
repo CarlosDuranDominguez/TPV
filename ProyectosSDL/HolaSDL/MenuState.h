@@ -11,7 +11,7 @@ const unsigned int NUMBER_BUTTONS_MENU = 3;
 
 class MenuState : public State
 {
-  public:
-	MenuState(Game *game, SDL_Renderer *renderer);
-	~MenuState();
+public:
+  MenuState(Game *game, SDL_Renderer *renderer);
+  ~MenuState();
 };

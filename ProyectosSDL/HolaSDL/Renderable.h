@@ -5,12 +5,14 @@
 /*
  *Renderable interface
  */
-class Renderable {
+class Renderable
+{
 protected:
-	Texture* _texture;
+  Texture *_texture;
+
 public:
-	Renderable() {};
-	Renderable(Texture* texture) :_texture(texture) {};
-	~Renderable() {};
-	virtual void render() const {};
+  Renderable(){};
+  Renderable(Texture *texture) : _texture(texture){};
+  ~Renderable(){};
+  virtual void render() const {};
 };

@@ -3,24 +3,24 @@
 #include "checkML.h"
 #include <iostream>
 #include "Game.h"
-#include <time.h> 
+#include <time.h>
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks
-	srand(time(NULL));
-	try
-	{
-		Game *game = new Game();
-		game->run();
-		delete game;
-		return 0;
-	}
-	catch (exception e)
-	{
-		cout << e.what();
-		return -1;
-	}
+  _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); // Check Memory Leaks
+  srand(time(NULL));
+  try
+  {
+    Game *game = new Game();
+    game->run();
+    delete game;
+    return 0;
+  }
+  catch (exception e)
+  {
+    cout << e.what();
+    return -1;
+  }
 }

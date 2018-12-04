@@ -3,8 +3,8 @@
 #include "ArkanoidError.h"
 #include <SDL.h>
 
-
-class FileNotFoundError : public ArkanoidError {
+class FileNotFoundError : public ArkanoidError
+{
 public:
-    FileNotFoundError(const string& name) : ArkanoidError("[File Not Found]: " + name) {}
+  FileNotFoundError(const string &name) : ArkanoidError("[File Not Found]: " + name) {}
 };
