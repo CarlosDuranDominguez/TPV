@@ -41,5 +41,3 @@ public:
 std::istream& operator>>(std::istream& out, GameObject& object);
 
 std::ostream& operator<<(std::ostream& in, const GameObject& object);
-
-std::istream& operator>>(std::istream& out, GAME_OBJECTS& object);

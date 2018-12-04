@@ -8,6 +8,12 @@
 #include "Enemy.h"
 #include "Text.h"
 #include "Timer.h"
+#include "EnlargenAward.h"
+#include "LaserAward.h"
+#include "MultiBallAward.h"
+#include "NextLevelAward.h"
+#include "ShortenAward.h"
+#include "StickyAward.h"
 #include "Scoremarker.h"
 #include "LiveMarker.h"
 #include "Button.h"
@@ -128,12 +134,51 @@ void GameState::init()
 
 void GameState::loadLevel(const string& path) {
 	ifstream file;
-	file.open(path, std::ifstream::in);
+	file.open(path, std::ifstream::out);
 	if (file.fail()) {
 		throw new FileNotFoundError(path);
 	}
-	while (!file.eof()) {
 
+	if (!file.eof())
+	{
+		int score;
+		file >> score;
+		Game::gameManager()->setScore(score);
+	}
+
+	GameObject* gameObject;
+	while (!file.eof() && !file.fail()) {
+		string name;
+		file >> name;
+		GameObject* gameObject = nullptr;
+		if (name == "Wall") { gameObject = new Wall(); }
+		else if (name == "Paddle") { gameObject = new Paddle(); }
+		else if (name == "Enemy") { gameObject = new Enemy(); }
+		else if (name == "DeadZone") { gameObject = new DeadZone(); }
+		else if (name == "Block") { gameObject = new Block(); Game::gameManager()->addBlock(); }
+		else if (name == "Ball") { gameObject = new Ball(); Game::gameManager()->addBalls(1); }
+		else if (name == "Award") { gameObject = new Award(); }
+		else if (name == "EnlargenAward") { gameObject = new EnlargenAward(); }
+		else if (name == "LaserAward") { gameObject = new LaserAward(); }
+		else if (name == "MultiBallAward") { gameObject = new MultiBallAward();	}
+		else if (name == "NextLevelAward") { gameObject = new NextLevelAward();	}
+		else if (name == "ShortenAward") { gameObject = new ShortenAward();	}
+		else if (name == "StickyAward") { gameObject = new StickyAward(); }
+		else { throw new FileFormatError(path); }
+		file >> *gameObject;
+		add(*gameObject);
+	}
+}
+
+void GameState::saveLevel(const string& path) {
+	ofstream file;
+	file.open(path, std::ofstream::in);
+	if (file.fail()) {
+		throw new FileNotFoundError(path);
+	}
+	for (auto gameObject : _gameObjects) {
+		if(dynamic_cast<ArkanoidObject*>(gameObject))
+			file << *gameObject;
 	}
 }
 
