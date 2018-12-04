@@ -43,7 +43,7 @@ void Award::render() const
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance gets in contact with the ball
+/// Defines behaviour when the instance gets in contact with the instance
 void Award::contact()
 {
 	destroy();

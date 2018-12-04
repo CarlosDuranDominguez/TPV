@@ -55,9 +55,14 @@ void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World
 	setUp(shape, fixtureDef);
 }
 
+/// Public Virtual
+/// Defines behaviour when the instance gets in contact with the instance
 void Block::contact()
 {
+	// Destroy the block on contact
 	destroy();
+
+	// Create a new randomized event that throws an award
 	State::current->addEvent([this]() {
 		Award *award = nullptr;
 		switch (rand() % 40)
@@ -81,6 +86,8 @@ void Block::contact()
 		default:
 			break;
 		}
+
+		// If award is not null, add it and set its velocity
 		if (award != nullptr)
 		{
 			State::current->add(*award);
@@ -89,6 +96,8 @@ void Block::contact()
 	});
 }
 
+/// Public Virtual
+/// Defines behaviour when the instance is to be destroyed
 void Block::destroy()
 {
 	GameObject::destroy();

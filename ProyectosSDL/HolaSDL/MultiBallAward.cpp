@@ -6,9 +6,14 @@
 MultiBallAward::MultiBallAward(float32 x, float32 y, float32 width, float32 height, float32 framerate, Texture *texture)
 	: Award(x, y, width, height, framerate, texture) {}
 
+/// Public Virtual
+/// Defines behaviour when the instance gets in contact with the instance
 void MultiBallAward::contact()
 {
+	// Call the default behaviour
 	Award::contact();
+
+	// Creates an event that creates two new balls
 	State::current->addEvent([this]() {
 		GameState *gs = dynamic_cast<GameState *>(State::current);
 		b2Vec2 pos = dynamic_cast<RigidBody *>(this)->getPosition();

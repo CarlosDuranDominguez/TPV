@@ -87,6 +87,8 @@ std::ostream &Ball::serialize(std::ostream &is) const
 			  << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
 }
 
+/// Public Virtual
+/// Defines behaviour when the instance is to be destroyed
 void Ball::destroy()
 {
 	GameObject::destroy();

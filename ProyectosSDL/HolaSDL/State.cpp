@@ -35,13 +35,13 @@ void State::_render() const {
 	SDL_RenderPresent(_renderer);
 }
 
-void State::_update() { 
+void State::_update() {
 	for (auto gameObject : _gameObjects) {
 		gameObject->update();
 	}
 }
 
-void State::_handleEvents() { 
+void State::_handleEvents() {
   SDL_Event event;
   while (!_exit && SDL_PollEvent(&event))
   {
@@ -56,7 +56,7 @@ void State::_handleEvents() {
   }
 }
 
-void State::_fixUpdate(float32 time) { 
+void State::_fixUpdate(float32 time) {
 	_world->Step(time, 8, 3);
 }
 
@@ -94,14 +94,14 @@ void State::destroy(list<GameObject*>::iterator& gameObjectId) {
 	_pendingOnDestroy.push_back(gameObjectId);
 }
 
-State::State(Game *game, SDL_Renderer *renderer) 
+State::State(Game *game, SDL_Renderer *renderer)
 	: _game(game), _renderer(renderer), _stateTime(new ArkanoidTimer()){
 	_world = new b2World(b2Vec2(0.0f, 0.0f));
 	_listenerLogic = new CollisionLogic();
 	_world->SetContactListener(_listenerLogic);
 }
 
-State::~State() { 
+State::~State() {
 	for (auto gameObject : _gameObjects) {
 		delete gameObject;
 	}
@@ -112,7 +112,7 @@ State::~State() {
 	delete _listenerLogic;
 }
 
-void State::run() { 
+void State::run() {
 
 	b2Timer startTime;
 	while (!_exit)
