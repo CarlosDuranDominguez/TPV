@@ -65,7 +65,7 @@ float32 ArkanoidSettings::sceneWidth = 0.0f;
 float32 ArkanoidSettings::sceneHeight = 0.0f;
 // Ball
 const float32 ArkanoidSettings::ballAngle = b2_pi / 4.0f;
-const float32 ArkanoidSettings::ballRadiusRatio = 25.0f;
+const float32 ArkanoidSettings::ballRadiusRatio = 17.5f;
 const float32 ArkanoidSettings::ballSpeedRatio = 1000.0f;
 float32 ArkanoidSettings::ballRadius = 0.0f;
 float32 ArkanoidSettings::ballSpeed = 0.0f;

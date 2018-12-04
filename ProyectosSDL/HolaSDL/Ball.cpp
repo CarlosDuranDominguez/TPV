@@ -10,7 +10,6 @@ Ball::Ball(float32 x, float32 y, float32 radius, float32 speed, Texture *texture
     : ArkanoidBody(x, y, radius * 2, radius * 2, texture), _speed(speed)
 {
   setBody(x, y, radius, *Game::getWorld());
-  Game::gameManager()->addBalls(1);
 }
 
 Ball::~Ball()
