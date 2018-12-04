@@ -77,7 +77,7 @@ std::istream &Enemy::deserialize(std::istream &out)
 {
 	_texture = readTexture(out);
 	float32 posx, posy, radius, velx, vely;
-	out >> posx >> posy >> radius;
+	out >> posx >> posy >> radius >> _halfLife >> _changeProbability >> _framerate >> _frame;
 	setBody(posx, posy, radius, *Game::getWorld());
 	_position.Set(posx, posy);
 	return out;
@@ -88,7 +88,8 @@ std::istream &Enemy::deserialize(std::istream &out)
 std::ostream &Enemy::serialize(std::ostream &is) const
 {
 	return is << "Enemy " << textureIndex() << " " << _position.x << " " << _position.y << " "
-			  << _fixture->GetShape()->m_radius << " " << _speed << " " << _halfLife << " " << _changeProbability << " " << _framerate << " " << _frame;
+			  << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " "
+			  << _speed << " " << _halfLife << " " << _changeProbability << " " << _framerate << " " << _frame;
 }
 
 /// Private
