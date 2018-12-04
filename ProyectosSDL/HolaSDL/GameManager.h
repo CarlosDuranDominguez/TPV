@@ -33,5 +33,6 @@ class GameManager
 	void setLives(int livesLenght);
 	void deleteLive();
 	void addLives(int lives);
+	int getLives() const;
 	void newGame();
 };

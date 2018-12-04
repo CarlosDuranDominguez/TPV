@@ -105,7 +105,9 @@ void GameManager::deleteLive() {
 void GameManager::addLives(int lives){
 	_lives += lives;
 }
-
+int GameManager::getLives() const {
+	return _lives;
+}
 void GameManager::newGame() {
 	reset();
 	_currentLevel = 0;

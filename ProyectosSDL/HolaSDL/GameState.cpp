@@ -9,6 +9,7 @@
 #include "Text.h"
 #include "Timer.h"
 #include "Scoremarker.h"
+#include "LiveMarker.h"
 #include <algorithm>
 
 GameState::GameState(Game *game, SDL_Renderer *renderer) 
@@ -47,6 +48,9 @@ void GameState::init()
 	add(*gameObject); 
 
 	gameObject = new ScoreMarker(400, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
+	add(*gameObject);
+
+	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[PADDLE]);
 	add(*gameObject);
 	
 	gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);

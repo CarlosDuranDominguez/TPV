@@ -134,6 +134,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="LiveMarker.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="ScoreMarker.cpp" />
     <ClCompile Include="Scoremarker.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="LiveMarker.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="LoadManager.h" />
