@@ -31,6 +31,7 @@ public:
 	virtual void afterUpdate() {};
 	virtual void handleEvents(SDL_Event event) {};
 	virtual b2Vec2 getPosition() const;
+	virtual void setPosition(float32 x, float32 y);
 	virtual b2Vec2 getSize() const;
 	virtual std::istream& deserialize(std::istream& out) = 0;
 	virtual std::ostream& serialize(std::ostream& is) const = 0;

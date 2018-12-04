@@ -23,6 +23,7 @@ public:
 	virtual void render() const;
 	virtual void handleEvents(SDL_Event event);
 	virtual void setWidth(float32 width);
+	virtual void setPosition(b2Vec2 pos);
 	virtual std::istream& deserialize(std::istream& out);
 	virtual std::ostream& serialize(std::ostream& is) const;
 };

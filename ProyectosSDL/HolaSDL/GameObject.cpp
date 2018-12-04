@@ -4,7 +4,9 @@
 void GameObject::destroy() {
 	State::current->destroy(_id);
 }
-
+void GameObject::setPosition(float32 x, float32 y) {
+	_position.Set(x, y);
+}
 b2Vec2 GameObject::getPosition() const {
 	return _position;
 }

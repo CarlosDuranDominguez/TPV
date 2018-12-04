@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "GameState.h"
 #include "MenuState.h"
+#include "ScoreBoardState.h"
 #include "SDLError.h"
 
 GameManager* Game:: _gamemanager = nullptr;
@@ -32,6 +33,7 @@ Game::Game()
 
 	_states.insert(std::pair<States, State*> (States::GAME, new GameState(this, _renderer)));
 	_states.insert(std::pair<States, State*> (States::MENU, new MenuState(this, _renderer)));
+	_states.insert(std::pair<States, State*>(States::SCOREBOARD, new ScoreBoardState(this, _renderer)));
 	_gamemanager = new GameManager(this);
 }
 

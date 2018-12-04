@@ -91,6 +91,10 @@ void Paddle::handleEvents(SDL_Event event) {
 	setVelocity(v);
 }
 
+void Paddle::setPosition(b2Vec2 pos) {
+	RigidBody::setPosition(pos);
+}
+
 void Paddle::setWidth(float32 width) {
 	b2Vec2 pos = _body->GetPosition();
 	b2Vec2 vel = _body->GetLinearVelocity();

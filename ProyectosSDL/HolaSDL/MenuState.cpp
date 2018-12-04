@@ -20,6 +20,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) :State(game, renderer)
 		_buttons[i] = new Button(game->getFonts()[BIGFONT], 0, i * 110, 200, 100, WHITE, GREY, nombres[i], callbacks[i]);
 		add(*_buttons[i]);
 	}
+	delete[] _buttons;
 }
 
 /**
