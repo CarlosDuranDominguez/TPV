@@ -49,7 +49,7 @@ void ArkanoidSettings::setWindowHeight(uint height) {
 // General
 uint ArkanoidSettings::_windowHeight = 0;
 uint ArkanoidSettings::_windowWidth = 0;
-const float32 ArkanoidSettings::framerate = 60.0f;
+const float32 ArkanoidSettings::framerate = 120.0f;
 const float32 ArkanoidSettings::widthRatio = 1400.0f;
 const float32 ArkanoidSettings::heightRatio = 2000.0f;
 b2Vec2 ArkanoidSettings::sceneUpperLeftCorner = b2Vec2{ 0.f, 0.f };
@@ -58,7 +58,7 @@ float32 ArkanoidSettings::sceneHeight = 0.0f;
 // Ball
 const float32 ArkanoidSettings::ballAngle = b2_pi / 4.0f;
 const float32 ArkanoidSettings::ballRadiusRatio = 25.0f;
-const float32 ArkanoidSettings::ballSpeedRatio = 900.0f;
+const float32 ArkanoidSettings::ballSpeedRatio = 1000.0f;
 float32 ArkanoidSettings::ballRadius = 0.0f;
 float32 ArkanoidSettings::ballSpeed = 0.0f;
 // Block
@@ -67,12 +67,12 @@ const float32 ArkanoidSettings::blockWidthRatio = 100.0f;
 float32 ArkanoidSettings::blockHeight = 0.0f;
 float32 ArkanoidSettings::blockWidth = 0.0f;
 // Enemy
-const float32 ArkanoidSettings::enemyRadiusRatio = 0.0f;
-const float32 ArkanoidSettings::enemySpeedRatio = 0.0f;
+const float32 ArkanoidSettings::enemyRadiusRatio = 20.0f;
+const float32 ArkanoidSettings::enemySpeedRatio = 600.0f;
 float32 ArkanoidSettings::enemyRadius = 0.0f;
 float32 ArkanoidSettings::enemySpeed = 0.0f;
 // Paddle
-const float32 ArkanoidSettings::paddleSpeedRatio = 1000.0f;
+const float32 ArkanoidSettings::paddleSpeedRatio = 10000.0f;
 const float32 ArkanoidSettings::paddleWidthRatio = 200.0f;
 const float32 ArkanoidSettings::paddleHeightRatio = 40.0f;
 float32 ArkanoidSettings::paddleSpeed = 0.0f;

@@ -87,12 +87,6 @@ void Paddle::handleEvents(SDL_Event event) {
 			break;
 		}
 	}
-	if ((_leftMovement&&_rightMovement) || (!_leftMovement && !_rightMovement)) {
-		_body->SetLinearDamping(1000.0f);
-	}
-	else {
-		_body->SetLinearDamping(0.0f);
-	}
 	b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
 	setVelocity(v);
 }

@@ -54,7 +54,8 @@ void GameState::init()
 		ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneHeight / 20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
 	add(*gameObject);
 
-	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[LIFE]);
+	gameObject = new LiveMarker(ArkanoidSettings::sceneUpperLeftCorner.x, ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::sceneHeight*19.0f/20.0f,
+		ArkanoidSettings::sceneHeight / 20.0f, ArkanoidSettings::sceneHeight / 20.0f, _game->getTextures()[LIFE]);
 	add(*gameObject);
 
 	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "HOLA", [this]() {
@@ -63,28 +64,55 @@ void GameState::init()
 	});
 	add(*gameObject);
 	
-	gameObject = new Block(50,50, 40, 30,1,_game->getTextures()[BRICKS]);
-	add(*gameObject);
-	
-	gameObject = new Wall(10, 600, 20, 1200, _game->getTextures()[SIDE]);
-	add(*gameObject);
-	gameObject = new Wall(790, 600, 20, 1200, _game->getTextures()[SIDE]);
-	add(*gameObject);
-	gameObject = new Wall(400, 10, 780, 20, _game->getTextures()[TOPSIDE]);
-	add(*gameObject);
-	gameObject = new Wall(400, 800, 780, 20, _game->getTextures()[TOPSIDE]);
+	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x +ArkanoidSettings::wallWidth/2.0f, 
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::wallHeight / 2.0f + ArkanoidSettings::sceneHeight / 20.0f,
+		ArkanoidSettings::wallWidth, 
+		ArkanoidSettings::wallHeight, 
+		_game->getTextures()[SIDE]);
 	add(*gameObject);
 
-	gameObject = new Ball(100,100,10, _game->getTextures()[BALL]);
+	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth / 2.0f,
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::wallHeight / 2.0f + ArkanoidSettings::sceneHeight / 20.0f,
+		ArkanoidSettings::wallWidth,
+		ArkanoidSettings::wallHeight, 
+		_game->getTextures()[SIDE]);
+	add(*gameObject);
+	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x+ArkanoidSettings::sceneWidth/2.0f,
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f  + ArkanoidSettings::sceneHeight / 20.0f, 
+		ArkanoidSettings::wallHeight,
+		ArkanoidSettings::wallWidth, _game->getTextures()[TOPSIDE]);
+	add(*gameObject);
+
+	gameObject = new Block(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth+ArkanoidSettings::blockWidth/2.0f, 
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::sceneHeight / 20.0f +ArkanoidSettings::blockHeight/2.0f,
+		ArkanoidSettings::blockWidth, 
+		ArkanoidSettings::blockHeight,
+		1,_game->getTextures()[BRICKS]);
+	add(*gameObject);
+	
+	
+
+	gameObject = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f + ArkanoidSettings::ballRadius*2.0f,
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f,
+		10, _game->getTextures()[BALL]);
 	add(*gameObject);
 	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,10000 });
 	_balls.push_back(gameObject->getId());
 
-	gameObject = new Paddle(200, 400, 100, 15, 400,400,2000.f, _game->getTextures()[PADDLE]);
+	gameObject = new Paddle(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f +ArkanoidSettings::wallHeight,
+		ArkanoidSettings::paddleWidth, 
+		ArkanoidSettings::paddleHeight,
+		ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+		(ArkanoidSettings::sceneWidth)/2 - ArkanoidSettings::wallWidth,
+		ArkanoidSettings::paddleSpeed, _game->getTextures()[PADDLE]);
 	add(*gameObject);
 	_paddles.push_back(gameObject->getId());
 
-	gameObject = new DeadZone(200, 600, 1000, 5);
+	gameObject = new DeadZone(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, 
+		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight +ArkanoidSettings::paddleHeight,
+		ArkanoidSettings::sceneWidth, 
+		10.0f);
 	add(*gameObject);
 
 	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, 10.0f,_game->getTextures()[ENEMY1]);
