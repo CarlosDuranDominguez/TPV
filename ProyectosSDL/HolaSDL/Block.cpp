@@ -84,10 +84,11 @@ void Block::destroy() {
 	Game::gameManager()->deleteBlock();
 }
 
-std::istream& Block::deserialize(std::istream&  is) {
-	is >> _color >> _position.x >> _position.y >> _size.x >> _size.y;
+std::istream& Block::deserialize(std::istream&  out) {
+	_texture = readTexture(out);
+	out >> _position.x >> _position.y >> _size.x >> _size.y;
 	SetBody(_position.x, _position.y, _size.x, _size.y, *Game::getWorld());
-	return is;
+	return out;
 }
 
 std::ostream& Block::serialize(std::ostream& is) const {
