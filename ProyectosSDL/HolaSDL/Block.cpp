@@ -1,6 +1,10 @@
 #include "Block.h"
 #include "Game.h"
 #include "Award.h"
+#include "MultiBallAward.h"
+#include "EnlargenAward.h"
+#include "ShortenAward.h"
+#include "NextLevelAward.h"
 
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture) 
 	:ArkanoidObject(x, y, width, height, texture), _color(color) {
@@ -45,7 +49,34 @@ void Block::SetBody(float32 x, float32 y, float32 width, float32 height, b2World
 
 void Block::contact() {
 	destroy();
-	State::current->addCreation(GAME_OBJECTS::award, _position);
+	State::current->addEvent([this]() {
+		Award *award = nullptr;
+		switch (rand()%40)
+		{
+		case 0:
+			award = new MultiBallAward(_body->GetPosition().x, _body->GetPosition().y,
+				100, 40, 10, Game::current->getTextures()[REWARD6]);
+			break;
+		case 1:
+			award = new EnlargenAward(_body->GetPosition().x, _body->GetPosition().y,
+				100, 40, 10, Game::current->getTextures()[REWARD2]);
+			break;
+		case 2:
+			award = new ShortenAward(_body->GetPosition().x, _body->GetPosition().y,
+				100, 40, 10, Game::current->getTextures()[REWARD4]);
+			break;
+		case 3:
+			award = new NextLevelAward(_body->GetPosition().x, _body->GetPosition().y,
+				100, 40, 10, Game::current->getTextures()[REWARD1]);
+			break;
+		default:
+			break;
+		}
+		if (award != nullptr) {
+			State::current->add(*award);
+			award->setVelocity(b2Vec2{ 0, 500.0f });
+		}
+	});
 }
 
 void Block::destroy() {
