@@ -54,14 +54,17 @@ void Ball::onEndContact(RigidBody* rigidBody) {
 	if (block) { block->contact(); }
 }
 
-std::istream& Ball::deserialize(std::istream& is) {
-	is >> _position.x >> _position.y >> _size.x >> _fixture->GetShape()->m_radius;
-	setBody(_position.x, _position.y, _size.x/2, *Game::getWorld());
-	return is;
+std::istream& Ball::deserialize(std::istream& out) {
+  _texture = readTexture(out);
+  float32 posx, posy, radius, velx, vely;
+  out >> posx >> posy >> radius;
+  setBody(posx, posy, radius, *Game::getWorld());
+  _position.Set(posx, posy);
+  return out;
 }
 
 std::ostream& Ball::serialize(std::ostream& is) const {
-  return is << "Ball" << textureIndex() << _position.x << _position.y << _size.x << _size.y
+  return is << "Ball" << textureIndex() << _position.x << _position.y
     << _fixture->GetShape()->m_radius << getVelocity().x << getVelocity().y;
 }
 

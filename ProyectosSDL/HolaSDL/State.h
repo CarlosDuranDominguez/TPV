@@ -55,7 +55,5 @@ class State
 	GameObject* create(GAME_OBJECTS type, b2Vec2& position);
 	void add(GameObject& gameObject);
 	void addEvent(function<void()>);
-	virtual void load(string& filename);
-	virtual void save(string& filename);
 	float32 getTime() const;
 };

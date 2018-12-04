@@ -67,8 +67,8 @@ void GameState::init()
 		ArkanoidSettings::sceneHeight / 20.0f, ArkanoidSettings::sceneHeight / 20.0f, _game->getTextures()[LIFE]);
 	add(*gameObject);
 
-	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "HOLA", [this]() {
-		auto call = [this]() {dynamic_cast<Paddle*>(**_paddles.begin())->setWidth(100); };
+	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "S", [this]() {
+	  auto call = [this]() { saveLevel("../saves/level.save"); };
 		addEvent(call);
 	});
 	add(*gameObject);

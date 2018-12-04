@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Paddle.h"
 
-void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World& world) {
+void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World& world) {
 
 	float32 radius = height / 2.0f;
 	b2BodyDef bodyDef;
@@ -55,7 +55,7 @@ void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World
 
 Award::Award(float32 x, float32 y, float32 width, float32 height, float32 framerate, Texture *texture)
 	:ArkanoidObject(x,y,width,height,texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false) {
-	SetBody(x, y, width, height, *Game::getWorld());
+	setBody(x, y, width, height, *Game::getWorld());
 }
 
 Award::~Award(){
@@ -93,8 +93,16 @@ void Award::onBeginContact(RigidBody* rigidbody) {
 		contact();
 	}
 }
+
 std::istream& Award::deserialize(std::istream& out){
-	return out;
+  _texture = readTexture(out);
+  float32 posx, posy, sizex, sizey;
+  out >> posx >> posy >> sizex >> sizey;
+  _position.Set(posx, posy);
+  setBody(posx, posy, sizex, sizey, *Game::getWorld());
+  _size.Set(sizex, sizey);
+  out >> _framerate;
+  return out;
 }
 
 std::ostream& Award::serialize(std::ostream& is) const {

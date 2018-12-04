@@ -87,9 +87,6 @@
     <ClCompile Include="RigidBody.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Award.cpp">
-      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Ball.cpp">
       <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     <ClCompile Include="ArkanoidSettings.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Award.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2D.h">
@@ -190,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="RigidBody.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
-      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Renderable.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
@@ -286,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="SDLError.h">
       <Filter>Archivos de encabezado\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Archivos de encabezado\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
