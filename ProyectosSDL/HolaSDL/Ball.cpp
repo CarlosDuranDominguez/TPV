@@ -29,9 +29,9 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
 	shape.m_p.Set(0.0f, 0.0f);
 	shape.m_radius = radius;
 	b2FixtureDef fixtureDef;
-	fixtureDef.density = 0.1f;
+	fixtureDef.density = 0.0f;
 	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0010;
-	fixtureDef.filter.maskBits = 0b0000'0000'0000'0000'1111;
+	fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'1111;
 	fixtureDef.friction = 0.0f;
 	//fixtureDef.isSensor = false;
 	fixtureDef.restitution = 1.0f;

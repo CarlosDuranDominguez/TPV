@@ -8,6 +8,8 @@ class Award : public ArkanoidObject, public RigidBody
 {
 private:
 	int _framerate;
+	uint _frame;
+	b2Timer* _animationTimer;
 	void SetBody(float32 x, float32 y, float32 width, float32 height, b2World& world);
 public:
 	Award() {};

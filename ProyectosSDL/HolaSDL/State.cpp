@@ -62,7 +62,6 @@ void State::_destroy() {
 	for (list<GameObject*>::iterator object : _pendingOnDestroy) {
 		if (*object != nullptr) {
 			delete *object;
-			*object = nullptr;
 			_gameObjects.erase(object);
 		}
 	}
@@ -126,7 +125,7 @@ void State::create(GAME_OBJECTS type, b2Vec2& position) {
 	switch (type)
 	{
 	case GAME_OBJECTS::award:
-		gameObject = new Award(position.x, position.y, 200, 100, 60, _game->getTextures()[BRICKS]);
+		gameObject = new Award(position.x, position.y, 30, 10, 10, _game->getTextures()[REWARD1]);
 		dynamic_cast<RigidBody*>(gameObject)->setVelocity(b2Vec2{ 0,500.0f });
 		add(*gameObject);
 		break;

@@ -22,7 +22,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1000000.0f;
 	fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
-	fixtureDef.filter.maskBits = 0b0000'0000'0000'0001'0010;
+	fixtureDef.filter.maskBits = 0b0000'0000'0000'0011'0010;
 	fixtureDef.friction = 0.0f;
 	//fixtureDef.isSensor = false;
 	fixtureDef.restitution = 1.0f;

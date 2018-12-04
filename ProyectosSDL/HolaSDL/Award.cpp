@@ -1,5 +1,6 @@
 #include "Award.h"
 #include "Game.h"
+#include "Paddle.h"
 
 
 void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World& world) {
@@ -54,7 +55,7 @@ void Award::SetBody(float32 x, float32 y, float32 width, float32 height, b2World
 }
 
 Award::Award(float32 x, float32 y, float32 width, float32 height, float32 framerate, Texture *texture)
-	:ArkanoidObject(x,y,width,height,texture), _framerate(framerate) {
+	:ArkanoidObject(x,y,width,height,texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0) {
 	SetBody(x, y, width, height, *Game::getWorld());
 }
 
@@ -62,12 +63,20 @@ Award::~Award(){
 }
 
 void Award::update(){
+	if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate) {
+		if ((++_frame) > _texture->getNumCols()*_texture->getNumRows()) {
+			_frame = 0;
+		}
+		_animationTimer->Reset();
+	}
 }
 
 void Award::render() const{
-	_texture->render({ (int)(_body->GetPosition().x - _size.x / 2.0f),
-					  (int)(_body->GetPosition().y - _size.y / 2.0f),
-					  (int)(_size.x), (int)(_size.y) });
+	b2Vec2 pos = _body->GetPosition();
+
+	_texture->renderFrame({ (int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
+		(int)_fixture->GetShape()->m_radius * 2, (int)_fixture->GetShape()->m_radius * 2 },
+		_frame / (_texture->getNumCols() + 1), _frame%_texture->getNumCols());
 }
 
 void Award::contact(){
@@ -79,7 +88,9 @@ void Award::destroy(){
 }
 
 void Award::onBeginContact(RigidBody* rigidbody) {
-	contact();
+	if (dynamic_cast<Paddle*>(rigidbody)) {
+		contact();
+	}
 }
 std::istream& Award::deserialize(std::istream& out){
 	return out;

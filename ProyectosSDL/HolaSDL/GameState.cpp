@@ -52,7 +52,7 @@ void GameState::init()
 	gameObject = new ScoreMarker(400, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
 	add(*gameObject);
 
-	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[PADDLE]);
+	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[LIFE]);
 	add(*gameObject);
 
 	gameObject = new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "HOLA", []() {cout << "NANANA"; });
@@ -63,22 +63,26 @@ void GameState::init()
 	
 	gameObject = new Wall(10, 600, 20, 1200, _game->getTextures()[SIDE]);
 	add(*gameObject);
-	gameObject = new Wall(600, 10, 1200, 20, _game->getTextures()[TOPSIDE]);
+	gameObject = new Wall(790, 600, 20, 1200, _game->getTextures()[SIDE]);
+	add(*gameObject);
+	gameObject = new Wall(400, 10, 780, 20, _game->getTextures()[TOPSIDE]);
+	add(*gameObject);
+	gameObject = new Wall(400, 800, 780, 20, _game->getTextures()[TOPSIDE]);
 	add(*gameObject);
 
-	gameObject = new Ball(100,100,5, _game->getTextures()[BALL]);
+	gameObject = new Ball(100,100,10, _game->getTextures()[BALL]);
 	add(*gameObject);
-	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,500 });
+	dynamic_cast<RigidBody*>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{ 0,10000 });
 	_balls.push_back(gameObject->getId());
 
-	gameObject = new Paddle(200, 400, 100, 5, 400,400,2000.f, _game->getTextures()[PADDLE]);
+	gameObject = new Paddle(200, 400, 100, 15, 400,400,2000.f, _game->getTextures()[PADDLE]);
 	add(*gameObject);
 	_paddles.push_back(gameObject->getId());
 
 	gameObject = new DeadZone(200, 600, 1000, 5);
 	add(*gameObject);
 
-	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, _game->getTextures()[BALL]);
+	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, 10.0f,_game->getTextures()[ENEMY1]);
 	add(*gameObject);
 
 	

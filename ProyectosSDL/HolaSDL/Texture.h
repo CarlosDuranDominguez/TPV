@@ -32,6 +32,7 @@ class Texture
     int getW() const { return _w; };
     int getH() const { return _h; };
     uint getNumCols() const { return _numCols; };
+	uint getNumRows() const { return _numRows; };
 	void setTexture(SDL_Texture *texture) {
 		if (texture != _texture) {
 			SDL_DestroyTexture(_texture);

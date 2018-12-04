@@ -128,7 +128,6 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Counter.cpp" />
     <ClCompile Include="DeadZone.cpp" />
-    <ClCompile Include="DynamicBody.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />

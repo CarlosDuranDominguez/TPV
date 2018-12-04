@@ -19,20 +19,26 @@
     <Filter Include="Archivos de código fuente\GameObjects">
       <UniqueIdentifier>{5f74c594-4e9f-4c4b-aab7-bde37302d137}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de código fuente\GameObjects\ArkanoidObjects">
+      <UniqueIdentifier>{f79eec47-91a0-433d-8826-3a62ae7eb846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\GameObjects\Interface">
+      <UniqueIdentifier>{5bf18c8e-9ca7-47b5-b4d0-09594ee423be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de código fuente\States">
+      <UniqueIdentifier>{b0812215-6d61-49cb-b27e-4e56d3c924f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\States">
+      <UniqueIdentifier>{ff0a9de8-8d6f-40d3-aebe-f8ec23e3652d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\GameObjects\ArkanoidObjects">
+      <UniqueIdentifier>{2b04d35c-e617-4bb3-ad32-afb185d81030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\GameObjects\Interface">
+      <UniqueIdentifier>{f31dc831-530a-4847-86e2-b4e139d2e9c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Block.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Counter.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
@@ -51,28 +57,10 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Paddle.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Vector2D.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuState.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreBoardState.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
     <ClCompile Include="ScoreBoard.cpp">
@@ -84,54 +72,69 @@
     <ClCompile Include="State.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicBody.cpp">
-      <Filter>Archivos de código fuente\GameObjects</Filter>
+    <ClCompile Include="Award.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Counter.cpp">
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
     </ClCompile>
     <ClCompile Include="DeadZone.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Award.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClCompile>
-    <ClCompile Include="Award.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Scoremarker.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreMarker.cpp">
-      <Filter>Archivos de código fuente</Filter>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Archivos de código fuente\States</Filter>
     </ClCompile>
     <ClCompile Include="LiveMarker.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreMarker.cpp">
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Paddle.cpp">
+      <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Archivos de código fuente\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreBoardState.cpp">
+      <Filter>Archivos de código fuente\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Award.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Scoremarker.h">
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2D.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Block.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Paddle.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Ball.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
@@ -140,34 +143,16 @@
     <ClInclude Include="Texture.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Counter.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="LoadManager.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuState.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreBoardState.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="ScoreBoard.h">
@@ -185,9 +170,6 @@
     <ClInclude Include="State.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Renderable.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
     </ClInclude>
@@ -203,14 +185,47 @@
     <ClInclude Include="CollisionLogic.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClInclude>
     <ClInclude Include="DeadZone.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Paddle.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Counter.h">
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
     </ClInclude>
     <ClInclude Include="LiveMarker.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Archivos de encabezado\States</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Archivos de encabezado\States</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreBoardState.h">
+      <Filter>Archivos de encabezado\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
