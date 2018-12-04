@@ -121,12 +121,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArkanoidObject.cpp" />
+    <ClCompile Include="ArkanoidSettings.cpp" />
     <ClCompile Include="Award.cpp" />
-    <ClCompile Include="Award.h" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Counter.cpp" />
     <ClCompile Include="DeadZone.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnlargenAward.cpp" />
@@ -140,9 +139,7 @@
     <ClCompile Include="NextLevelAward.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="ScoreMarker.cpp" />
-    <ClCompile Include="Scoremarker.h" />
     <ClCompile Include="ShortenAward.cpp" />
-    <ClCompile Include="ShortenAward.h" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="LoadManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -161,12 +158,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArkanoidObject.h" />
+    <ClInclude Include="ArkanoidSettings.h" />
+    <ClInclude Include="Award.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CollisionLogic.h" />
     <ClInclude Include="Controllable.h" />
-    <ClInclude Include="Counter.h" />
     <ClInclude Include="DeadZone.h" />
     <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="Enemy.h" />
@@ -180,6 +178,7 @@
     <ClInclude Include="MultiBallAward.h" />
     <ClInclude Include="NextLevelAward.h" />
     <ClInclude Include="Renderable.h" />
+    <ClInclude Include="ShortenAward.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="LoadManager.h" />
     <ClInclude Include="Menu.h" />
@@ -187,6 +186,7 @@
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Scoremarker.h" />
     <ClInclude Include="ScoreBoardState.h" />
     <ClInclude Include="StickyAward.h" />
     <ClInclude Include="Text.h" />

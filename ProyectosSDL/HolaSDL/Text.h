@@ -12,6 +12,7 @@ class Text : public GameObject, public Renderable
 	Texture* _texture;
 	string _text;
 	SDL_Color _color;
+	int _width, _height;
   public:
 	Text(Font *font, float x, float y, int width, int height, const SDL_Color &color, const string &text);
 	~Text();

@@ -9,6 +9,8 @@
 #include "GameManager.h"
 #include "State.h"
 #include <map>
+#include "ArkanoidSettings.h"
+
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;

@@ -46,10 +46,12 @@ void GameState::init()
 	Game::gameManager()->newGame();
 	Game::gameManager()->addLives(3);
 
-	GameObject *gameObject = new Timer(0, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
+	GameObject *gameObject = new Timer(ArkanoidSettings::sceneUpperLeftCorner.x, ArkanoidSettings::sceneUpperLeftCorner.y,
+		ArkanoidSettings::sceneWidth/2.0f, ArkanoidSettings::sceneHeight/20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
 	add(*gameObject); 
 
-	gameObject = new ScoreMarker(400, 0, 500, 100, WHITE, _game->getFonts()[MEDIUMFONT]);
+	gameObject = new ScoreMarker(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneUpperLeftCorner.y,
+		ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneHeight / 20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
 	add(*gameObject);
 
 	gameObject = new LiveMarker(0, 500, 50, 50, _game->getTextures()[LIFE]);

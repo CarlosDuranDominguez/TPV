@@ -96,9 +96,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="Counter.cpp">
-      <Filter>Archivos de código fuente\GameObjects\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="DeadZone.cpp">
       <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
     </ClCompile>
@@ -132,15 +129,6 @@
     <ClCompile Include="ScoreBoardState.cpp">
       <Filter>Archivos de código fuente\States</Filter>
     </ClCompile>
-    <ClCompile Include="Award.h">
-      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="Scoremarker.h">
-      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="ShortenAward.h">
-      <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
-    </ClCompile>
     <ClCompile Include="LaserAward.cpp">
       <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
     </ClCompile>
@@ -161,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>Archivos de código fuente\States</Filter>
+    </ClCompile>
+    <ClCompile Include="ArkanoidSettings.cpp">
+      <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +227,6 @@
     <ClInclude Include="Button.h">
       <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Counter.h">
-      <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="LiveMarker.h">
       <Filter>Archivos de encabezado\GameObjects\Interface</Filter>
     </ClInclude>
@@ -271,6 +259,18 @@
     </ClInclude>
     <ClInclude Include="LaserAward.h">
       <Filter>Archivos de encabezado\GameObjects\ArkanoidObjects\Awards</Filter>
+    </ClInclude>
+    <ClInclude Include="ArkanoidSettings.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Award.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ShortenAward.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Scoremarker.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

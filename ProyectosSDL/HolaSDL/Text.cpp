@@ -7,10 +7,10 @@ Text::Text(Font *font, float x, float y, int width, int height, const SDL_Color 
 	: _font(font), GameObject(x,y,width,height), _color(color), _text(text)
 {
 	
-	TTF_SizeText(_font->getFont(), text.c_str(), &width, &height);
+	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
 	SDL_Texture* _textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
-	_texture = new Texture(_textTexture, font->getRenderer(), width, height, width, height,1,1);
+	_texture = new Texture(_textTexture, font->getRenderer(), _width, _height, _width, _height,1,1);
 	SDL_FreeSurface(textSurface);
 }
 
@@ -28,8 +28,7 @@ Text::~Text()
 void Text::setText(const string newText)
 {
 	_text = newText;
-	int width = _texture->getW(), height = _texture->getH();
-	TTF_SizeText(_font->getFont(), newText.c_str(), &width, &height);
+	TTF_SizeText(_font->getFont(), newText.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), newText.c_str(), _color);
 	_texture->setTexture(SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface));
 	SDL_FreeSurface(textSurface);
@@ -43,8 +42,8 @@ SDL_Rect Text::getRect() const
 	return {
 		(int)_position.x,
 		(int)_position.y,
-		_texture->getW(),
-		_texture->getH() };
+		_width,
+		_height };
 }
 
 /**
@@ -63,11 +62,11 @@ SDL_Color Text::setColor(const SDL_Color &color)
  */
 void Text::render() const
 {
-	SDL_Rect rect {
+	SDL_Rect rect{
 		(int)_position.x,
 		(int)_position.y,
-		_texture->getW(),
-		_texture->getH()};
+		_width,
+		_height };
 	SDL_RenderCopy(_font->getRenderer(), _texture->getTexture(), nullptr, &rect);
 }
 

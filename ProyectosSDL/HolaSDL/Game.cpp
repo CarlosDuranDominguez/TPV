@@ -11,6 +11,7 @@ Game* Game::current = nullptr;
 Game::Game()
 	: _window(nullptr), _renderer(nullptr)
 {
+	ArkanoidSettings::setUp(WIN_WIDTH, WIN_HEIGHT);
 	current = this;
 	SDL_Init(SDL_INIT_EVERYTHING);
 	if (TTF_Init() < 0)

@@ -8,6 +8,7 @@
 Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
 	:Text(font, x, y, width, height, color, "HOLA"){
 	time = State::current->getTime();
+	setText(to_string(time));
 };
 
 
