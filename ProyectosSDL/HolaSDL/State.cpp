@@ -165,21 +165,34 @@ GameObject *State::create(GAME_OBJECTS type, b2Vec2 &position)
   switch (type)
   {
   case GAME_OBJECTS::award:
-    gameObject = new MultiBallAward(position.x, position.y, 40, 10, 10, _game->getTextures()[REWARD1]);
+    gameObject = new MultiBallAward(position.x, position.y,
+									ArkanoidSettings::rewardWidth,
+									ArkanoidSettings::rewardHeigth,
+									ArkanoidSettings::rewardSpeed,
+									ArkanoidSettings::rewardFramerate,
+									Game::current->getTextures()[REWARD6]);
     dynamic_cast<RigidBody *>(gameObject)->setVelocity(b2Vec2{0, 500.0f});
     add(*gameObject);
     break;
   case GAME_OBJECTS::ball:
-    gameObject = new Ball(position.x, position.y, 5, _game->getTextures()[BALL]);
+    gameObject = new Ball(position.x, position.y, 
+							ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
     add(*gameObject);
-    dynamic_cast<RigidBody *>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{0.0f, 500.0f});
+    dynamic_cast<RigidBody *>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{0.0f, ArkanoidSettings::ballSpeed});
     break;
   case GAME_OBJECTS::block:
-    gameObject = new Block(position.x, position.y, 40, 30, 1, _game->getTextures()[BRICKS]);
+    gameObject = new Block(position.x, position.y, 
+							ArkanoidSettings::blockWidth, ArkanoidSettings::blockHeight, rand()%6, _game->getTextures()[BRICKS]);
     add(*gameObject);
     break;
   case GAME_OBJECTS::paddle:
-    gameObject = new Paddle(position.x, position.y, 100, 5, 400, 400, 2000.f, _game->getTextures()[PADDLE]);
+    gameObject = new Paddle(position.x, position.y, 
+							ArkanoidSettings::paddleWidth, 
+							ArkanoidSettings::paddleHeight,
+							ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+							ArkanoidSettings::sceneWidth / 2.0f, 
+							ArkanoidSettings::paddleSpeed, 
+							_game->getTextures()[PADDLE]);
     add(*gameObject);
     break;
   default:

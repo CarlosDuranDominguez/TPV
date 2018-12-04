@@ -147,6 +147,9 @@
     <ClCompile Include="Award.cpp">
       <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects\Awards</Filter>
     </ClCompile>
+    <ClCompile Include="ArkanoidBody.cpp">
+      <Filter>Archivos de código fuente\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -180,9 +183,6 @@
       <Filter>Archivos de encabezado\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Controllable.h">
-      <Filter>Archivos de encabezado\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicBody.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="CollisionLogic.h">
@@ -271,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="ArkanoidTimer.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ArkanoidBody.h">
+      <Filter>Archivos de encabezado\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

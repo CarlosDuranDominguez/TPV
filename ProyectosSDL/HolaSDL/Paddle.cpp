@@ -37,7 +37,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 Paddle::Paddle(){};
 
 Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
+    : ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
       _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed)
 {
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
@@ -57,11 +57,11 @@ void Paddle::afterUpdate()
   b2Vec2 pos = _body->GetPosition();
   if (pos.x - _size.x / 2.0f < _leftAnchor)
   {
-    setPosition(b2Vec2{_leftAnchor + _size.x / 2.0f, pos.y});
+    setPosition(_leftAnchor + _size.x / 2.0f, pos.y);
   }
   else if (pos.x + _size.x / 2.0f > _rightAnchor)
   {
-    setPosition(b2Vec2{_rightAnchor - _size.x / 2.0f, pos.y});
+    setPosition(_rightAnchor - _size.x / 2.0f, pos.y);
   }
 }
 
@@ -101,11 +101,6 @@ void Paddle::handleEvents(SDL_Event event)
   }
   b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
   setVelocity(v);
-}
-
-void Paddle::setPosition(b2Vec2 pos)
-{
-  RigidBody::setPosition(pos);
 }
 
 void Paddle::setWidth(float32 width)

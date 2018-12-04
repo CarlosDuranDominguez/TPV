@@ -1,13 +1,12 @@
 #pragma once
 
 #include "checkML.h"
-#include "ArkanoidObject.h"
-#include "RigidBody.h"
+#include "ArkanoidBody.h"
 #include "Controllable.h"
 
 class Game;
 
-class Paddle : public ArkanoidObject, public RigidBody, public Controllable
+class Paddle : public ArkanoidBody, public Controllable
 {
 private:
   bool _rightMovement, _leftMovement;
@@ -24,13 +23,6 @@ public:
   virtual void render() const;
   virtual void handleEvents(SDL_Event event);
   virtual void setWidth(float32 width);
-  virtual void setPosition(b2Vec2 pos);
-  virtual b2Vec2 getPosition() const { return RigidBody::getPosition(); };
-  virtual void setPosition(float32 x, float32 y)
-  {
-    RigidBody::setPosition(b2Vec2{x, y});
-    GameObject::setPosition(x, y);
-  };
   virtual std::istream &deserialize(std::istream &out);
   virtual std::ostream &serialize(std::ostream &is) const;
 };

@@ -120,6 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArkanoidBody.cpp" />
     <ClCompile Include="ArkanoidObject.cpp" />
     <ClCompile Include="ArkanoidSettings.cpp" />
     <ClCompile Include="Award.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArkanoidBody.h" />
     <ClInclude Include="ArkanoidObject.h" />
     <ClInclude Include="ArkanoidError.h" />
     <ClInclude Include="ArkanoidTimer.h" />
@@ -168,7 +170,6 @@
     <ClInclude Include="CollisionLogic.h" />
     <ClInclude Include="Controllable.h" />
     <ClInclude Include="DeadZone.h" />
-    <ClInclude Include="DynamicBody.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnlargenAward.h" />
     <ClInclude Include="Game.h" />

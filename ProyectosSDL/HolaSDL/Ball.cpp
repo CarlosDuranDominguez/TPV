@@ -6,8 +6,8 @@
 /*
 * Constructor
 */
-Ball::Ball(float32 x, float32 y, float32 radius, Texture *texture)
-    : ArkanoidObject(x, y, radius * 2, radius * 2, texture)
+Ball::Ball(float32 x, float32 y, float32 radius, float32 speed, Texture *texture)
+    : ArkanoidBody(x, y, radius * 2, radius * 2, texture), _speed(speed)
 {
   setBody(x, y, radius, *Game::getWorld());
   Game::gameManager()->addBalls(1);
@@ -48,6 +48,16 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world)
 /// Updates the update behaviour
 void Ball::update() {}
 
+void Ball::afterUpdate() 
+{
+	if (getVelocity().LengthSquared() != _speed) 
+	{
+		b2Vec2 v = getVelocity();
+		v.Normalize();
+		v *= _speed;
+		setVelocity(v);
+	}
+}
 /// Public Virtual
 /// Defines the render behaviour
 void Ball::render() const
@@ -73,7 +83,7 @@ std::istream &Ball::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
   float32 posx, posy, radius, velx, vely;
-  out >> posx >> posy >> radius >> velx >> vely;
+  out >> posx >> posy >> radius >> velx >> vely >> _speed;
   setBody(posx, posy, radius, *Game::getWorld());
   setPosition(posx, posy);
   setVelocity(b2Vec2{velx, vely});
@@ -86,7 +96,7 @@ std::istream &Ball::deserialize(std::istream &out)
 std::ostream &Ball::serialize(std::ostream &is) const
 {
   return is << "Ball " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
-            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
+            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << _speed;
 }
 
 /// Public Virtual

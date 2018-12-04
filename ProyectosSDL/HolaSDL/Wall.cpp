@@ -2,7 +2,7 @@
 #include "Game.h"
 
 Wall::Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture)
+    : ArkanoidBody(x, y, width, height, texture)
 {
   setBody(x, y, width, height, *Game::getWorld());
 }

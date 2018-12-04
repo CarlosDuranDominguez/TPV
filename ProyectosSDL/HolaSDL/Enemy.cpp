@@ -8,7 +8,7 @@
 /// Constructor
 Enemy::Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpeed, float32 halfLife,
              float32 changeProbability, float32 framerate, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture), _speed(maxSpeed), _halfLife(halfLife),
+    : ArkanoidBody(x, y, width, height, texture), _speed(maxSpeed), _halfLife(halfLife),
       _changeProbability(changeProbability), _timer(new b2Timer()), _animationTimer(new b2Timer()), _framerate(framerate), _frame(0)
 {
   setBody(x, y, width / 2.0f, *Game::getWorld());

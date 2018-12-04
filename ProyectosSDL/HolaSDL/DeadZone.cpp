@@ -2,7 +2,7 @@
 #include "Game.h"
 
 DeadZone::DeadZone(float32 x, float32 y, float32 width, float32 height)
-    : ArkanoidObject(x, y, width, height, nullptr)
+    : ArkanoidBody(x, y, width, height, nullptr)
 {
   setBody(x, y, width, height, *Game::getWorld());
 }

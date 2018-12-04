@@ -1,13 +1,11 @@
 #pragma once
 
 #include "checkML.h"
-#include "ArkanoidObject.h"
-#include "RigidBody.h"
-#include "Controllable.h"
+#include "ArkanoidBody.h"
 
 class Game;
 
-class Enemy : public ArkanoidObject, public RigidBody
+class Enemy : public ArkanoidBody
 {
 private:
   float32 _speed;

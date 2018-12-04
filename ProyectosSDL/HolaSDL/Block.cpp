@@ -7,7 +7,7 @@
 #include "NextLevelAward.h"
 
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture), _color(color)
+    : ArkanoidBody(x, y, width, height, texture), _color(color)
 {
   setBody(x, y, width, height, *Game::getWorld());
   Game::gameManager()->addBlock();
@@ -69,19 +69,35 @@ void Block::contact()
     {
     case 0:
       award = new MultiBallAward(_body->GetPosition().x, _body->GetPosition().y,
-                                 100, 40, 10, Game::current->getTextures()[REWARD6]);
+                                 ArkanoidSettings::rewardWidth, 
+								 ArkanoidSettings::rewardHeigth, 
+							     ArkanoidSettings::rewardSpeed,
+								 ArkanoidSettings::rewardFramerate,
+								 Game::current->getTextures()[REWARD6]);
       break;
     case 1:
       award = new EnlargenAward(_body->GetPosition().x, _body->GetPosition().y,
-                                100, 40, 10, Game::current->getTextures()[REWARD2]);
+								 ArkanoidSettings::rewardWidth,
+								 ArkanoidSettings::rewardHeigth,
+								 ArkanoidSettings::rewardSpeed,
+								 ArkanoidSettings::rewardFramerate,
+								 Game::current->getTextures()[REWARD2]);
       break;
     case 2:
       award = new ShortenAward(_body->GetPosition().x, _body->GetPosition().y,
-                               100, 40, 10, Game::current->getTextures()[REWARD4]);
+								 ArkanoidSettings::rewardWidth,
+								 ArkanoidSettings::rewardHeigth,
+								 ArkanoidSettings::rewardSpeed,
+								 ArkanoidSettings::rewardFramerate,
+								 Game::current->getTextures()[REWARD4]);
       break;
     case 3:
       award = new NextLevelAward(_body->GetPosition().x, _body->GetPosition().y,
-                                 100, 40, 10, Game::current->getTextures()[REWARD1]);
+								 ArkanoidSettings::rewardWidth,
+								 ArkanoidSettings::rewardHeigth,
+								 ArkanoidSettings::rewardSpeed,
+								 ArkanoidSettings::rewardFramerate,
+								 Game::current->getTextures()[REWARD1]);
       break;
     default:
       break;

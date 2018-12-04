@@ -4,8 +4,8 @@
 
 /// Public
 /// Constructor
-Award::Award(float32 x, float32 y, float32 width, float32 height, float32 framerate, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false)
+Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed, float32 framerate, Texture *texture)
+    : ArkanoidBody(x, y, width, height, texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false), _speed(speed)
 {
   setBody(x, y, width, height, *Game::getWorld());
 }
@@ -76,8 +76,8 @@ std::istream &Award::deserialize(std::istream &out)
   _texture = readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey;
-  _position.Set(posx, posy);
   setBody(posx, posy, sizex, sizey, *Game::getWorld());
+  setPosition(posx, posy);
   _size.Set(sizex, sizey);
   out >> _framerate;
   return out;
@@ -87,7 +87,7 @@ std::istream &Award::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Award::serialize(std::ostream &is) const
 {
-  return is << typeid(*this).name() << " " << textureIndex() << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y << " "
+  return is << typeid(*this).name() << " " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
             << _framerate;
 }
 
