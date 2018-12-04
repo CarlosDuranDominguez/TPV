@@ -11,11 +11,13 @@ protected:
 	void _reset();
 private:
 	bool _isReseting;
+	bool _isNewGame;
 public:
 	GameState(Game *game, SDL_Renderer *renderer);
 	virtual ~GameState();
 	virtual void reset();
 	virtual void init();
+	virtual void newGame(bool isNewGame) { _isNewGame = isNewGame; };
 	void loadLevel(const string& path);
 	void saveLevel(const string& path);
 	Paddle* paddle() { return dynamic_cast<Paddle*>(**(_paddles.begin())); };

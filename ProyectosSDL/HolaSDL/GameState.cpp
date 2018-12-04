@@ -24,7 +24,7 @@
 #include "FileFormatError.h"
 
 GameState::GameState(Game *game, SDL_Renderer *renderer) 
-	:State(game, renderer) {
+	:State(game, renderer),_isNewGame(false) {
 };
 
 GameState::~GameState() {
@@ -72,7 +72,20 @@ void GameState::init()
 		addEvent(call);
 	});
 	add(*gameObject);
-	
+
+	if (_isNewGame) {
+		loadLevel("../levels/level01.ark");
+	}
+	else {
+		try {
+			loadLevel("../saves/level.save");
+		}
+		catch(exception e) {
+			loadLevel("../levels/level01.ark");
+		}
+	}
+	_isNewGame = false;
+	/*
 	gameObject = new Wall(ArkanoidSettings::sceneUpperLeftCorner.x +ArkanoidSettings::wallWidth/2.0f, 
 		ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 2.0f + ArkanoidSettings::wallHeight / 2.0f + ArkanoidSettings::sceneHeight / 20.0f,
 		ArkanoidSettings::wallWidth, 
@@ -126,6 +139,7 @@ void GameState::init()
 
 	gameObject = new Enemy(600, 50, 40, 40, 500, 1.0f, 0.2f, 10.0f,_game->getTextures()[ENEMY1]);
 	add(*gameObject);
+	*/
 
 	
 	_stateTime->reset();
@@ -136,7 +150,7 @@ void GameState::loadLevel(const string& path) {
 	ifstream file;
 	file.open(path, std::ifstream::out);
 	if (file.fail()) {
-		throw new FileNotFoundError(path);
+		throw (FileNotFoundError)(path);
 	}
 
 	if (!file.eof())
@@ -178,7 +192,9 @@ void GameState::loadLevel(const string& path) {
 		else if (name == "NextLevelAward") { gameObject = new NextLevelAward();	}
 		else if (name == "ShortenAward") { gameObject = new ShortenAward();	}
 		else if (name == "StickyAward") { gameObject = new StickyAward(); }
-		else { throw new FileFormatError(path); }
+		else { 
+			throw (FileFormatError)(path); 
+		}
 		file >> *gameObject;
 		add(*gameObject);
 	}

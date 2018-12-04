@@ -8,6 +8,7 @@
 #include "Font.h"
 #include "GameManager.h"
 #include "State.h"
+#include "GameState.h"
 #include <map>
 #include "ArkanoidSettings.h"
 
@@ -206,6 +207,7 @@ class Game
 	void newScore(const string &name, int score, double time);
 	void run();
 	States getState() { return _state; };
+	GameState* getGameState() { return dynamic_cast<GameState*>(_states[GAME]); }
 	static GameManager *gameManager();
 	static b2World* getWorld();
 	static void setWorld(b2World& world);
