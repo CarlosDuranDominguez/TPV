@@ -39,14 +39,15 @@ void GameState::reset()
 void GameState::_reset()
 {
 
-  for (auto paddle : _paddles)
+  for (auto gameObject : _gameObjects)
   {
-    destroy(paddle);
+	  if(dynamic_cast<Ball*>(gameObject)|| dynamic_cast<Paddle*>(gameObject))
+		gameObject->destroy();
   }
-
-  _paddles.clear();
-  addCreation(GAME_OBJECTS::ball, b2Vec2{100, 100});
-  addCreation(GAME_OBJECTS::paddle, b2Vec2{200, 400});
+  addCreation(GAME_OBJECTS::ball, b2Vec2{ ArkanoidSettings::sceneUpperLeftCorner.x+ArkanoidSettings::sceneWidth / 2.0f, 
+										  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f });
+  addCreation(GAME_OBJECTS::paddle, b2Vec2{ ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, 
+											ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight });
   _isReseting = false;
   _stateTime->reset();
 }
