@@ -6,27 +6,29 @@
  * Constructors.
  */
 Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
-	:Text(font, x, y, width, height, color, "HOLA"){
+	: Text(font, x, y, width, height, color, "HOLA")
+{
 	time = State::current->getTime();
 	setText(to_string(time));
 };
-
 
 /**
  * It updates the current time.
  */
 void Timer::update()
 {
-	if (time != State::current->getTime()) {
+	if (time != State::current->getTime())
+	{
 		time = State::current->getTime();
 		setText(to_string(time));
 	}
-	
 }
 
-std::istream& Timer::deserialize(std::istream& out) {
+std::istream &Timer::deserialize(std::istream &out)
+{
 	return out;
 }
-std::ostream& Timer::serialize(std::ostream& is) const {
+std::ostream &Timer::serialize(std::ostream &is) const
+{
 	return is;
 }

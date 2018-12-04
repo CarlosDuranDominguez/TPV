@@ -4,16 +4,17 @@
 #include "RigidBody.h"
 #include "ArkanoidObject.h"
 
-class Wall: public ArkanoidObject, public RigidBody
+class Wall : public ArkanoidObject, public RigidBody
 {
-private:
-	void setBody(float32 x, float32 y, float32 width, float32 height, b2World& world);
-public:
-	Wall() {};
+  private:
+	void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+
+  public:
+	Wall(){};
 	Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture);
-	~Wall() {};
+	~Wall(){};
 	virtual void update();
 	virtual void render() const;
-	virtual std::istream& deserialize(std::istream& out);
-	virtual std::ostream& serialize(std::ostream& is) const;
+	virtual std::istream &deserialize(std::istream &out);
+	virtual std::ostream &serialize(std::ostream &is) const;
 };

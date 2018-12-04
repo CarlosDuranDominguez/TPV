@@ -4,13 +4,13 @@
  * Constructors.
  */
 Text::Text(Font *font, float x, float y, int width, int height, const SDL_Color &color, const string &text)
-	: _font(font), GameObject(x,y,width,height), _color(color), _text(text)
+	: _font(font), GameObject(x, y, width, height), _color(color), _text(text)
 {
-	
+
 	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
 	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
-	SDL_Texture* _textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
-	_texture = new Texture(_textTexture, font->getRenderer(), _width, _height, _width, _height,1,1);
+	SDL_Texture *_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
+	_texture = new Texture(_textTexture, font->getRenderer(), _width, _height, _width, _height, 1, 1);
 	SDL_FreeSurface(textSurface);
 }
 
@@ -43,7 +43,7 @@ SDL_Rect Text::getRect() const
 		(int)_position.x,
 		(int)_position.y,
 		_width,
-		_height };
+		_height};
 }
 
 /**
@@ -66,14 +66,16 @@ void Text::render() const
 		(int)_position.x,
 		(int)_position.y,
 		_width,
-		_height };
+		_height};
 	SDL_RenderCopy(_font->getRenderer(), _texture->getTexture(), nullptr, &rect);
 }
 
-std::istream& Text::deserialize(std::istream& out) {
+std::istream &Text::deserialize(std::istream &out)
+{
 	return out;
 }
 
-std::ostream& Text::serialize(std::ostream& is) const {
+std::ostream &Text::serialize(std::ostream &is) const
+{
 	return is;
 }

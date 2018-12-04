@@ -5,12 +5,13 @@
 
 class ScoreMarker : public Text
 {
-private:
+  private:
 	int _score;
-public:
+
+  public:
 	ScoreMarker(float x, float y, int width, int height, SDL_Color color, Font *font);
-	~ScoreMarker() {};
+	~ScoreMarker(){};
 	void update();
-	virtual std::istream& deserialize(std::istream& out);
-	virtual std::ostream& serialize(std::ostream& is) const;
+	virtual std::istream &deserialize(std::istream &out);
+	virtual std::ostream &serialize(std::ostream &is) const;
 };

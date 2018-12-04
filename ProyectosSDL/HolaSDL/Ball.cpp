@@ -7,15 +7,18 @@
 * Constructor
 */
 Ball::Ball(float32 x, float32 y, float32 radius, Texture *texture)
-	:ArkanoidObject(x, y, radius * 2, radius * 2, texture) {
+	: ArkanoidObject(x, y, radius * 2, radius * 2, texture)
+{
 	setBody(x, y, radius, *Game::getWorld());
 	Game::gameManager()->addBalls(1);
 }
 
-Ball::~Ball() {
+Ball::~Ball()
+{
 }
 
-void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
+void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world)
+{
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = false;
 	bodyDef.type = b2_dynamicBody;
@@ -24,7 +27,7 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
 	bodyDef.position.x = x;
 	bodyDef.position.y = y;
 	bodyDef.linearDamping = 0.0f;
-	bodyDef.userData = static_cast<RigidBody*>(this);
+	bodyDef.userData = static_cast<RigidBody *>(this);
 	b2CircleShape shape;
 	shape.m_p.Set(0.0f, 0.0f);
 	shape.m_radius = radius;
@@ -43,32 +46,41 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World& world) {
 
 void Ball::update() {}
 
-void Ball::render() const {
+void Ball::render() const
+{
 	b2Vec2 pos = _body->GetPosition();
-	_texture->renderFrame({ (int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, 
-		(int)_fixture->GetShape()->m_radius * 2, (int)_fixture->GetShape()->m_radius*2 }, 0, 0);
+	_texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
+						   (int)_fixture->GetShape()->m_radius * 2, (int)_fixture->GetShape()->m_radius * 2},
+						  0, 0);
 }
 
-void Ball::onEndContact(RigidBody* rigidBody) {
-	Block* block = dynamic_cast<Block*>(rigidBody);
-	if (block) { block->contact(); }
+void Ball::onEndContact(RigidBody *rigidBody)
+{
+	Block *block = dynamic_cast<Block *>(rigidBody);
+	if (block)
+	{
+		block->contact();
+	}
 }
 
-std::istream& Ball::deserialize(std::istream& out) {
-  _texture = readTexture(out);
-  float32 posx, posy, radius, velx, vely;
-  out >> posx >> posy >> radius;
-  setBody(posx, posy, radius, *Game::getWorld());
-  _position.Set(posx, posy);
-  return out;
+std::istream &Ball::deserialize(std::istream &out)
+{
+	_texture = readTexture(out);
+	float32 posx, posy, radius, velx, vely;
+	out >> posx >> posy >> radius;
+	setBody(posx, posy, radius, *Game::getWorld());
+	_position.Set(posx, posy);
+	return out;
 }
 
-std::ostream& Ball::serialize(std::ostream& is) const {
-  return is << "Ball " << textureIndex() << " " << _position.x << " " << _position.y << " "
-    << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
+std::ostream &Ball::serialize(std::ostream &is) const
+{
+	return is << "Ball " << textureIndex() << " " << _position.x << " " << _position.y << " "
+			  << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y;
 }
 
-void Ball::destroy() {
+void Ball::destroy()
+{
 	GameObject::destroy();
 	Game::gameManager()->deleteBall();
 }
