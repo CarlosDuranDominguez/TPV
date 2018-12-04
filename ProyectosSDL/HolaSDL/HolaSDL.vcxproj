@@ -158,6 +158,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArkanoidObject.h" />
+    <ClInclude Include="ArkanoidError.h" />
+    <ClInclude Include="FileFormatError.h" />
+    <ClInclude Include="FileNotFoundError.h" />
+    <ClInclude Include="SDLError.h" />
     <ClInclude Include="ArkanoidSettings.h" />
     <ClInclude Include="Award.h" />
     <ClInclude Include="Ball.h" />

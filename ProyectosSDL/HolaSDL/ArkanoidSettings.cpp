@@ -72,7 +72,7 @@ const float32 ArkanoidSettings::enemySpeedRatio = 600.0f;
 float32 ArkanoidSettings::enemyRadius = 0.0f;
 float32 ArkanoidSettings::enemySpeed = 0.0f;
 // Paddle
-const float32 ArkanoidSettings::paddleSpeedRatio = 10000.0f;
+const float32 ArkanoidSettings::paddleSpeedRatio = 1200.0f;
 const float32 ArkanoidSettings::paddleWidthRatio = 200.0f;
 const float32 ArkanoidSettings::paddleHeightRatio = 40.0f;
 float32 ArkanoidSettings::paddleSpeed = 0.0f;

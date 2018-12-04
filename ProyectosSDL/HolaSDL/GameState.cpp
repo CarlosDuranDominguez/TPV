@@ -13,6 +13,9 @@
 #include "Button.h"
 #include <iostream>
 #include <algorithm>
+#include <fstream>  
+#include "FileNotFoundError.h"
+#include "FileFormatError.h"
 
 GameState::GameState(Game *game, SDL_Renderer *renderer) 
 	:State(game, renderer) {
@@ -122,6 +125,18 @@ void GameState::init()
 	_stateTime->Reset();
 	_isReseting = false;
 }
+
+void GameState::loadLevel(const string& path) {
+	ifstream file;
+	file.open(path, std::ifstream::in);
+	if (file.fail()) {
+		throw new FileNotFoundError(path);
+	}
+	while (!file.eof()) {
+
+	}
+}
+
 void GameState::_end(){
 	if (_isReseting) {
 		_reset();

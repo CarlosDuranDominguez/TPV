@@ -16,5 +16,6 @@ public:
 	virtual ~GameState();
 	virtual void reset();
 	virtual void init();
+	void loadLevel(const string& path);
 	Paddle* paddle() { return dynamic_cast<Paddle*>(**(_paddles.begin())); };
 };
