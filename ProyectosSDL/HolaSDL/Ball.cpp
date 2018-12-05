@@ -49,13 +49,13 @@ void Ball::update() {}
 
 void Ball::afterUpdate()
 {
-  if (getVelocity().LengthSquared() != _speed)
-  {
-    b2Vec2 v = getVelocity();
-    v.Normalize();
-    v *= _speed;
-    setVelocity(v);
-  }
+		if (getVelocity().LengthSquared() != _speed)
+		{
+			b2Vec2 v = getVelocity();
+			v.Normalize();
+			v *= _speed;
+			setVelocity(v);
+		}
 }
 /// Public Virtual
 /// Defines the render behaviour

@@ -48,7 +48,6 @@ void TopBoard::loadFile(const std::string& path) {
 		}else{ 
 			_scores.push_back(game); 
 		}
-		
 	}
 	file.close();
 }

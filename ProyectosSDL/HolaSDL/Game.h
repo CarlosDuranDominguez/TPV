@@ -188,7 +188,7 @@ private:
   Font *_fonts[NUMBERFONTS];
   static GameManager *_gamemanager;
   map<States, State *> _states;
-  States _state = States::MENU;
+  States _state = States::GAME;
   static b2World *_world;
 
 public:

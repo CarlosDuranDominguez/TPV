@@ -97,6 +97,9 @@ void Paddle::handleEvents(SDL_Event event)
     case SDLK_LEFT:
       _leftMovement = false;
       break;
+	case SDLK_UP:
+		splitFromBall();
+		break;
     }
   }
   b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
@@ -113,6 +116,33 @@ void Paddle::setWidth(float32 width)
   setBody(pos.x, pos.y, width, _size.y, _leftAnchor - _rightAnchor,
           (_rightAnchor - _leftAnchor) / 2.0f, *Game::getWorld());
   setVelocity(vel);
+}
+
+void Paddle::jointTo(Ball* ball) {
+	b2PrismaticJointDef jointDef;
+	jointDef.bodyB = _body;
+	jointDef.bodyA = ball->getBody();
+	jointDef.enableLimit = true;
+	b2Vec2 a = getPosition()- ball->getPosition();
+	jointDef.localAxisA = a;
+	jointDef.upperTranslation = a.LengthSquared();
+	jointDef.lowerTranslation = a.LengthSquared();
+	_ballJointA = Game::getWorld()->CreateJoint(&jointDef);
+	b2DistanceJointDef jointDefa;
+	jointDefa.bodyB = _body;
+	jointDefa.bodyA = ball->getBody();
+	jointDefa.length = 10.0f;
+	_ballJointB = Game::getWorld()->CreateJoint(&jointDefa);
+	_ball = ball;
+}
+
+void Paddle::splitFromBall() {
+	if (_ball != nullptr) {
+		Game::getWorld()->DestroyJoint(_ballJointA);
+		Game::getWorld()->DestroyJoint(_ballJointB);
+		_ball->setVelocity(getPosition() - _ball->getPosition());
+		_ball = nullptr;
+	}
 }
 
 /// Public Virtual
