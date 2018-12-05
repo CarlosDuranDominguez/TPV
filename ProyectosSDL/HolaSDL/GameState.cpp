@@ -55,7 +55,7 @@ void GameState::_reset()
                         ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius * 2.0f,
                         ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
   add(*ball);
-  Game::gameManager()->setBalls(1);
+  Game::getGameManager()->setBalls(1);
   _stateTime->reset();
 }
 
@@ -81,17 +81,17 @@ void GameState::init()
     addEvent(call);
   });
   add(*gameObject);
-  if (Game::gameManager()->getLevel() > 0)
+  if (Game::getGameManager()->getLevel() > 0)
   {
-    int lives = Game::gameManager()->getLives();
-    loadLevel("../levels/level" + to_string(Game::gameManager()->getLevel()) + ".ark");
-    if (Game::gameManager()->getLevel() == 1)
+    int lives = Game::getGameManager()->getLives();
+    loadLevel("../levels/level" + to_string(Game::getGameManager()->getLevel()) + ".ark");
+    if (Game::getGameManager()->getLevel() == 1)
     {
-      Game::gameManager()->setLives(ArkanoidSettings::initialLives);
+      Game::getGameManager()->setLives(ArkanoidSettings::initialLives);
     }
     else
     {
-      Game::gameManager()->setLives(lives);
+      Game::getGameManager()->setLives(lives);
     }
   }
   else
@@ -103,7 +103,7 @@ void GameState::init()
     catch (exception e)
     {
       loadLevel("../levels/level01.ark");
-      Game::gameManager()->setLives(ArkanoidSettings::initialLives);
+      Game::getGameManager()->setLives(ArkanoidSettings::initialLives);
     }
   }
 }
@@ -122,24 +122,24 @@ void GameState::loadLevel(const string &path)
     uint level;
     file >> level;
     if (level == 1)
-      Game::gameManager()->newGame();
+      Game::getGameManager()->newGame();
     else
-      Game::gameManager()->reset();
-    Game::gameManager()->setLevel(level);
+      Game::getGameManager()->reset();
+    Game::getGameManager()->setLevel(level);
   }
 
   if (!file.eof() && !file.fail())
   {
     int lives;
     file >> lives;
-    Game::gameManager()->setLives(lives);
+    Game::getGameManager()->setLives(lives);
   }
 
   if (!file.eof() && !file.fail())
   {
     int score;
     file >> score;
-    Game::gameManager()->setScore(score);
+    Game::getGameManager()->setScore(score);
   }
 
   if (!file.eof() && !file.fail())
@@ -176,12 +176,12 @@ void GameState::loadLevel(const string &path)
     else if (name == "Block")
     {
       gameObject = new Block();
-      Game::gameManager()->addBlock();
+      Game::getGameManager()->addBlock();
     }
     else if (name == "Ball")
     {
       gameObject = new Ball();
-      Game::gameManager()->addBalls(1);
+      Game::getGameManager()->addBalls(1);
     }
     else if (name == "Award")
     {
@@ -229,7 +229,7 @@ void GameState::saveLevel(const string &path)
   {
     throw new FileNotFoundError(path);
   }
-  file << Game::gameManager()->getLevel() << ' ' << Game::gameManager()->getLives() << ' ' << Game::gameManager()->getScore() << ' ' << _stateTime->getSeconds() << '\n';
+  file << Game::getGameManager()->getLevel() << ' ' << Game::getGameManager()->getLives() << ' ' << Game::getGameManager()->getScore() << ' ' << _stateTime->getSeconds() << '\n';
   for (auto gameObject : _gameObjects)
   {
     if (dynamic_cast<ArkanoidObject *>(gameObject))

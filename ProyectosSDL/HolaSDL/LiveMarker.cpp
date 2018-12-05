@@ -7,7 +7,7 @@ LiveMarker::LiveMarker(float32 x, float32 y, float32 width, float32 height, Text
     : GameObject(x, y, width, height), Renderable(texture) {}
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void LiveMarker::render() const
 {
   SDL_Rect rect{
@@ -15,7 +15,7 @@ void LiveMarker::render() const
       (int)_position.y,
       _texture->getW(),
       _texture->getH()};
-  int lives = Game::gameManager()->getLives();
+  int lives = Game::getGameManager()->getLives();
   for (int i = 0; i < lives; i++)
   {
     rect.x = (int)_position.x + i * _texture->getW();

@@ -1,17 +1,12 @@
 #include "Bullet.h"
 #include "Game.h"
 
-/// Public
-/// Constructor
-Bullet::Bullet(float32 x, float32 y, float32 radius, float32 speed, Texture *texture)
-    : Ball(x, y, radius, speed, texture) {}
-
 /// Public Virtual
-/// Defines behaviour when the instance starts to have contact with an element
+// Defines behaviour when the instance starts to have contact with an element
 void Bullet::onBeginContact(RigidBody *rigidBody) { destroy(); }
 
 /// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Bullet::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
@@ -26,7 +21,7 @@ std::istream &Bullet::deserialize(std::istream &out)
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Bullet::serialize(std::ostream &is) const
 {
   return is << "Bullet " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
@@ -34,7 +29,7 @@ std::ostream &Bullet::serialize(std::ostream &is) const
 }
 
 /// Private
-/// setBody method, creates a dynamic circle shape with Box2D's API
+// setBody method, creates a dynamic circle shape with Box2D's API
 void Bullet::setBody(float32 x, float32 y, float32 radius, b2World &world)
 {
   // Create the body definition

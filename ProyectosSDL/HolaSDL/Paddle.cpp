@@ -1,6 +1,8 @@
 #include "Paddle.h"
 #include "Game.h"
 
+/// Private
+// setBody method, creates a kinematic chain shape with Box2D's API
 void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, b2World &world)
 {
 
@@ -73,7 +75,7 @@ void Paddle::afterUpdate()
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Paddle::render() const
 {
   b2Vec2 pos = _body->GetPosition();

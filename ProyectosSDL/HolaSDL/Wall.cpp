@@ -41,6 +41,8 @@ std::ostream &Wall::serialize(std::ostream &is) const
   return is << "Wall " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y;
 }
 
+/// Private
+// setBody method, creates a static polygon shape with Box2D's API
 void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
 {
   b2BodyDef bodyDef;

@@ -5,7 +5,7 @@
 #include <iostream>
 
 /// Public
-/// Constructor
+// Constructor
 Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed, uint framerate, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false), _speed(speed)
 {
@@ -13,28 +13,33 @@ Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed,
 }
 
 /// Public
-/// Destructor
+// Destructor
 Award::~Award()
 {
   delete _animationTimer;
 }
 
 /// Public Victual
-/// Updates the update behaviour
+// Updates the update behaviour
 void Award::update()
 {
+  // If the counter's milliseconds counted over 1000 milliseconds divided by
+  // the framerate frequency, go to the next frame to continue the animation
   if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate)
   {
+    // If the next frame is outside the animation range, go to to the first frame
     if ((++_frame) > _texture->getNumCols() * _texture->getNumRows())
     {
       _frame = 0;
     }
+
+    // Reset the timer
     _animationTimer->Reset();
   }
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Award::render() const
 {
   b2Vec2 pos = _body->GetPosition();
@@ -45,22 +50,22 @@ void Award::render() const
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance gets in contact with the instance
+// Defines behaviour when the instance gets in contact with the instance
 void Award::contact()
 {
   destroy();
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance is to be destroyed
+// Defines behaviour when the instance is to be destroyed
 void Award::destroy()
 {
-  // Calls GameObject's destroy method
+  // Call inherited destroy method from GameObject
   GameObject::destroy();
 }
 
 /// Public Virtual
-///
+// Defines behaviour after every update cycle
 void Award::afterUpdate()
 {
   if (getVelocity().y != _speed)
@@ -71,7 +76,7 @@ void Award::afterUpdate()
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance starts to have contact with an element
+// Defines behaviour when the instance starts to have contact with an element
 void Award::onBeginContact(RigidBody *rigidbody)
 {
   // If the contact was done with the paddle, set _contacted to true
@@ -83,7 +88,7 @@ void Award::onBeginContact(RigidBody *rigidbody)
 }
 
 /// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Award::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
@@ -97,7 +102,7 @@ std::istream &Award::deserialize(std::istream &out)
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Award::serialize(std::ostream &is) const
 {
   string a = typeid(*this).name();
@@ -107,7 +112,7 @@ std::ostream &Award::serialize(std::ostream &is) const
 }
 
 /// Private
-/// setBody method, creates a dynamic polygon shape with Box2D's API
+// setBody method, creates a dynamic polygon shape with Box2D's API
 void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
 {
   float32 radius = height / 2.0f;

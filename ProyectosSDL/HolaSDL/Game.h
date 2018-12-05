@@ -202,7 +202,7 @@ public:
   void run();
   States getState() { return _state; };
   GameState *getGameState() { return dynamic_cast<GameState *>(_states[GAME]); }
-  static GameManager *gameManager();
+  static GameManager *getGameManager();
   static b2World *getWorld();
   static void setWorld(b2World &world);
 };

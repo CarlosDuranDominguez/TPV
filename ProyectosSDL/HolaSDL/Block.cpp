@@ -23,7 +23,7 @@ void Block::update()
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Block::render() const
 {
   b2Vec2 pos = _body->GetPosition();
@@ -31,32 +31,8 @@ void Block::render() const
                         _color % _texture->getNumCols());
 }
 
-void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
-{
-  b2BodyDef bodyDef;
-  bodyDef.type = b2_staticBody;
-  bodyDef.fixedRotation = true;
-  bodyDef.position.x = x;
-  bodyDef.position.y = y;
-  bodyDef.linearDamping = 0.0f;
-  bodyDef.userData = static_cast<RigidBody *>(this);
-  b2PolygonShape shape;
-  shape.SetAsBox(width / 2.0f, height / 2.0f);
-  b2FixtureDef fixtureDef;
-  fixtureDef.density = 1.0f;
-  fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0100;
-  fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'0010;
-  fixtureDef.friction = 0.0f;
-  //fixtureDef.isSensor = false;
-  fixtureDef.restitution = 1.0f;
-  fixtureDef.shape = &shape;
-
-  _body = world.CreateBody(&bodyDef);
-  setUp(shape, fixtureDef);
-}
-
 /// Public Virtual
-/// Defines behaviour when the instance gets in contact with the instance
+// Defines behaviour when the instance gets in contact with the instance
 void Block::contact()
 {
   // Destroy the block on contact
@@ -121,15 +97,16 @@ void Block::contact()
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance is to be destroyed
+// Defines behaviour when the instance is to be destroyed
 void Block::destroy()
 {
+  // Call inherited destroy method from GameObject
   GameObject::destroy();
-  Game::gameManager()->deleteBlock();
+  Game::getGameManager()->deleteBlock();
 }
 
 /// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Block::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
@@ -142,9 +119,42 @@ std::istream &Block::deserialize(std::istream &out)
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Block::serialize(std::ostream &is) const
 {
   return is << "Block " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y
             << " " << _color;
+}
+
+/// Private
+// setBody method, creates a static polygon shape with Box2D's API
+void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
+{
+  // Create the body definition
+  b2BodyDef bodyDef;
+  bodyDef.type = b2_staticBody;
+  bodyDef.fixedRotation = true;
+  bodyDef.position.x = x;
+  bodyDef.position.y = y;
+  bodyDef.linearDamping = 0.0f;
+  bodyDef.userData = static_cast<RigidBody *>(this);
+
+  // Create the polygon shape
+  b2PolygonShape shape;
+  shape.SetAsBox(width / 2.0f, height / 2.0f);
+
+  // Create the fixture definition
+  b2FixtureDef fixtureDef;
+  fixtureDef.density = 1.0f;
+  fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0100;
+  fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'0010;
+  fixtureDef.friction = 0.0f;
+  fixtureDef.restitution = 1.0f;
+  fixtureDef.shape = &shape;
+
+  // Add the body definition to the world
+  _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
+  setUp(shape, fixtureDef);
 }

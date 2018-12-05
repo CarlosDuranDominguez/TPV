@@ -15,5 +15,5 @@ void NextLevelAward::contact()
   Award::contact();
 
   // Creates an event that skips to the next level
-  State::current->addEvent([]() { Game::gameManager()->finishLevel(State::current->getTime()); });
+  State::current->addEvent([]() { Game::getGameManager()->finishLevel(State::current->getTime()); });
 }

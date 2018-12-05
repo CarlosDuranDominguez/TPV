@@ -8,7 +8,7 @@
 ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 height, SDL_Color color)
     : GameObject(x, y, width, height), _font(font), _color(color)
 {
-  vector<PlayerGame *> scores = Game::gameManager()->getScores();
+  vector<PlayerGame *> scores = Game::getGameManager()->getScores();
   int j = 0;
   for (auto score : scores)
   {
@@ -40,7 +40,7 @@ ScoreBoard::~ScoreBoard()
  */
 void ScoreBoard::rewrite()
 {
-  vector<PlayerGame *> scores = Game::gameManager()->getScores();
+  vector<PlayerGame *> scores = Game::getGameManager()->getScores();
   int j = 0;
   for (auto score : scores)
   {

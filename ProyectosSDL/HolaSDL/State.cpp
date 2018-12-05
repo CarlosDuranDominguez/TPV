@@ -181,13 +181,13 @@ GameObject *State::create(GAME_OBJECTS type, b2Vec2 &position)
                           ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
     add(*gameObject);
     dynamic_cast<RigidBody *>(gameObject)->ApplyLinearImpulseToCenter(b2Vec2{0.0f, ArkanoidSettings::ballSpeed});
-    Game::gameManager()->addBalls(1);
+    Game::getGameManager()->addBalls(1);
     break;
   case GAME_OBJECTS::block:
     gameObject = new Block(position.x, position.y,
                            ArkanoidSettings::blockWidth, ArkanoidSettings::blockHeight, rand() % 6, _game->getTextures()[BRICKS]);
     add(*gameObject);
-    Game::gameManager()->addBlock();
+    Game::getGameManager()->addBlock();
     break;
   case GAME_OBJECTS::paddle:
     gameObject = new Paddle(position.x, position.y,

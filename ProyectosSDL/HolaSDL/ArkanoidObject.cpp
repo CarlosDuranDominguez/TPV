@@ -6,7 +6,7 @@
 #include "FileFormatError.h"
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void ArkanoidObject::render() const
 {
   _texture->render(SDL_Rect{
@@ -17,8 +17,8 @@ void ArkanoidObject::render() const
 }
 
 /// Protected
-/// Retrieves the texture's index for this ArkanoidObject
-/// for serializing purposes
+// Retrieves the texture's index for this ArkanoidObject
+// for serializing purposes
 uint ArkanoidObject::textureIndex() const
 {
   auto game = GameManager::getGame();
@@ -30,7 +30,7 @@ uint ArkanoidObject::textureIndex() const
 }
 
 /// Protected
-/// Sets the texture
+// Sets the texture
 Texture *ArkanoidObject::readTexture(std::istream &out)
 {
   uint i;

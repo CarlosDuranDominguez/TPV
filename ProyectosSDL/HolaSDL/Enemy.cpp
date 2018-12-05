@@ -5,7 +5,7 @@
 #include <random>
 
 /// Public
-/// Constructor
+// Constructor
 Enemy::Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpeed, float32 halfLife,
              float32 changeProbability, float32 framerate, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _speed(maxSpeed), _halfLife(halfLife),
@@ -19,7 +19,7 @@ Enemy::Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpe
 }
 
 /// Public
-/// Destructor
+// Destructor
 Enemy::~Enemy()
 {
   delete _timer;
@@ -27,7 +27,7 @@ Enemy::~Enemy()
 }
 
 /// Public Victual
-/// Updates the update behaviour
+// Updates the update behaviour
 void Enemy::update()
 {
   if (_timer->GetMilliseconds() > _halfLife * 1000.0f)
@@ -50,7 +50,7 @@ void Enemy::update()
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Enemy::render() const
 {
   b2Vec2 pos = _body->GetPosition();
@@ -61,18 +61,20 @@ void Enemy::render() const
 }
 
 /// Public Virtual
-/// Defines behaviour when the instance starts to have contact with an element
+// Defines behaviour when the instance starts to have contact with an element
 void Enemy::onBeginContact(RigidBody *rigidBody)
 {
+  // If the contact was made with a ball or the paddle
   if (dynamic_cast<Ball *>(rigidBody) || dynamic_cast<Paddle *>(rigidBody))
   {
+    // Destroy and add 50 points to the score
     destroy();
-    Game::gameManager()->addScore(50);
+    Game::getGameManager()->addScore(50);
   }
 }
 
 /// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Enemy::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
@@ -87,7 +89,7 @@ std::istream &Enemy::deserialize(std::istream &out)
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Enemy::serialize(std::ostream &is) const
 {
   return is << "Enemy " << textureIndex() << " " << _position.x << " " << _position.y << " "
@@ -96,7 +98,7 @@ std::ostream &Enemy::serialize(std::ostream &is) const
 }
 
 /// Private
-/// setBody method, creates a dynamic circle shape with Box2D's API
+// setBody method, creates a dynamic circle shape with Box2D's API
 void Enemy::setBody(float32 x, float32 y, float32 radius, b2World &world)
 {
   // Create the body definition
