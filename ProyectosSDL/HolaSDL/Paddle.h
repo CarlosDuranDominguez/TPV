@@ -21,7 +21,7 @@ private:
   function<void()> _action;
 
 public:
-  Paddle();
+  Paddle(){};
   Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture);
   ~Paddle();
   virtual void update();

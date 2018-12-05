@@ -15,9 +15,30 @@
 #include <fstream>
 #include "CollisionLogic.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
+State::State(Game *game, SDL_Renderer *renderer)
+    : _game(game), _renderer(renderer), _stateTime(new ArkanoidTimer())
+{
+  _world = new b2World(b2Vec2(0.0f, 0.0f));
+  _listenerLogic = new CollisionLogic();
+  _world->SetContactListener(_listenerLogic);
+}
+
+/// Public
+/// Destructor
+State::~State()
+{
+  for (auto gameObject : _gameObjects)
+  {
+    delete gameObject;
+  }
+  _pendingOnDestroy.clear();
+  _gameObjects.clear();
+  delete _stateTime;
+  delete _world;
+  delete _listenerLogic;
+}
 
 void State::_create()
 {
@@ -111,27 +132,6 @@ void State::destroy(list<GameObject *>::iterator &gameObjectId)
     }
   }
   _pendingOnDestroy.push_back(gameObjectId);
-}
-
-State::State(Game *game, SDL_Renderer *renderer)
-    : _game(game), _renderer(renderer), _stateTime(new ArkanoidTimer())
-{
-  _world = new b2World(b2Vec2(0.0f, 0.0f));
-  _listenerLogic = new CollisionLogic();
-  _world->SetContactListener(_listenerLogic);
-}
-
-State::~State()
-{
-  for (auto gameObject : _gameObjects)
-  {
-    delete gameObject;
-  }
-  _pendingOnDestroy.clear();
-  _gameObjects.clear();
-  delete _stateTime;
-  delete _world;
-  delete _listenerLogic;
 }
 
 void State::run()

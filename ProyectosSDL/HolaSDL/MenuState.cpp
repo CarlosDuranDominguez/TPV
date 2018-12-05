@@ -3,9 +3,8 @@
 #include "Game.h"
 #include <functional>
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 MenuState::MenuState(Game *game, SDL_Renderer *renderer) : State(game, renderer)
 {
   auto _buttons = new Button *[4];

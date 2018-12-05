@@ -1,6 +1,8 @@
 #include "Wall.h"
 #include "Game.h"
 
+/// Public
+/// Constructor
 Wall::Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture)
 {

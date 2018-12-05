@@ -7,9 +7,9 @@
 GameManager *Game::_gamemanager = nullptr;
 b2World *Game::_world = nullptr;
 Game *Game::current = nullptr;
-/**
- * Constructor.
- */
+
+/// Public
+/// Constructor
 Game::Game()
     : _window(nullptr), _renderer(nullptr)
 {
@@ -35,12 +35,11 @@ Game::Game()
   _states.insert(std::pair<States, State *>(States::GAME, new GameState(this, _renderer)));
   _states.insert(std::pair<States, State *>(States::MENU, new MenuState(this, _renderer)));
   _states.insert(std::pair<States, State *>(States::SCOREBOARD, new ScoreBoardState(this, _renderer)));
-  
+
 }
 
-/**
- * Destructor.
- */
+/// Public
+/// Destructor
 Game::~Game()
 {
   for (auto state : _states)

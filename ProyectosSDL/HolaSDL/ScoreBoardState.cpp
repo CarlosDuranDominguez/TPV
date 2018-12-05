@@ -1,9 +1,8 @@
 #include "ScoreBoardState.h"
 #include "Game.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
     : State(game, renderer)
 {

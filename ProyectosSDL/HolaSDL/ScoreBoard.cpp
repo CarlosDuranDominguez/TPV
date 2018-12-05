@@ -3,9 +3,8 @@
 #include <iostream>
 #include "Game.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 height, SDL_Color color)
     : GameObject(x, y, width, height), _font(font), _color(color)
 {
@@ -26,9 +25,8 @@ ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 
   }
 }
 
-/**
- * Destructor.
- */
+/// Public
+/// Destructor
 ScoreBoard::~ScoreBoard()
 {
   for (auto text : _texts)

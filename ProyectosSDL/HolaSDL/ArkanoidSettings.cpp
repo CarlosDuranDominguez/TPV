@@ -1,14 +1,16 @@
 #include "ArkanoidSettings.h"
 
-//Methods
+// Methods
 float32 ArkanoidSettings::getWindowHeight()
 {
   return _windowHeight;
 };
+
 float32 ArkanoidSettings::getWindowWidth()
 {
   return _windowWidth;
 };
+
 void ArkanoidSettings::setSceneDimensions()
 {
   if (widthRatio / heightRatio > _windowWidth / _windowHeight)
@@ -40,22 +42,26 @@ void ArkanoidSettings::setSceneDimensions()
   wallWidth = ratio * wallWidthRatio;
   wallHeight = ratio * wallHeightRatio;
 };
+
 void ArkanoidSettings::setWindowWidth(uint width)
 {
   _windowWidth = width;
   setSceneDimensions();
 };
+
 void ArkanoidSettings::setUp(uint width, uint height)
 {
   _windowWidth = width;
   _windowHeight = height;
   setSceneDimensions();
 };
+
 void ArkanoidSettings::setWindowHeight(uint height)
 {
   _windowHeight = height;
   setSceneDimensions();
 };
+
 // General
 uint ArkanoidSettings::_windowHeight = 0;
 uint ArkanoidSettings::_windowWidth = 0;
@@ -94,7 +100,7 @@ float32 ArkanoidSettings::paddleWidth = 0.0f;
 float32 ArkanoidSettings::paddleHeight = 0.0f;
 float32 ArkanoidSettings::paddleMinimumWidth = 0.0f;
 float32 ArkanoidSettings::paddleMaximumWidth = 0.0f;
-//Reward
+// Reward
 const float32 ArkanoidSettings::rewardFramerate = 15.0f;
 const float32 ArkanoidSettings::rewardWidthRatio = 100.0f;
 const float32 ArkanoidSettings::rewardHeigthRatio = 40.0f;

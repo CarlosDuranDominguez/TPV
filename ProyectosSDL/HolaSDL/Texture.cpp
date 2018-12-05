@@ -11,6 +11,8 @@ void Texture::liberate()
   _w = _h = 0;
 }
 
+/// Public
+/// Constructor
 Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, uint w, uint h, uint fw, uint fh, uint numRows, uint numCols)
     : _renderer(renderer), _texture(texture), _w(w), _h(h), _fw(fw), _fh(fh), _numRows(numRows), _numCols(numCols) {}
 

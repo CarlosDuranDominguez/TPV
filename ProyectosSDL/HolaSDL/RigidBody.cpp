@@ -3,17 +3,21 @@
 #include "RigidBody.h"
 #include "Game.h"
 
-RigidBody::RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef, b2World &world)
-{
-  // Set the fixture definition
-  setUp(shape, fixtureDef);
-}
-
+/// Public
+/// Destructor
 RigidBody::~RigidBody()
 {
   _body->DestroyFixture(_fixture);
   Game::getWorld()->DestroyBody(_body);
 };
+
+/// Public
+/// Constructor
+RigidBody::RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef, b2World &world)
+{
+  // Set the fixture definition
+  setUp(shape, fixtureDef);
+}
 
 void RigidBody::setUp(b2Shape &shape, b2FixtureDef &fixture)
 {

@@ -1,8 +1,7 @@
 #include "Button.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 Button::Button(Font *font, float32 x, float32 y, float32 width, float32 height,
                SDL_Color inColor, SDL_Color outColor, string text, function<void()> callback)
     : Text(font, x, y, width, height, outColor, text), _inColor(inColor), _outColor(outColor), _callback(callback) {}

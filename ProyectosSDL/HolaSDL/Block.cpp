@@ -8,6 +8,8 @@
 #include "StickyAward.h"
 #include "LaserAward.h"
 
+/// Public
+/// Constructor
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _color(color)
 {

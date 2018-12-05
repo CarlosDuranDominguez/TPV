@@ -2,9 +2,8 @@
 #include "Game.h"
 #include "GameState.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 GameManager::GameManager(Game *game)
 {
   GameManager::setGame(game);
@@ -14,7 +13,8 @@ GameManager::GameManager(Game *game)
 
 Game *GameManager::_game = nullptr;
 
-
+/// Public
+/// Destructor
 GameManager::~GameManager() {
 	_topBoard->storeFile("../saves/save.save");
 	delete _topBoard;

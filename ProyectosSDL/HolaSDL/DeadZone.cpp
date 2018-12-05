@@ -1,6 +1,8 @@
 #include "DeadZone.h"
 #include "Game.h"
 
+/// Public
+/// Constructor
 DeadZone::DeadZone(float32 x, float32 y, float32 width, float32 height)
     : ArkanoidBody(x, y, width, height, nullptr)
 {
@@ -30,6 +32,8 @@ void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height, b2Wo
   setUp(shape, fixtureDef);
 }
 
+/// Public Virtual
+/// Defines behaviour when the instance starts to have contact with an element
 void DeadZone::onBeginContact(RigidBody *rigidBody)
 {
   dynamic_cast<GameObject *>(rigidBody)->destroy();

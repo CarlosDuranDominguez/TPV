@@ -2,6 +2,8 @@
 #include "Game.h"
 #include "State.h"
 
+/// Public
+/// Constructor
 StickyAward::StickyAward(float32 x, float32 y, float32 width, float32 height, float32 speed, float32 framerate, Texture *texture)
     : Award(x, y, width, height, speed, framerate, texture) {}
 

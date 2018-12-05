@@ -1,8 +1,7 @@
 #include "Text.h"
 
-/**
- * Constructors.
- */
+/// Public
+/// Constructor
 Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height, const SDL_Color &color, const string &text)
     : _font(font), GameObject(x, y, width, height), _color(color), _text(text)
 {
@@ -13,10 +12,8 @@ Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height, cons
   _texture = new Texture(_textTexture, font->getRenderer(), _width, _height, _width, _height, 1, 1);
   SDL_FreeSurface(textSurface);
 }
-
-/**
- * Destructor.
- */
+/// Public
+/// Destructor
 Text::~Text()
 {
   delete _texture;

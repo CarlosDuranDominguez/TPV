@@ -2,6 +2,23 @@
 #include <algorithm>
 #include <fstream>
 
+/// Public
+/// Constructor
+TopBoard::TopBoard(const std::string &path) : _scores()
+{
+  loadFile(path);
+}
+
+/// Public
+/// Destructor
+TopBoard::~TopBoard()
+{
+  for (auto score : _scores)
+  {
+    delete score;
+  }
+}
+
 /**
  * The comparing function depending on the player's name.
  */
@@ -24,19 +41,6 @@ bool TopBoard::_comparescore(const PlayerGame *game1, const PlayerGame *game2)
 bool TopBoard::_comparetime(const PlayerGame *game1, const PlayerGame *game2)
 {
   return game1->time > game2->time;
-}
-
-TopBoard::TopBoard(const std::string &path) : _scores()
-{
-  loadFile(path);
-}
-
-TopBoard::~TopBoard()
-{
-  for (auto score : _scores)
-  {
-    delete score;
-  }
 }
 
 void TopBoard::loadFile(const std::string &path)

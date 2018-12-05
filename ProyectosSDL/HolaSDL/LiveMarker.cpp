@@ -1,6 +1,8 @@
 #include "LiveMarker.h"
 #include "Game.h"
 
+/// Public
+/// Constructor
 LiveMarker::LiveMarker(float32 x, float32 y, float32 width, float32 height, Texture *texture)
     : GameObject(x, y, width, height), Renderable(texture) {}
 

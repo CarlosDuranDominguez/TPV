@@ -1,6 +1,8 @@
 #include "ScoreMarker.h"
 #include "Game.h"
 
+/// Public
+/// Constructor
 ScoreMarker::ScoreMarker(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "h")
 {

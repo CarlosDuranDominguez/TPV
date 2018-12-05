@@ -34,8 +34,8 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
   setUp(shape, fixtureDef);
 }
 
-Paddle::Paddle(){};
-
+/// Public
+/// Constructor
 Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture)
 	: ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
 	_leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true)
@@ -44,6 +44,8 @@ Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anch
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
 
+/// Public
+/// Destructor
 Paddle::~Paddle()
 {
 	/*if (_ball) {
@@ -111,6 +113,8 @@ void Paddle::handleEvents(SDL_Event event)
   setVelocity(v);
 }
 
+/// Public Virtual
+/// Defines behaviour when the instance starts to have contact with an element
 void Paddle::onBeginContact(RigidBody* rigigbody) {
 	Ball*ball;
 	if (_sticky && (ball = dynamic_cast<Ball*>(rigigbody))) {

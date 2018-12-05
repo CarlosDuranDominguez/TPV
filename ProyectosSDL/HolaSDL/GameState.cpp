@@ -23,6 +23,8 @@
 #include "FileNotFoundError.h"
 #include "FileFormatError.h"
 
+/// Public
+/// Constructor
 GameState::GameState(Game *game, SDL_Renderer *renderer)
     : State(game, renderer){};
 

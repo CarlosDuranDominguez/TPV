@@ -2,15 +2,14 @@
 #include <math.h>
 #include "State.h"
 
-/**
- * Constructors.
- */
+/// Public
+/// Constructor
 Timer::Timer(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "HOLA")
 {
   time = State::current->getTime();
   setText(to_string(time));
-};
+}
 
 /// Public Victual
 /// Updates the update behaviour

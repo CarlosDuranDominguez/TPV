@@ -10,7 +10,7 @@ private:
   static uint _windowWidth;
 
 public:
-  //Methods
+  // Methods
   static float32 getWindowHeight();
   static float32 getWindowWidth();
   static void setSceneDimensions();
@@ -53,7 +53,7 @@ public:
   static float32 paddleHeight;
   static float32 paddleMinimumWidth;
   static float32 paddleMaximumWidth;
-  //Reward
+  // Reward
   const static float32 rewardFramerate;
   const static float32 rewardWidthRatio;
   const static float32 rewardHeigthRatio;

@@ -1,18 +1,16 @@
 #include "Font.h"
 #include "FileNotFoundError.h"
 
-/**
- * Constructor.
- */
+/// Public
+/// Constructor
 Font::Font(SDL_Renderer *renderer, string filename, int size)
     : _renderer(renderer), _size(size)
 {
   load(filename);
 }
 
-/**
- * Destructor.
- */
+/// Public
+/// Destructor
 Font::~Font()
 {
   liberate();
