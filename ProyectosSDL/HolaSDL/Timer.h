@@ -1,26 +1,17 @@
 #pragma once
 
 #include "checkML.h"
-#include <time.h>
-#include "Vector2D.h"
-#include "Font.h"
 #include "Text.h"
 
-class Timer
+class Timer : public Text
 {
-  private:
-	time_t _firstTime;
-	time_t _currentTime;
-	Vector2D _position;
-	int _width, _height;
-	Text *_text;
+private:
+  int time;
 
-  public:
-	Timer(float x, float y, int width, int height, SDL_Color color, Font *font);
-	Timer(Vector2D position, int width, int height, SDL_Color color, Font *font);
-	~Timer();
-	void render() const;
-	void update();
-	void reset();
-	double getTime() const;
+public:
+  Timer(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font);
+  ~Timer(){};
+  void update();
+  virtual std::istream &deserialize(std::istream &out);
+  virtual std::ostream &serialize(std::ostream &is) const;
 };

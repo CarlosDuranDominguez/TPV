@@ -1,55 +1,50 @@
 #include "Font.h"
+#include "FileNotFoundError.h"
 
-/**
- * Constructor.
- */
+/// Public
+// Constructor
 Font::Font(SDL_Renderer *renderer, string filename, int size)
-	: _renderer(renderer), _size(size)
+    : _renderer(renderer), _size(size)
 {
-	load(filename);
+  load(filename);
 }
 
-/**
- * Destructor.
- */
+/// Public
+// Destructor
 Font::~Font()
 {
-	liberate();
+  liberate();
 }
 
-/**
- * It gets the created font.
- */
+/// Public
+// Gets the created font
 TTF_Font *Font::getFont() const
 {
-	return _font;
+  return _font;
 }
 
-/**
- * It gets the renderer of the font.
- */
+/// Public
+// Gets the renderer for this font
 SDL_Renderer *Font::getRenderer() const
 {
-	return _renderer;
+  return _renderer;
 }
 
-/**
- * It frees memory of the font.
- */
+/// Public
+// Closes the font from the TTF library and frees it
 void Font::liberate()
 {
-	TTF_CloseFont(_font);
-	_font = nullptr;
+  TTF_CloseFont(_font);
+  _font = nullptr;
 }
 
-/**
- * It loads the font from the filename.
- */
+/// Public
+// Load the font from a file path
 void Font::load(string filename)
 {
-	_font = TTF_OpenFont(filename.c_str(), _size);
-	if (_font == nullptr)
-	{
-		throw "Error loading font";
-	}
+  _font = TTF_OpenFont(filename.c_str(), _size);
+  if (_font == nullptr)
+  {
+    throw new FileNotFoundError(filename);
+  }
 }

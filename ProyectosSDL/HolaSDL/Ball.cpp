@@ -1,103 +1,130 @@
-#include "GameState.h"
 #include "Ball.h"
-#include "Texture.h"
 #include "Game.h"
-#include <Box2D\Box2D.h>
+#include "Block.h"
+#include "GameState.h"
 
-/**
- * Constructors.
- */
-Ball::Ball()
-	: _position(), _width(), _height(), _velocity(), _texture(), _game(nullptr), _radius(((double)_width) / 2) {}
+/// Public
+// Constructor
+Ball::Ball(float32 x, float32 y, float32 radius, float32 speed, Texture *texture)
+    : ArkanoidBody(x, y, radius * 2, radius * 2, texture), _speed(speed)
+{
+  setBody(x, y, radius, *Game::getWorld());
+}
 
-Ball::Ball(Vector2D position, int width, int heigth, Texture *texture, GameState *game)
-	: _position(position), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
+/// Public Virtual
+// Updates the update behaviour
+void Ball::update() {}
 
-Ball::Ball(double x, double y, int width, int heigth, Texture *texture, GameState *game)
-	: _position(x, y), _width(width), _height(heigth), _velocity(), _texture(texture), _game(game), _radius(((double)width) / 2) {}
+/// Public Virtual
+// Defines behaviour after every update cycle
+void Ball::afterUpdate()
+{
+  // Check if the speed is not the maximum speed
+  float32 speed = getVelocity().LengthSquared();
+  if (speed != _speed)
+  {
+    // Set the normalized speed to the maximum one
+    b2Vec2 v = getVelocity();
+    v.Normalize();
+    v *= _speed;
+    setVelocity(v);
+  }
+  else if (speed < b2_epsilon)
+  {
+	  setVelocity(b2Vec2{0.0f,speed});
+  }
+}
 
-/**
- * Ball's texture is renderized in the correct position.
- */
+/// Public Virtual
+// Defines the render behaviour
 void Ball::render() const
 {
-	_texture->render(SDL_Rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height});
+  // Gets the position, size, and diameter, and renders
+  auto pos = _body->GetPosition();
+  auto size = getSize();
+  auto diameter = (int)_fixture->GetShape()->m_radius * 2;
+  _texture->renderFrame({(int)pos.x - (int)size.x / 2,
+                         (int)pos.y - (int)size.y / 2,
+                         diameter, diameter},
+                        0, 0);
 }
 
-/**
- * Update the position and detects the collisions.
- */
-void Ball::update()
+/// Public Virtual
+// Defines the end contact behaviour
+void Ball::onEndContact(RigidBody *rigidBody)
 {
-	_position = _position + _velocity / FRAMERATE;
-	Vector2D collision;
-	Vector2D auxVelocity = _velocity / FRAMERATE;
-	double length = auxVelocity.modulus();
-	Vector2D reflection;
-	Vector2D centerPosition;
-	// If collides reflect the ball to another position, if it still collides
-	// repeat until it move enought or there is no collision.
-	while (auxVelocity.modulus() != 0.0 && _game->collides(this, collision, reflection))
-	{
-		auxVelocity = (position() - collision).modulus() / length * auxVelocity.reflect(reflection).normalize();
-		setPosition(collision + auxVelocity + reflection.normalize() * _radius);
-		_velocity = auxVelocity.normalize() * _velocity.modulus();
-	}
+  // Casts the rigidBody to a block, since balls can only collide with blocks,
+  // walls, and other balls
+  Block *block = dynamic_cast<Block *>(rigidBody);
+  // If it's a block, invoke the contact call
+  if (block)
+    block->contact();
 }
 
-/**
- * Get the radius of the ball.
- */
-double Ball::getRadius() const
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Ball::deserialize(std::istream &out)
 {
-	return _radius;
+  _texture = readTexture(out);
+  float32 posx, posy, radius, velx, vely, speed;
+  out >> posx >> posy >> radius >> velx >> vely >> speed;
+  setBody(posx, posy, radius, *Game::getWorld());
+  setSpeed(speed);
+  setPosition(posx, posy);
+  setVelocity(b2Vec2{velx, vely});
+  _size.Set(radius * 2, radius * 2);
+  return out;
 }
 
-/**
- * Get the center's position.
- */
-Vector2D Ball::position() const
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Ball::serialize(std::ostream &is) const
 {
-	return Vector2D(_width / 2 + _position.getX(), _height / 2 + _position.getY());
+  return is << "Ball " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
+            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Ball::setPosition(const double x, const double y)
+/// Public Virtual
+// Defines behaviour when the instance is to be destroyed
+void Ball::destroy()
 {
-	Vector2D pos(x, y);
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
+  // Call inherited destroy method from GameObject
+  GameObject::destroy();
+  Game::getGameManager()->deleteBall();
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Ball::setPosition(const Vector2D pos)
+/// Private
+// setBody method, creates a dynamic circle shape with Box2D's API
+void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world)
 {
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
-}
+  // Create the body definition
+  b2BodyDef bodyDef;
+  bodyDef.allowSleep = false;
+  bodyDef.type = b2_dynamicBody;
+  bodyDef.bullet = true;
+  bodyDef.fixedRotation = true;
+  bodyDef.position.x = x;
+  bodyDef.position.y = y;
+  bodyDef.linearDamping = 0.0f;
+  bodyDef.userData = static_cast<RigidBody *>(this);
 
-/**
- * Get the vector of the velocity.
- */
-Vector2D Ball::velocity() const
-{
-	return _velocity;
-}
+  // Create the circle shape
+  b2CircleShape shape;
+  shape.m_p.Set(0.0f, 0.0f);
+  shape.m_radius = radius;
 
-/**
- * Set the vector of the velocity.
- */
-Vector2D Ball::setVelocity(const double x, const double y)
-{
-	_velocity.setX(x);
-	_velocity.setY(y);
-	return _velocity;
+  // Create the fixture definition
+  b2FixtureDef fixtureDef;
+  fixtureDef.density = 0.0f;
+  fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0010;
+  fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'1111;
+  fixtureDef.friction = 0.0f;
+  fixtureDef.restitution = 1.0f;
+  fixtureDef.shape = &shape;
+
+  // Add the body definition to the world
+  _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
+  setUp(shape, fixtureDef);
 }

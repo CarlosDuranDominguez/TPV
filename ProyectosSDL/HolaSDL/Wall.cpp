@@ -1,92 +1,75 @@
 #include "Wall.h"
+#include "Game.h"
 
-/**
- * Contructors.
- */
-Wall::Wall(float x, float y, int width, int height, Texture *texture)
-	: _position(x, y), _width(width), _height(height), _texture(texture){};
+/// Public
+/// Constructor
+Wall::Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture)
+    : ArkanoidBody(x, y, width, height, texture)
+{
+  setBody(x, y, width, height, *Game::getWorld());
+}
 
-Wall::Wall(Vector2D position, int width, int height, Texture *texture)
-	: _position(position), _width(width), _height(height), _texture(texture){};
+/// Public Virtual
+/// Updates the update behaviour
+void Wall::update() {}
 
-/**
- * Destructor.
- */
-Wall::~Wall(){};
-
-/**
- * It renders the wall in the correct position.
- */
+/// Public Virtual
+/// Defines the render behaviour
 void Wall::render() const
 {
-	_texture->render(SDL_Rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height});
-};
+  b2Vec2 pos = _body->GetPosition();
+  _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, 0, 0);
+}
 
-/**
- * Detects if the circular object collides with the Wall and return the position of the collision and the reflection vector(normal vector of the side).
- */
-bool Wall::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
+/// Public Virtual
+/// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Wall::deserialize(std::istream &out)
 {
-	if (object->position().isIn(
-			_position.getX() - object->getRadius(),
-			_position.getY(),
-			_position.getX() + _width + object->getRadius(),
-			_position.getY() + _height) ||
-		object->position().isIn(
-			_position.getX(),
-			_position.getY() - object->getRadius(),
-			_position.getX() + _width,
-			_position.getY() + _height + object->getRadius()) ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY())).modulus() < object->getRadius())
-	{
-		if ((object->position().getY() - _position.getY()) * (_width) - (object->position().getX() - _position.getX()) * (_height) < 0.0)
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				reflection = Vector2D(0, -1);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(0, object->getRadius()),
-					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
-			}
-			else
-			{
-				reflection = Vector2D(1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(object->getRadius(), 0),
-					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
-			}
-		}
-		else
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				reflection = Vector2D(-1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(object->getRadius(), 0),
-					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
-			}
-			else
-			{
-				reflection = Vector2D(0, 1);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(0, object->getRadius()),
-					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
-			}
-		}
+  _texture = readTexture(out);
+  float32 posx, posy, sizex, sizey;
+  out >> posx >> posy >> sizex >> sizey;
+  setBody(posx, posy, sizex, sizey, *Game::getWorld());
+  setPosition(posx, posy);
+  _size.Set(sizex, sizey);
+  return out;
+}
 
-		return true;
-	}
+/// Public Virtual
+/// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Wall::serialize(std::ostream &is) const
+{
+  return is << "Wall " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y;
+}
 
-	return false;
+/// Private
+// setBody method, creates a static polygon shape with Box2D's API
+void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
+{
+  // Create the body definition
+  b2BodyDef bodyDef;
+  bodyDef.type = b2_staticBody;
+  bodyDef.fixedRotation = true;
+  bodyDef.position.x = x;
+  bodyDef.position.y = y;
+  bodyDef.linearDamping = 0.0f;
+  bodyDef.userData = static_cast<RigidBody *>(this);
+
+  // Create a polygon shape
+  b2PolygonShape shape;
+  shape.SetAsBox(width / 2.0f, height / 2.0f);
+
+  // Create the fixture definition
+  b2FixtureDef fixtureDef;
+  fixtureDef.density = 1.0f;
+  fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0100;
+  fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'0010;
+  fixtureDef.friction = 0.0f;
+  fixtureDef.restitution = 1.0f;
+  fixtureDef.shape = &shape;
+
+  // Add the body definition to world
+  _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
+  setUp(shape, fixtureDef);
 }

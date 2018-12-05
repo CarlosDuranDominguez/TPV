@@ -1,21 +1,19 @@
 #pragma once
 
 #include "checkML.h"
-#include "Vector2D.h"
-#include "Texture.h"
-#include "Ball.h"
+#include "ArkanoidBody.h"
 
-class Wall
+class Wall : public ArkanoidBody
 {
-  private:
-	Vector2D _position;
-	int _width, _height;
-	Texture *_texture;
+private:
+  void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
 
-  public:
-	Wall(float x, float y, int width, int height, Texture *texture);
-	Wall(Vector2D position, int width, int height, Texture *texture);
-	~Wall();
-	void render() const;
-	bool collide(const Ball *, Vector2D &, Vector2D &);
+public:
+  Wall(){};
+  Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture);
+  ~Wall(){};
+  virtual void update();
+  virtual void render() const;
+  virtual std::istream &deserialize(std::istream &out);
+  virtual std::ostream &serialize(std::ostream &is) const;
 };

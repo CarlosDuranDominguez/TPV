@@ -1,34 +1,24 @@
 #pragma once
-
-#include "checkML.h"
-#include "Texture.h"
-#include "Timer.h"
-#include "Ball.h"
+#include "State.h"
 #include "Paddle.h"
-#include "BlocksMap.h"
-#include "Wall.h"
 
-class Game;
-
-class GameState
+class GameState : public State
 {
-  private:
-	SDL_Renderer *_renderer = nullptr;
-	bool _exit = false, _gameover = false, _win = false;
-	Game *_game;
-	Timer *_timer;
-	Ball *_ball = nullptr;
-	Paddle *_paddle = nullptr;
-	BlocksMap *_blocksmap = nullptr;
-	Wall *_upWall = nullptr, *_rightWall = nullptr, *_leftWall = nullptr;
-	void _render() const;
-	void _update();
-	void _handleevents();
+protected:
+  virtual void _end();
+  Paddle *_paddle;
+  void _reset();
 
-  public:
-	GameState(Game *game, SDL_Renderer *renderer);
-	~GameState();
-	void init();
-	void run();
-	bool collides(const Ball *, Vector2D &, Vector2D &) const;
+private:
+  void _destroyAll();
+
+public:
+  GameState(Game *game, SDL_Renderer *renderer)
+      : State(game, renderer){};
+  virtual ~GameState(){};
+  virtual void reset();
+  virtual void init();
+  void loadLevel(const string &path);
+  void saveLevel(const string &path);
+  Paddle *paddle() { return _paddle; };
 };

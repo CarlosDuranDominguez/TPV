@@ -1,201 +1,276 @@
 #include "Paddle.h"
 #include "Game.h"
-#include "SDL.h"
+#include "Bullet.h"
+#include <algorithm>
 
-/**
- * Constructors.
- */
-Paddle::Paddle(Game *game, Vector2D position, int width, int heigth, double speed, Texture *texture)
-	: _game(game), _position(position), _width(width), _height(heigth), _velocity(), _speed(), _texture(texture),
-	  _leftMovement(false), _rightMovement(false){};
-
-Paddle::Paddle(Game *game, double x, double y, int width, int heigth, double speed, Texture *texture)
-	: _game(game), _position(x, y), _width(width), _height(heigth), _velocity(), _speed(speed), _texture(texture),
-	  _leftMovement(false), _rightMovement(false){};
-
-/**
- * It renders the paddle in the correct position.
- */
-void Paddle::render() const
+/// Public
+/// Constructor
+Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, ACTIONS action, Texture *texture)
+    : ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
+      _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true), _actionType(action)
 {
-	_texture->render(SDL_Rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height});
-};
+  setAction(action);
+  setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
+}
 
-/**
- * Update the position of the paddle.
- */
+/// Public
+// Destructor
+Paddle::~Paddle()
+{
+  for (auto joint : _joints)
+  {
+    delete joint;
+  }
+  _joints.clear();
+}
+
+/// Public Virtual
+// Defines the update behaviour for this instance
 void Paddle::update()
 {
-	if (_velocity.getX() != 0)
-	{
-		_position = _position + _velocity * FRAMERATE;
+  for (auto joint : _joints)
+  {
+    b2Vec2 pos = getPosition() + joint->_distance;
+    joint->_ball->setPosition(pos.x, pos.y);
+  }
+}
 
-		int wall_width = _game->getTextures()[TOPSIDE]->getH() * WIN_WIDTH / _game->getTextures()[TOPSIDE]->getW();
-		double x = _position.getX();
-		if (x < wall_width)
-			_position = Vector2D(wall_width, _position.getY());
-		else if (x > WIN_WIDTH - wall_width - _width)
-			_position = Vector2D(WIN_WIDTH - wall_width - _width, _position.getY());
-	}
-};
+/// Public Virtual
+// Defines the after update behaviour for this instance
+void Paddle::afterUpdate()
+{
+  // Get position
+  b2Vec2 pos = _body->GetPosition();
 
-/**
- * It moves the paddle acording with the user's input.
- */
+  // If the paddle is in the walls, move it inside the area
+  if (pos.x - _size.x / 2.0f < _leftAnchor)
+  {
+    setPosition(_leftAnchor + _size.x / 2.0f, pos.y);
+  }
+  else if (pos.x + _size.x / 2.0f > _rightAnchor)
+  {
+    setPosition(_rightAnchor - _size.x / 2.0f, pos.y);
+  }
+}
+
+/// Public Virtual
+// Defines the render behaviour
+void Paddle::render() const
+{
+  b2Vec2 pos = _body->GetPosition();
+  _texture->render({(int)pos.x - (int)_size.x / 2, (int)pos.y - (int)_size.y / 2, (int)_size.x, (int)_size.y});
+}
+
+/// Publc Virtual
+// Defines the event handler behaviour
 void Paddle::handleEvents(SDL_Event event)
 {
-	switch (event.type)
-	{
-	case SDL_KEYDOWN:
-		switch (event.key.keysym.sym)
-		{
-		case SDLK_RIGHT:
-			_rightMovement = true;
-			break;
-		case SDLK_LEFT:
-			_leftMovement = true;
-			break;
-		}
-		break;
-	case SDL_KEYUP:
-		switch (event.key.keysym.sym)
-		{
-		case SDLK_RIGHT:
-			_rightMovement = false;
-			break;
-		case SDLK_LEFT:
-			_leftMovement = false;
-			break;
-		}
-	}
-	double x = (_rightMovement ? 1 : 0) + (_leftMovement ? -1 : 0);
-	double y = 0;
-	_velocity = Vector2D(x, y);
+  switch (event.type)
+  {
+  // If it's a key press
+  case SDL_KEYDOWN:
+    switch (event.key.keysym.sym)
+    {
+    // If right arrow was pressed, set rightMovement to true
+    case SDLK_RIGHT:
+      _rightMovement = true;
+      break;
+    // If left arrow was pressed, set leftMovement to true
+    case SDLK_LEFT:
+      _leftMovement = true;
+      break;
+    // If space bar was pressed, call _action()
+    case SDLK_SPACE:
+      State::current->addEvent(_action);
+      break;
+    }
+    break;
+  // If it's a key leave
+  case SDL_KEYUP:
+    switch (event.key.keysym.sym)
+    {
+    // If the right arrow was unpressed, set rightMovement to false
+    case SDLK_RIGHT:
+      _rightMovement = false;
+      break;
+    // If the left arrow was unpressed, set leftMovement to false
+    case SDLK_LEFT:
+      _leftMovement = false;
+      break;
+    }
+  }
+
+  // Set the velocity
+  setVelocity(b2Vec2{
+      (_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0),
+      0.0f});
 }
 
-/**
- * Get the center's position.
- */
-Vector2D Paddle::position() const
+/// Public Virtual
+// Defines behaviour when the instance starts to have contact with an element
+void Paddle::onBeginContact(RigidBody *rigigbody)
 {
-	double x = ((double)_width) / 2 + _position.getX();
-	double y = ((double)_height) / 2 + _position.getY();
-	return Vector2D(x, y);
+  Ball *ball;
+  if (_sticky && (ball = dynamic_cast<Ball *>(rigigbody)))
+  {
+    State::current->addEvent([this, ball]() { jointTo(ball); });
+  }
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Paddle::setPosition(const double x, const double y)
+/// Public Virtual
+// Defines the setWidth behaviour
+void Paddle::setWidth(float32 width)
 {
-	Vector2D pos(x, y);
-	return setPosition(pos);
+  // Gets the position and linear velocity, then destroy the fixture and the body
+  b2Vec2 pos = _body->GetPosition();
+  b2Vec2 vel = _body->GetLinearVelocity();
+  _body->DestroyFixture(_fixture);
+  Game::getWorld()->DestroyBody(_body);
+
+  // Sets the new width and creates a new body and velocity
+  _size.x = width;
+  setBody(pos.x, pos.y, width, _size.y, _leftAnchor - _rightAnchor,
+          (_rightAnchor - _leftAnchor) / 2.0f, *Game::getWorld());
+  setVelocity(vel);
 }
 
-/**
- * Set the center's position.
- */
-Vector2D Paddle::setPosition(const Vector2D pos)
+/// Public
+// Creates a joint to a ball (for the sticky paddle)
+void Paddle::jointTo(Ball *ball)
 {
-	_position = pos - Vector2D(_width / 2, _height / 2);
-	return pos;
+  if (!any_of(_joints.begin(), _joints.end(), [ball](ArkanoidJoint *joint) { return joint->_ball == ball; }))
+  {
+
+    b2Vec2 a = ball->getPosition() - getPosition();
+
+    _joints.push_back(new ArkanoidJoint(ball, a));
+    ball->getBody()->SetActive(false);
+  }
 }
 
-/**
- * Get the vector of the velocity.
- */
-Vector2D Paddle::velocity() const
+/// Public
+// Splits from a ball, releasing it to a direction away from the paddle's center
+void Paddle::splitFromBalls()
 {
-	return _velocity;
+  for (auto joint : _joints)
+  {
+    joint->_ball->getBody()->SetActive(true);
+    joint->_distance *= (1.0f / (joint->_distance.LengthSquared() * joint->_ball->getSpeed()));
+    joint->_ball->setVelocity(joint->_distance);
+    delete joint;
+  }
+  _joints.clear();
 }
 
-/**
- * Set the vector of the velocity.
- */
-Vector2D Paddle::setVelocity(const double x, const double y)
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Paddle::deserialize(std::istream &out)
 {
-	_velocity.setX(x);
-	_velocity.setY(y);
-	return _velocity;
+  _texture = readTexture(out);
+  float32 posx, posy, sizex, sizey;
+  int action;
+  out >> posx >> posy >> sizex >> sizey >> _speed >> action;
+  setBody(posx, posy, sizex, sizey, ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+          (ArkanoidSettings::sceneWidth) / 2 - ArkanoidSettings::wallWidth, *Game::getWorld());
+  setPosition(posx, posy);
+  _size.Set(sizex, sizey);
+  _leftAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth;
+  _rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
+  _leftMovement = false;
+  _rightMovement = false;
+  _actionType = (ACTIONS)action;
+  setAction(_actionType);
+  return out;
 }
 
-/**
- * Reset the paddle's velocity and movement states.
- */
-void Paddle::reset()
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Paddle::serialize(std::ostream &is) const
 {
-	setVelocity(0, 0);
-	_rightMovement = false;
-	_leftMovement = false;
+  return is << "Paddle " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
+            << _speed << _actionType;
 }
 
-/**
- * Detects if the circular object collides with the paddle and return the position of the collision and the reflection vector(normal vector of the side).
- * If the collision happends int the top the reflection vector depends on the distance between the centers.
- */
-bool Paddle::collide(const Ball *object, Vector2D &collisionPosition, Vector2D &reflection)
+/// Private
+// setBody method, creates a kinematic chain shape with Box2D's API
+void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, b2World &world)
 {
-	if (object->position().isIn(
-			_position.getX() - object->getRadius(),
-			_position.getY(),
-			_position.getX() + _width + object->getRadius(),
-			_position.getY() + _height) ||
-		object->position().isIn(
-			_position.getX(),
-			_position.getY() - object->getRadius(),
-			_position.getX() + _width,
-			_position.getY() + _height + object->getRadius()) ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY() + _height)).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX() + _width, _position.getY())).modulus() < object->getRadius() ||
-		(object->position() - Vector2D(_position.getX(), _position.getY())).modulus() < object->getRadius())
-	{
-		if ((object->position().getY() - _position.getY()) * (_width) - (object->position().getX() - _position.getX()) * (_height) < 0.0)
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(0, object->getRadius()),
-					object->position() + Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(_width, 0));
-				reflection = Vector2D((object->position().getX() - position().getX()) / _width, -1);
-				reflection.normalize();
-			}
-			else
-			{
-				reflection = Vector2D(1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(object->getRadius(), 0),
-					object->position() - Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(_width, 0), _position + Vector2D(_width, _height));
-			}
-		}
-		else
-		{
-			if ((object->position().getY() - _position.getY() - _height) * (_width) - (object->position().getX() - _position.getX()) * (-_height) < 0.0)
-			{
-				reflection = Vector2D(-1, 0);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() + Vector2D(object->getRadius(), 0),
-					object->position() + Vector2D(object->getRadius(), 0) + object->velocity(),
-					_position + Vector2D(0, 0), _position + Vector2D(0, _height));
-			}
-			else
-			{
-				reflection = Vector2D(0, 1);
-				collisionPosition = Vector2D::cutPoint(
-					object->position() - Vector2D(0, object->getRadius()),
-					object->position() - Vector2D(0, object->getRadius()) + object->velocity(),
-					_position + Vector2D(0, _height), _position + Vector2D(_width, _height));
-			}
-		}
+  // Create the body definition
+  b2BodyDef bodyDef;
+  bodyDef.type = b2_kinematicBody;
+  bodyDef.fixedRotation = true;
+  bodyDef.position.x = x;
+  bodyDef.position.y = y;
+  bodyDef.linearDamping = 0.0f;
+  bodyDef.userData = static_cast<RigidBody *>(this);
 
-		return true;
-	}
+  // Create an array of 2D vectors
+  b2Vec2 vs[6];
+  vs[0].Set(-width / 2.0f, height / 2.0f);
+  vs[1].Set(-width * 3.0f / 8.0f, -height / 4.0f);
+  vs[2].Set(-width / 8.0f, -height / 2.0f);
+  vs[3].Set(width / 8.0f, -height / 2.0f);
+  vs[4].Set(width * 3.0f / 8.0f, -height / 4.0f);
+  vs[5].Set(width / 2.0f, height / 2.0f);
 
-	return false;
+  // Create a chain shape and set the array of vectors
+  b2ChainShape shape;
+  shape.CreateChain(vs, 6);
+
+  // Create the fixture definition
+  b2FixtureDef fixtureDef;
+  fixtureDef.density = 1000000.0f;
+  fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
+  fixtureDef.filter.maskBits = 0b0000'0000'0000'0011'0010;
+  fixtureDef.friction = 0.0f;
+  fixtureDef.restitution = 1.0f;
+  fixtureDef.shape = &shape;
+
+  // Add the body definition to world
+  _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
+  setUp(shape, fixtureDef);
 }
+
+/// Public
+// Defines the setWidth behaviour
+void Paddle::setAction(ACTIONS action)
+{
+  _actionType = action;
+  // Set the proper action.
+  switch (action)
+  {
+  case NONE:
+    splitFromBalls();
+    setSticky(false);
+    _action = []() {};
+    break;
+  case BEGIN:
+    splitFromBalls();
+    setSticky(true);
+    _action = [this]() {splitFromBalls(); setSticky(false); };
+    break;
+  case STICKY:
+    setSticky(true);
+    _action = [this]() { splitFromBalls(); };
+    break;
+  case LASER:
+    splitFromBalls();
+    setSticky(false);
+    _action = [this]() {
+      /*Create Bullet*/
+      Bullet *bullet = new Bullet(getPosition().x, getPosition().y, 10.0f, 1000.0f, Game::current->getTextures()[BALLBLACK]);
+      State::current->add(*bullet);
+      bullet->setVelocity(b2Vec2{0, -1000.0f});
+    };
+    break;
+  default:
+    break;
+  }
+}
+
+Paddle::ArkanoidJoint::ArkanoidJoint(Ball *ball, b2Vec2 &distance)
+    : _ball(ball), _distance(distance) {}
+
+Paddle::ArkanoidJoint::~ArkanoidJoint(){};

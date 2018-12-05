@@ -1,95 +1,78 @@
 #include "Text.h"
 
-/**
- * Constructors.
- */
-Text::Text(Font *font, float x, float y, int width, int height, const SDL_Color &color, const string &text)
-	: _font(font), _position(x, y), _width(width), _height(height), _color(color), _text(text)
+/// Public
+// Constructor
+Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height, const SDL_Color &color, const string &text)
+    : _font(font), GameObject(x, y, width, height), _color(color), _text(text)
 {
-	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
-	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
-	_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
-	SDL_FreeSurface(textSurface);
-}
 
-Text::Text(Font *font, const Vector2D &position, int width, int height, const SDL_Color &color, const string &text)
-	: _font(font), _position(position), _width(width), _height(height), _color(color), _text(text)
-{
-	TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
-	SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
-	_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
-	SDL_FreeSurface(textSurface);
+  TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
+  SDL_Surface *textSurface = TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
+  SDL_Texture *_textTexture = SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
+  _texture = new Texture(_textTexture, font->getRenderer(), _width, _height, _width, _height, 1, 1);
+  SDL_FreeSurface(textSurface);
 }
-
-/**
- * Destructor.
- */
+/// Public
+// Destructor
 Text::~Text()
 {
-	SDL_DestroyTexture(_textTexture);
+  delete _texture;
 }
 
-/**
- * It changes the text by newText.
- */
+/// Public
+// Sets the text for this instance
 void Text::setText(const string newText)
 {
-	SDL_DestroyTexture(_textTexture);
-	TTF_SizeText(_font->getFont(), newText.c_str(), &_width, &_height);
-	SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), newText.c_str(), _color);
-	_textTexture = SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface);
-	SDL_FreeSurface(textSurface);
+  _text = newText;
+  TTF_SizeText(_font->getFont(), newText.c_str(), &_width, &_height);
+  SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), newText.c_str(), _color);
+  _texture->setTexture(SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface));
+  SDL_FreeSurface(textSurface);
 }
 
-/**
- * It gets the rect of the text.
- */
+/// Public
+// Gets the text box
 SDL_Rect Text::getRect() const
 {
-	return {
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height};
+  return {
+      (int)_position.x,
+      (int)_position.y,
+      _width,
+      _height};
 }
 
-/**
- * It changes the position of the text.
- */
-Vector2D Text::setPosition(const Vector2D &newPosition)
-{
-	return _position = newPosition;
-}
-
-/**
- * It changes the position of the text.
- */
-Vector2D Text::setPosition(double x, double y)
-{
-	return _position = Vector2D(x, y);
-}
-
-/**
- * It changes the color of the text.
- */
+/// Public
+// Set the text color
 SDL_Color Text::setColor(const SDL_Color &color)
 {
-	SDL_DestroyTexture(_textTexture);
-	SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), _text.c_str(), color);
-	_textTexture = SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface);
-	SDL_FreeSurface(textSurface);
-	return this->_color = color;
+  SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), _text.c_str(), color);
+  _texture->setTexture(SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface));
+  SDL_FreeSurface(textSurface);
+  return this->_color = color;
 }
 
-/**
- * It renders the text in the corrent position.
- */
+/// Public Virtual
+// Defines the render behaviour
 void Text::render() const
 {
-	SDL_Rect rect{
-		(int)_position.getX(),
-		(int)_position.getY(),
-		_width,
-		_height};
-	SDL_RenderCopy(_font->getRenderer(), _textTexture, nullptr, &rect);
+  SDL_Rect rect{
+      (int)_position.x,
+      (int)_position.y,
+      _width,
+      _height};
+  SDL_RenderCopy(_font->getRenderer(), _texture->getTexture(), nullptr, &rect);
+}
+
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Text::deserialize(std::istream &out)
+{
+  return out;
+}
+
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Text::serialize(std::ostream &is) const
+{
+  return is;
 }

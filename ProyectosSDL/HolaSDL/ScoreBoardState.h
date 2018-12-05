@@ -3,23 +3,17 @@
 #include "checkML.h"
 #include "ScoreBoard.h"
 #include "Button.h"
+#include "State.h"
 
 class Game;
 
-class ScoreBoardState
+class ScoreBoardState : public State
 {
-  private:
-	ScoreBoard *_scoreboard;
-	Button *_button;
-	Game *_game;
-	SDL_Renderer *_renderer;
-	bool _exit = false;
-	void _render();
-	void _handleEvents();
+private:
+  ScoreBoard *_scoreboard;
 
-  public:
-	ScoreBoardState(Game *game, SDL_Renderer *renderer);
-	~ScoreBoardState();
-	void run();
-	void pushNewFinishGame(const string &name, int score, int time);
+public:
+  ScoreBoardState(Game *game, SDL_Renderer *renderer);
+  ~ScoreBoardState(){};
+  virtual void init();
 };

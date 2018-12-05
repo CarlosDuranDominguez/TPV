@@ -1,170 +1,80 @@
 #include "ScoreBoard.h"
 #include <fstream>
 #include <iostream>
+#include "Game.h"
 
-/**
- * Constructor.
- */
-ScoreBoard::ScoreBoard(Font *font, double x, double y, int width, int height, SDL_Color color, string filename)
-	: _font(font), _position(x, y), _width(width), _height(height), _color(color), _filename(filename)
+/// Public
+// Constructor
+ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 height, SDL_Color color)
+    : GameObject(x, y, width, height), _font(font), _color(color)
 {
-	fstream file;
-	file.open(filename, fstream::in | fstream::out);
-	int numberOfGames;
-	if (!file.eof())
-	{
-		file >> numberOfGames;
-		if (numberOfGames >= 0)
-		{
-			int i = 0;
-			PlayerGame tmp;
-			_allGames.reserve(numberOfGames);
-			while (!file.eof() && i < numberOfGames)
-			{
-				file >> tmp;
-				_allGames.push_back(tmp);
-				i++;
-			}
-			file.close();
-			if (i == numberOfGames)
-			{
-				for (unsigned int j = 0; j < _allGames.size() && j < 10; j++)
-				{
-					string aux = to_string(j + 1) + "\u00ba " + _allGames[j].name + " " + to_string(_allGames[j].score) + " " + to_string(_allGames[j].time);
-					_texts[j] = new Text(font, _position + Vector2D(0, height) * j, width, height, color, aux);
-				}
-				for (unsigned int j = _allGames.size(); j < 10; j++)
-				{
-					string aux = to_string(j + 1) + "\u00ba ------ ------ ------";
-					_texts[j] = new Text(font, _position + Vector2D(0, height) * j, width, height, color, aux);
-				}
-				return;
-			}
-		}
-	}
-	throw "Error loading scoreboard";
+  vector<PlayerGame *> scores = Game::getGameManager()->getScores();
+  int j = 0;
+  for (auto score : scores)
+  {
+    if (j == 10)
+      break;
+    _texts[j] = new Text(_font, _position.x, _position.y + getSize().y * j, getSize().x, getSize().y, _color,
+                         to_string(j + 1) + "\u00ba " + score->name + " " + to_string(score->score) + " " + to_string(score->time));
+    j++;
+  }
+  for (unsigned int j = scores.size(); j < 10; j++)
+  {
+    string aux = to_string(j + 1) + "\u00ba ------ ------ ------";
+    _texts[j] = new Text(_font, _position.x, _position.y + getSize().y * j, getSize().x, getSize().y, _color, aux);
+  }
 }
 
-/**
- * Destructor.
- */
+/// Public
+// Destructor
 ScoreBoard::~ScoreBoard()
 {
-	fstream file;
-	file.open(_filename, fstream::out);
-	file << _allGames.size() << '\n';
-	for each(PlayerGame var in _allGames)
-	{
-		file << var << '\n';
-	}
-	file.close();
-	for (unsigned int j = 0; j < 10; j++)
-	{
-		delete _texts[j];
-	}
+  for (auto text : _texts)
+  {
+    delete text;
+  }
 }
 
-/**
- * The comparing function depending on the player's name.
- */
-bool ScoreBoard::_comparename(const PlayerGame &game1, const PlayerGame &game2)
+/// Public
+// Creates the first ten games.
+void ScoreBoard::rewrite()
 {
-	return game1.name < game2.name;
+  vector<PlayerGame *> scores = Game::getGameManager()->getScores();
+  int j = 0;
+  for (auto score : scores)
+  {
+    if (j == 10)
+      break;
+    _texts[j]->setText(to_string(j + 1) + "\u00ba " + score->name + " " + to_string(score->score) + " " + to_string(score->time));
+    j++;
+  }
+  for (unsigned int j = scores.size(); j < 10; j++)
+  {
+    _texts[j]->setText(to_string(j + 1) + "\u00ba ------ ------ ------");
+  }
 }
 
-/**
- * The comparing function depending on the player's score.
- */
-bool ScoreBoard::_comparescore(const PlayerGame &game1, const PlayerGame &game2)
-{
-	return game1.score < game2.score;
-}
-
-/**
- * The comparing function depending on the player's time.
- */
-bool ScoreBoard::_comparetime(const PlayerGame &game1, const PlayerGame &game2)
-{
-	return game1.time > game2.time;
-}
-
-/**
- * It puts a new finish game.
- */
-void ScoreBoard::pushGame(const PlayerGame &newGame)
-{
-	_allGames.push_back(newGame);
-	sortByName();
-}
-
-/**
- * It sorts the scoreboard depending on the name.
- */
-void ScoreBoard::sortByName()
-{
-	sort(_allGames.begin(), _allGames.end(), _comparename);
-	_rewrite();
-}
-
-/**
- * It sorts the scoreboard depending on the score.
- */
-void ScoreBoard::sortByScore()
-{
-	sort(_allGames.begin(), _allGames.end(), _comparescore);
-	_rewrite();
-}
-
-/**
- * It sorts the scoreboard depending on the time.
- */
-void ScoreBoard::sortByTime()
-{
-	sort(_allGames.begin(), _allGames.end(), _comparetime);
-	_rewrite();
-}
-
-/**
- * It creates the first ten games.
- */
-void ScoreBoard::_rewrite()
-{
-	for (unsigned int j = 0; j < _allGames.size() && j < 10; j++)
-	{
-		string aux = to_string(j + 1) + "\u00ba " + _allGames[j].name + " " + to_string(_allGames[j].score) + " " + to_string(_allGames[j].time);
-		_texts[j]->setText(aux);
-		_texts[j]->setPosition(_position + Vector2D(0, _height) * j);
-	}
-	for (unsigned int j = _allGames.size(); j < 10; j++)
-	{
-		string aux = to_string(j + 1) + "\u00ba ------ ------ ------";
-		_texts[j]->setPosition(_position + Vector2D(0, _height) * j);
-	}
-}
-
-/**
- * It renders the first ten score's games.
- */
+/// Public Virtual
+// Defines the render behaviour
 void ScoreBoard::render() const
 {
-	for (unsigned int j = 0; j < 10; j++)
-	{
-		_texts[j]->render();
-	}
+  // Render the first 10 elements
+  for (unsigned int j = 0; j < 10; j++)
+  {
+    _texts[j]->render();
+  }
 }
 
-/**
- * It inserts the the PlayerGamer on a stream.
- */
-ostream &operator<<(ostream &os, const PlayerGame &v)
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &ScoreBoard::deserialize(std::istream &out)
 {
-	return os << v.name << ' ' << v.score << ' ' << v.time;
+  return out;
 }
 
-/**
- * It reads a Player game from the stream.
- */
-istream &operator>>(istream &os, PlayerGame &v)
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
+std::ostream &ScoreBoard::serialize(std::ostream &is) const
 {
-	return os >> v.name >> v.score >> v.time;
+  return is;
 }

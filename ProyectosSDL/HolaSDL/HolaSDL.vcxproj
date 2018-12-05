@@ -5,9 +5,17 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -22,7 +30,20 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -36,13 +57,31 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\ProyectosSDL.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ProyectosSDL.props" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\ProyectosSDL.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\ProyectosSDL.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
@@ -66,55 +105,100 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArkanoidBody.cpp" />
     <ClCompile Include="ArkanoidObject.cpp" />
+    <ClCompile Include="ArkanoidSettings.cpp" />
+    <ClCompile Include="Award.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="BlocksMap.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Counter.cpp" />
+    <ClCompile Include="DeadZone.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnlargenAward.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="LoadManager.cpp" />
+    <ClCompile Include="LaserAward.cpp" />
+    <ClCompile Include="LiveMarker.cpp" />
+    <ClCompile Include="MultiBallAward.cpp" />
+    <ClCompile Include="NextLevelAward.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="ScoreMarker.cpp" />
+    <ClCompile Include="ShortenAward.cpp" />
+    <ClCompile Include="State.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="ScoreBoardState.cpp" />
-    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="StickyAward.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
-    <ClCompile Include="Vector2D.cpp" />
+    <ClCompile Include="TopBoard.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArkanoidBody.h" />
     <ClInclude Include="ArkanoidObject.h" />
+    <ClInclude Include="ArkanoidError.h" />
+    <ClInclude Include="ArkanoidTimer.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="FileFormatError.h" />
+    <ClInclude Include="FileNotFoundError.h" />
+    <ClInclude Include="SDLError.h" />
+    <ClInclude Include="ArkanoidSettings.h" />
+    <ClInclude Include="Award.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="BlocksMap.h" />
     <ClInclude Include="Button.h" />
-    <ClInclude Include="Counter.h" />
+    <ClInclude Include="CollisionLogic.h" />
+    <ClInclude Include="Controllable.h" />
+    <ClInclude Include="DeadZone.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnlargenAward.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="LoadManager.h" />
-    <ClInclude Include="Menu.h" />
+    <ClInclude Include="LaserAward.h" />
+    <ClInclude Include="LiveMarker.h" />
+    <ClInclude Include="MultiBallAward.h" />
+    <ClInclude Include="NextLevelAward.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="ShortenAward.h" />
+    <ClInclude Include="State.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Scoremarker.h" />
     <ClInclude Include="ScoreBoardState.h" />
-    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="StickyAward.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ScoreBoard.h" />
-    <ClInclude Include="Vector2D.h" />
+    <ClInclude Include="TopBoard.h" />
+    <ClInclude Include="Updatable.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

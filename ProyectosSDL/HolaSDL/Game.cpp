@@ -1,95 +1,125 @@
 #include "Game.h"
-#include "LoadManager.h"
+#include "GameState.h"
+#include "MenuState.h"
+#include "ScoreBoardState.h"
+#include "SDLError.h"
 
-/**
- * Constructor.
- */
+GameManager *Game::_gamemanager = nullptr;
+b2World *Game::_world = nullptr;
+Game *Game::current = nullptr;
+
+/// Public
+// Constructor
 Game::Game()
-	: _window(nullptr), _renderer(nullptr)
+    : _window(nullptr), _renderer(nullptr)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	if (TTF_Init() < 0)
-	{
-		throw "Error loading the SDL font";
-	}
-	_window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
-	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-	if (_window == nullptr || _renderer == nullptr)
-		throw "Error loading the SDL window or renderer";
-	for (uint i = 0; i < NUMBER_TEXTURES; i++)
-	{
-		_textures[i] = new Texture(_renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
-	}
-	_fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
-	_fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
+  // Set up the Arkanoid settings for the window's width and height
+  ArkanoidSettings::setUp(WIN_WIDTH, WIN_HEIGHT);
+  current = this;
 
-	_game = new GameState(this, _renderer);
-	_menu = new MenuState(this, _renderer);
-	_scoreboard = new ScoreBoardState(this, _renderer);
-	_statemanager = new StateManager(_game, _menu, _scoreboard);
-	_gamemanager = new GameManager(this);
-	LoadManager::load(this, "../saves/level.save");
+  // Initialize SDL and TTF
+  if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    throw new SDLError("Error initializing SDL");
+  if (TTF_Init() < 0)
+    throw new SDLError("Error loading the SDL font");
+
+  // Create the window and renderer
+  _window = SDL_CreateWindow("Arkanoid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
+  _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
+
+  // If window or renderer is a null pointer, throw a SDLError
+  if (_window == nullptr || _renderer == nullptr)
+    throw new SDLError("Error loading the SDL window or renderer");
+
+  // Create the textures
+  for (uint i = 0; i < NUMBER_TEXTURES; i++)
+    _textures[i] = new Texture(_renderer, TEXTURES[i].path, TEXTURES[i].rows, TEXTURES[i].columns);
+
+  // Create the fonts
+  _fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
+  _fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
+
+  // Create the game manager and insert states
+  _gamemanager = new GameManager(this);
+  _states.insert(std::pair<States, State *>(States::GAME, new GameState(this, _renderer)));
+  _states.insert(std::pair<States, State *>(States::MENU, new MenuState(this, _renderer)));
+  _states.insert(std::pair<States, State *>(States::SCOREBOARD, new ScoreBoardState(this, _renderer)));
 }
 
-/**
- * Destructor.
- */
+/// Public
+// Destructor
 Game::~Game()
 {
-	delete _game;
-	delete _menu;
-	delete _scoreboard;
-	for (uint i = 0; i < NUMBER_TEXTURES; i++)
-	{
-		delete _textures[i];
-	}
-	delete _fonts[BIGFONT];
-	delete _fonts[MEDIUMFONT];
-	delete _gamemanager;
-	delete _statemanager;
-	SDL_DestroyRenderer(_renderer);
-	SDL_DestroyWindow(_window);
-	TTF_Quit();
-	SDL_Quit();
+  for (auto state : _states)
+  {
+    delete state.second;
+  }
+
+  for (uint i = 0; i < NUMBER_TEXTURES; i++)
+  {
+    delete _textures[i];
+  }
+  delete _fonts[BIGFONT];
+  delete _fonts[MEDIUMFONT];
+  delete _gamemanager;
+  SDL_DestroyRenderer(_renderer);
+  SDL_DestroyWindow(_window);
+  TTF_Quit();
+  SDL_Quit();
 }
 
-/**
- * It gets all the textures of the game.
- */
+/// Public
+// Get this game's textures
 Texture **Game::getTextures()
 {
-	return _textures;
+  return _textures;
 }
 
-/**
- * It gets all the fonts of the game.
- */
+/// Public
+// Get this game's fonts
 Font **Game::getFonts()
 {
-	return _fonts;
+  return _fonts;
 }
 
-/**
- * Execute the main loop.
- */
+/// Public
+// Run the game's event loop
 void Game::run()
 {
-	_statemanager->run();
+  // While it's not gameover (set when exit), run the event loop
+  while (_state != GAMEOVER)
+  {
+    State *cur = _states[_state];
+    cur->init();
+    cur->run();
+  }
 }
 
-/**
- * Change the state of the game(it is needed to exit from the current state).
- */
+/// Public
+// Change the current state
 void Game::changeState(const States &state)
 {
-	_statemanager->changeState(state);
+  _state = state;
+  State::current->end();
 }
 
-void Game::newScore(const string &name, int score, double time)
+/// Public
+// Gets the game's game manager
+GameManager *Game::getGameManager()
 {
-	_scoreboard->pushNewFinishGame(name, score, time);
+  return _gamemanager;
 }
-GameManager *Game::gameManager()
+
+/// Public
+// Gets the game's world
+b2World *Game::getWorld()
 {
-	return _gamemanager;
+  return _world;
+}
+
+/// Public
+// Sets this game's world
+void Game::setWorld(b2World &world)
+{
+  _world = &world;
 }

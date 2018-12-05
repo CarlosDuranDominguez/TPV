@@ -3,57 +3,50 @@
 #include "SDL.h"
 #include <Box2D/Box2D.h>
 #include "Texture.h"
+#include <list>
+#include <iterator>
 
-/*
- *Renderable interface
- */
-class Renderable {
-protected: 
-	Texture* _texture;
-public: 
-	Renderable(Texture* texture) :_texture(texture) {};
-	~Renderable() {};
-	virtual void render() const = 0;
-};
-
-/*
- *Updatable interface
- */
-class Updatable {
-public:
-	~Updatable() {};
-	virtual void update() = 0;
-};
-
-/*
- *Controllable interface
- */
-class Controllable {
-public:
-	~Controllable() {};
-	virtual void handleEvents(SDL_Event event) = 0;
-};
+const enum GAME_OBJECTS { block,
+                          wall,
+                          ball,
+                          paddle,
+                          button,
+                          award,
+                          counter };
+const string GAME_OBJECT_NAMES[]{"Block", "Wall", "Ball", "Paddle", "Button", "Award", "Counter"};
+const int GAME_OBJECT_COUNT = 7;
 
 /*
  *GameObject Abstract class
  */
-class GameObject {
+class GameObject
+{
 protected:
-	b2Vec2 _position;
-	b2Vec2 _size;
+  list<GameObject *>::iterator _id;
+  b2Vec2 _position;
+  b2Vec2 _size;
+
 public:
-	GameObject(double x, double y, double width, double height) : _position(x, y), _size(width, height) {};
-	~GameObject() {};
-	virtual std::ostream& toOutStream(std::ostream& out) const = 0;
-	virtual std::istream& fromInStream(std::istream& is) const = 0;
-	friend std::ostream& operator>>(std::ostream& out, const GameObject& object);
-	friend std::istream& operator<<(std::istream& out, const GameObject& object);
+  GameObject(){};
+  GameObject(float32 x, float32 y, float32 width, float32 height)
+      : _position(x, y), _size(width, height){};
+  virtual ~GameObject(){};
+  list<GameObject *>::iterator getId() const { return _id; };
+  list<GameObject *>::iterator setId(list<GameObject *>::iterator &id) { return _id = id; };
+  virtual void destroy();
+  virtual void render() const {};
+  virtual void update(){};
+  virtual void afterUpdate(){};
+  virtual void handleEvents(SDL_Event event){};
+  virtual b2Vec2 getPosition() const;
+  virtual void setPosition(float32 x, float32 y);
+  virtual b2Vec2 getSize() const;
+  virtual std::istream &deserialize(std::istream &out) = 0;
+  virtual std::ostream &serialize(std::ostream &is) const = 0;
+  friend std::istream &operator>>(std::istream &out, GameObject &object);
+  friend std::ostream &operator<<(std::ostream &out, const GameObject &object);
 };
 
-std::ostream& operator>>(std::ostream& out, const GameObject& object) {
-	return object.toOutStream(out);
-}
+std::istream &operator>>(std::istream &out, GameObject &object);
 
-std::istream& operator<<(std::istream& in, const GameObject& object) {
-	return object.fromInStream(in);
-}
+std::ostream &operator<<(std::ostream &in, const GameObject &object);

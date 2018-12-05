@@ -1,60 +1,38 @@
 #include "Timer.h"
 #include <math.h>
+#include "State.h"
 
-/**
- * Constructors.
- */
-Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
+/// Public
+// Constructor
+Timer::Timer(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
+    : Text(font, x, y, width, height, color, "")
 {
-	_text = new Text(font, x, y, width, height, color, "0");
-	time(&_firstTime);
-	time(&_currentTime);
-};
-
-Timer::Timer(Vector2D position, int width, int height, SDL_Color color, Font *font)
-{
-	_text = new Text(font, position, width, height, color, "0");
-	time(&_firstTime);
-	time(&_currentTime);
-};
-
-/**
- * Destructor.
- */
-Timer::~Timer()
-{
-	delete _text;
+  time = (int)State::current->getTime();
+  setText(to_string(time));
 }
 
-/**
- * It renders the timer text.
- */
-void Timer::render() const
-{
-	_text->setText(to_string((int)getTime()));
-	_text->render();
-}
-
-/**
- * It updates the current time.
- */
+/// Public Virtual
+// Updates the update behaviour
 void Timer::update()
 {
-	time(&_currentTime);
+  auto now = (int)State::current->getTime();
+  if (time != now)
+  {
+    time = now;
+    setText(to_string(time));
+  }
 }
 
-/**
- * It resets the timer to zero.
- */
-void Timer::reset()
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
+std::istream &Timer::deserialize(std::istream &out)
 {
-	time(&_firstTime);
+  return out;
 }
 
-/**
- * It gets the time since the timer was created or reseted.
- */
-double Timer::getTime() const
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
+std::ostream &Timer::serialize(std::ostream &is) const
 {
-	return difftime(_currentTime, _firstTime);
+  return is;
 }
