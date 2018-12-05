@@ -16,7 +16,7 @@ const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
 const uint NUMBER_TEXTURES = 44;
 const uint NUMBER_FONT_STYLES = 15;
-const double PADDLESPEED = 5;
+const float32 PADDLESPEED = 5;
 
 enum FontsStyles
 {
@@ -198,7 +198,7 @@ public:
   Texture **getTextures();
   Font **getFonts();
   void changeState(const States &state);
-  void newScore(const string &name, int score, double time);
+  void newScore(const string &name, int score, float32 time);
   void run();
   States getState() { return _state; };
   GameState *getGameState() { return dynamic_cast<GameState *>(_states[GAME]); }

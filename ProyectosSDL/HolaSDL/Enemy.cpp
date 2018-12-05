@@ -12,7 +12,7 @@ Enemy::Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpe
       _changeProbability(changeProbability), _timer(new b2Timer()), _animationTimer(new b2Timer()), _framerate(framerate), _frame(0)
 {
   setBody(x, y, width / 2.0f, *Game::getWorld());
-  float32 ra = rand() / (RAND_MAX + 1.) * M_PI * 2;
+  float32 ra = (float32)rand() / (RAND_MAX + 1.0f) * (float32)M_PI * 2.0f;
   setVelocity(b2Vec2{sin(ra) * _speed, cos(ra) * _speed});
   _timer->Reset();
   _animationTimer->Reset();
@@ -34,7 +34,7 @@ void Enemy::update()
   {
     if (rand() / (RAND_MAX + 1.) <= _changeProbability)
     {
-      float32 ra = rand() / (RAND_MAX + 1.) * M_PI * 2;
+      float32 ra = (float32)rand() / (RAND_MAX + 1.0f) * (float32)M_PI * 2.0f;
       setVelocity(b2Vec2{sin(ra) * _speed, cos(ra) * _speed});
     }
     _timer->Reset();

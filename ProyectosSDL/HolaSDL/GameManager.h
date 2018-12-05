@@ -23,8 +23,8 @@ public:
   GameManager(Game *game);
   ~GameManager();
   void finishLevel(float32 time);
-  int level();
-  void setLevel(int);
+  int getLevel() const;
+  void setLevel(int level);
   void reset();
   void setBlocks(int blocksLenght);
   void addBlock();

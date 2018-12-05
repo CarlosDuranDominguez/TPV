@@ -7,7 +7,7 @@
 Timer::Timer(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "HOLA")
 {
-  time = State::current->getTime();
+  time = (int)State::current->getTime();
   setText(to_string(time));
 }
 

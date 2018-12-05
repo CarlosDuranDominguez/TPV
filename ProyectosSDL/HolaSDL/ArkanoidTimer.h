@@ -12,15 +12,15 @@ public:
     time(_firstTime);
   }
   ~ArkanoidTimer() { delete _firstTime; }
-  double getSeconds() const
+  float32 getSeconds() const
   {
     time_t now;
     time(&now);
-    return difftime(now, *_firstTime);
+    return (float32)difftime(now, *_firstTime);
   }
-  void delay(double time)
+  void delay(uint time)
   {
-    *_firstTime -= (long long)time;
+    *_firstTime -= time;
   }
   void reset()
   {

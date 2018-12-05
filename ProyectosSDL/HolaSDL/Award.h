@@ -6,7 +6,7 @@
 class Award : public ArkanoidBody
 {
 private:
-  int _framerate;
+  uint _framerate;
   uint _frame;
   b2Timer *_animationTimer;
   float32 _speed;
@@ -15,7 +15,7 @@ private:
 
 public:
   Award() { _animationTimer = new b2Timer(); };
-  Award(float32 x, float32 y, float32 width, float32 height, float32 speed, float32 framerate, Texture *texture);
+  Award(float32 x, float32 y, float32 width, float32 height, float32 speed, uint framerate, Texture *texture);
   ~Award();
   virtual void update();
   virtual void render() const;

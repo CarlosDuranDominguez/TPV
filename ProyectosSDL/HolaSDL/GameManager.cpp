@@ -3,7 +3,7 @@
 #include "GameState.h"
 
 /// Public
-/// Constructor
+// Constructor
 GameManager::GameManager(Game *game)
 {
   GameManager::setGame(game);
@@ -14,18 +14,19 @@ GameManager::GameManager(Game *game)
 Game *GameManager::_game = nullptr;
 
 /// Public
-/// Destructor
+// Destructor
 GameManager::~GameManager() {
 	_topBoard->storeFile("../saves/save.save");
 	delete _topBoard;
-}
-/**
- * Finishes the level and pushes to leaderboard.
- */
+};
+
+/// Public
+// Finishes the level and pushes to leaderboard
 void GameManager::finishLevel(float32 time)
 {
   _totalTime += time;
-  if (_currentLevel < ArkanoidSettings::totalLevels)
+  // We store _currentLevel as int instead of uint because it causes compiler errors
+  if ((uint)_currentLevel < ArkanoidSettings::totalLevels)
   {
 	  _currentLevel++;
 	  State::current->end();
@@ -37,9 +38,7 @@ void GameManager::finishLevel(float32 time)
   }
 }
 
-/**
- * Set level.
- */
+// Set level
 void GameManager::setLevel(int level)
 {
   _currentLevel = level;
@@ -48,7 +47,7 @@ void GameManager::setLevel(int level)
 /**
  * Get the level.
  */
-int GameManager::level()
+int GameManager::getLevel() const
 {
   return _currentLevel;
 }

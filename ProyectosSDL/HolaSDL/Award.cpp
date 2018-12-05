@@ -6,7 +6,7 @@
 
 /// Public
 /// Constructor
-Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed, float32 framerate, Texture *texture)
+Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed, uint framerate, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false), _speed(speed)
 {
   setBody(x, y, width, height, *Game::getWorld());

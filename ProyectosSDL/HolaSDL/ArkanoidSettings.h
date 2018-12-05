@@ -6,17 +6,17 @@ typedef unsigned int uint;
 class ArkanoidSettings
 {
 private:
-  static uint _windowHeight;
-  static uint _windowWidth;
+  static float32 _windowHeight;
+  static float32 _windowWidth;
 
 public:
   // Methods
   static float32 getWindowHeight();
   static float32 getWindowWidth();
   static void setSceneDimensions();
-  static void setWindowWidth(uint width);
-  static void setUp(uint width, uint height);
-  static void setWindowHeight(uint height);
+  static void setWindowWidth(float32 width);
+  static void setUp(float32 width, float32 height);
+  static void setWindowHeight(float32 height);
   // General
   const static float32 framerate;
   const static float32 widthRatio;

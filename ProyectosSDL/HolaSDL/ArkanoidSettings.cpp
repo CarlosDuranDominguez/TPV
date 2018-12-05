@@ -43,28 +43,28 @@ void ArkanoidSettings::setSceneDimensions()
   wallHeight = ratio * wallHeightRatio;
 };
 
-void ArkanoidSettings::setWindowWidth(uint width)
+void ArkanoidSettings::setWindowWidth(float32 width)
 {
   _windowWidth = width;
   setSceneDimensions();
 };
 
-void ArkanoidSettings::setUp(uint width, uint height)
+void ArkanoidSettings::setUp(float32 width, float32 height)
 {
   _windowWidth = width;
   _windowHeight = height;
   setSceneDimensions();
 };
 
-void ArkanoidSettings::setWindowHeight(uint height)
+void ArkanoidSettings::setWindowHeight(float32 height)
 {
   _windowHeight = height;
   setSceneDimensions();
 };
 
 // General
-uint ArkanoidSettings::_windowHeight = 0;
-uint ArkanoidSettings::_windowWidth = 0;
+float32 ArkanoidSettings::_windowHeight = 0.0f;
+float32 ArkanoidSettings::_windowWidth = 0.0f;
 const float32 ArkanoidSettings::framerate = 120.0f;
 const float32 ArkanoidSettings::widthRatio = 1400.0f;
 const float32 ArkanoidSettings::heightRatio = 2000.0f;

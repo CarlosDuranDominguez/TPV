@@ -98,7 +98,7 @@ void Game::changeState(const States &state)
   State::current->end();
 }
 
-void Game::newScore(const string &name, int score, double time)
+void Game::newScore(const string &name, int score, float32 time)
 {
 }
 
