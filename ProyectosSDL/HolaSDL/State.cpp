@@ -139,6 +139,7 @@ GameObject *State::create(GAME_OBJECTS type, b2Vec2 &position)
                             ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
                             ArkanoidSettings::sceneWidth / 2.0f,
                             ArkanoidSettings::paddleSpeed,
+							NONE,
                             _game->getTextures()[PADDLE]);
     add(*gameObject);
     break;

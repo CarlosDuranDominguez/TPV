@@ -77,7 +77,7 @@ void ArkanoidSettings::setWindowHeight(float32 height)
 float32 ArkanoidSettings::_windowHeight = 0.0f;
 float32 ArkanoidSettings::_windowWidth = 0.0f;
 const float32 ArkanoidSettings::framerate = 120.0f;
-const float32 ArkanoidSettings::widthRatio = 1400.0f;
+const float32 ArkanoidSettings::widthRatio = 1200.0f;
 const float32 ArkanoidSettings::heightRatio = 2000.0f;
 const int ArkanoidSettings::initialLives = 3;
 const uint ArkanoidSettings::totalLevels = 3;

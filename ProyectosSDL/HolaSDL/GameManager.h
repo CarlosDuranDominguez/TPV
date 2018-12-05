@@ -25,6 +25,7 @@ public:
   int getLevel() const { return _currentLevel; };
   int getLives() const { return _lives; };
   int getScore() const { return _score; };
+  int getTotalTime() const { return _totalTime; };
   TopBoard* getTopBoard() const { return _topBoard; };
   void addBalls(int balls);
   void addBlock();
@@ -41,6 +42,7 @@ public:
   void setLevel(int level);
   void setLives(int lives);
   void setScore(int score);
+  void setTotalTime(float32 time);
   static Game *getGame() { return _game; };
   static void setGame(Game *game) { _game = game; };
   std::vector<PlayerGame*> getScores() const { return _topBoard->showScores(); };

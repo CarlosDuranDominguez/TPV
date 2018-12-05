@@ -55,20 +55,25 @@ void GameState::init()
     auto call = [this]() { saveLevel("../saves/level.save"); };
     addEvent(call);
   }));
-
+  auto gameManager = Game::getGameManager();
   // If the game's level is above 0, try to load the level
-  if (Game::getGameManager()->getLevel() > 0)
+  if (gameManager->getLevel() > 0)
   {
     // Get the amount of lives and load the level
-    int lives = Game::getGameManager()->getLives();
+    int lives = gameManager->getLives();
+	int score = gameManager->getScore();
+	int totalTime = gameManager->getTotalTime();
     loadLevel("../levels/level" + to_string(Game::getGameManager()->getLevel()) + ".ark");
-    // Uninitialized live (negative number)
-    if (lives <= 0) lives = Game::getGameManager()->getLives();
     // If the current level is the first one, give three lives
-    if (Game::getGameManager()->getLevel() == 1)
-      Game::getGameManager()->setLives(ArkanoidSettings::initialLives);
-    else
-      Game::getGameManager()->setLives(lives);
+	if (gameManager->getLevel() == 1) {
+		gameManager->setLives(ArkanoidSettings::initialLives);
+	}
+	else
+	{
+		gameManager->setLives(lives);
+		gameManager->setScore(score);
+		gameManager->setTotalTime(totalTime);
+	}  
   }
   else
   {
@@ -95,7 +100,8 @@ void GameState::loadLevel(const string &path)
 
   // If the file failed to load, throw FileNotFoundError
   if (!file)
-    throw(FileNotFoundError)(path);
+	  // If the name could not be recognized, throw an error
+	  throw(FileFormatError)(path);
 
   uint level, timer;
   int lives, score;
@@ -110,7 +116,8 @@ void GameState::loadLevel(const string &path)
 
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
-    return;
+	  // If the name could not be recognized, throw an error
+	  throw(FileFormatError)(path);
 
   // Read and set the amount of lives
   file >> lives;
@@ -118,7 +125,8 @@ void GameState::loadLevel(const string &path)
 
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
-    return;
+	  // If the name could not be recognized, throw an error
+	  throw(FileFormatError)(path);
 
   // Read and set the amount of points
   file >> score;
@@ -126,11 +134,21 @@ void GameState::loadLevel(const string &path)
 
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
-    return;
+	  // If the name could not be recognized, throw an error
+	  throw(FileFormatError)(path);
 
   // Read and set the timer second delay
   file >> timer;
   _stateTime->delay(timer);
+
+  // If not good (!eof && !fail && !bad), stop loading
+  if (!file.good())
+	  // If the name could not be recognized, throw an error
+	  throw(FileFormatError)(path);
+
+  // Read and set the timer second delay
+  file >> timer;
+  Game::getGameManager()->setTotalTime(timer);
 
   // While good (!eof && !fail && !bad), load lines
   while (file.good())
@@ -272,15 +290,17 @@ void GameState::_reset()
                        ArkanoidSettings::paddleWidth,
                        ArkanoidSettings::paddleHeight,
                        ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
-                       ArkanoidSettings::sceneWidth / 2.0f,
+                       ArkanoidSettings::sceneWidth / 2.0f - ArkanoidSettings::wallWidth,
                        ArkanoidSettings::paddleSpeed,
+					   BEGIN,
                        _game->getTextures()[PADDLE]);
   add(*_paddle);
 
   // Creates the ball on top of the paddle
-  Ball *ball = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
-                        ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius * 2.0f,
+  Ball *ball = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f + ArkanoidSettings::paddleWidth / 4.0f,
+                        ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius * 2.0f - ArkanoidSettings::paddleHeight/2.0f,
                         ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
+  ball->setVelocity(b2Vec2(0.0f, 1.0f));
   add(*ball);
 
   // Sets the initial ball for the game manager

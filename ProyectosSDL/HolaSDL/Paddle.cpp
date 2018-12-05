@@ -5,11 +5,11 @@
 
 /// Public
 /// Constructor
-Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture)
+Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, ACTIONS action, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
-      _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true)
+      _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true), _actionType(action)
 {
-  setAction(BEGIN);
+  setAction(action);
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
 
@@ -17,10 +17,10 @@ Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anch
 // Destructor
 Paddle::~Paddle()
 {
-  /*if (_ball) {
-		Game::getWorld()->DestroyJoint(_ballJointA);
-		Game::getWorld()->DestroyJoint(_ballJointB);
-	}*/
+	for (auto joint : _joints) {
+		delete joint;
+	}
+	_joints.clear();
 }
 
 /// Public Virtual

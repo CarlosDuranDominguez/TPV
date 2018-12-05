@@ -8,7 +8,7 @@ GameManager::GameManager(Game *game)
 {
   GameManager::setGame(game);
   _topBoard = new TopBoard("../saves/save.save");
-  reset();
+  newGame();
 };
 
 Game *GameManager::_game = nullptr;
@@ -107,7 +107,7 @@ void GameManager::finishLevel(float32 time)
 void GameManager::newGame()
 {
   reset();
-  _currentLevel = 0;
+  _currentLevel = 1;
   _score = 0;
   _totalTime = 0.0;
   _lives = ArkanoidSettings::initialLives;
@@ -154,4 +154,11 @@ void GameManager::setLives(int lives)
 void GameManager::setScore(int score)
 {
   _score = score;
+}
+
+/// Public
+// Set the game manager's total time
+void GameManager::setTotalTime(float32 time)
+{
+	_totalTime = time;
 }
