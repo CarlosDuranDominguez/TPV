@@ -13,7 +13,8 @@ private:
   void _destroyAll();
 
 public:
-  GameState(Game *game, SDL_Renderer *renderer);
+  GameState(Game *game, SDL_Renderer *renderer)
+      : State(game, renderer){};
   virtual ~GameState(){};
   virtual void reset();
   virtual void init();

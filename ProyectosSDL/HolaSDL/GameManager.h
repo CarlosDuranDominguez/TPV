@@ -35,10 +35,10 @@ public:
   void finishLevel(float32 time);
   void newGame();
   void reset();
-  void setBalls(int ballsLenght);
-  void setBlocks(int blocksLenght);
+  void setBalls(int balls);
+  void setBlocks(int blocks);
   void setLevel(int level);
-  void setLives(int livesLenght);
+  void setLives(int lives);
   void setScore(int score);
   static Game *getGame() { return _game; };
   static void setGame(Game *game) { _game = game; };

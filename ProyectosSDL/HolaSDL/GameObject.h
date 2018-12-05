@@ -28,7 +28,8 @@ protected:
 
 public:
   GameObject(){};
-  GameObject(float32 x, float32 y, float32 width, float32 height) : _position(x, y), _size(width, height){};
+  GameObject(float32 x, float32 y, float32 width, float32 height)
+      : _position(x, y), _size(width, height){};
   virtual ~GameObject(){};
   list<GameObject *>::iterator getId() const { return _id; };
   list<GameObject *>::iterator setId(list<GameObject *>::iterator &id) { return _id = id; };
