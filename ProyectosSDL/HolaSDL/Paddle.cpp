@@ -153,8 +153,17 @@ void Paddle::splitFromBall()
 {
   if (_ball != nullptr)
   {
-    Game::getWorld()->DestroyJoint(_ballJointA);
-    Game::getWorld()->DestroyJoint(_ballJointB);
+    // TODO: This is a workaround as the paddle destroys its joints and such.
+    // When the paddle is sticky and the ball breaks a block that releases a
+    // reward, and the paddle picks it up, the joint is destroyed but the ball
+    // is not released/kept.
+
+    // TODO: If the paddle picks a ShortenAward, and the ball is in one of the
+    // sides, it should drop into the void (likewise in the original Arkanoid
+    // if my memory serves well) when the shortened paddle does not touch the
+    // paddle anymore. Currently this gets stuck in air.
+    if (_ballJointA != nullptr) Game::getWorld()->DestroyJoint(_ballJointA);
+    if (_ballJointB != nullptr) Game::getWorld()->DestroyJoint(_ballJointB);
     _ball->setVelocity(_ball->getPosition() - getPosition());
     _ball = nullptr;
   }

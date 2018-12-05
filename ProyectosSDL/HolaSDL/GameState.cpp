@@ -62,6 +62,8 @@ void GameState::init()
     // Get the amount of lives and load the level
     int lives = Game::getGameManager()->getLives();
     loadLevel("../levels/level" + to_string(Game::getGameManager()->getLevel()) + ".ark");
+    // Uninitialized live (negative number)
+    if (lives <= 0) lives = Game::getGameManager()->getLives();
     // If the current level is the first one, give three lives
     if (Game::getGameManager()->getLevel() == 1)
       Game::getGameManager()->setLives(ArkanoidSettings::initialLives);

@@ -28,7 +28,7 @@ void GameManager::addBalls(int balls)
   _currentBalls += balls;
 }
 
-// Public
+/// Public
 // Add a block to the game manager
 void GameManager::addBlock()
 {
