@@ -17,14 +17,8 @@ void LaserAward::contact()
 
   // Creates an event that makes the paddle shorter
   State::current->addEvent([]() {
-    Paddle *pad = dynamic_cast<GameState *>(State::current)->paddle();
-    pad->setAction([pad]() {
-      State::current->addEvent([pad]() {
-        /*Create Bullet*/
-        Bullet *bullet = new Bullet(pad->getPosition().x, pad->getPosition().y, 10.0f, 1000.0f, Game::current->getTextures()[BALLBLACK]);
-        State::current->add(*bullet);
-        bullet->setVelocity(b2Vec2{0, -1000.0f});
-      });
-    });
+	  Paddle* pad = dynamic_cast<GameState *>(State::current)->paddle();
+	  pad->setWidth(ArkanoidSettings::paddleWidth);
+	  pad->setAction(LASER);
   });
 }

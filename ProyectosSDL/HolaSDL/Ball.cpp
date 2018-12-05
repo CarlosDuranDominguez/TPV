@@ -20,13 +20,18 @@ void Ball::update() {}
 void Ball::afterUpdate()
 {
   // Check if the speed is not the maximum speed
-  if (getVelocity().LengthSquared() != _speed)
+  float32 speed = getVelocity().LengthSquared();
+  if (speed != _speed)
   {
     // Set the normalized speed to the maximum one
     b2Vec2 v = getVelocity();
     v.Normalize();
     v *= _speed;
     setVelocity(v);
+  }
+  else if (speed < b2_epsilon)
+  {
+	  setVelocity(b2Vec2{0.0f,speed});
   }
 }
 

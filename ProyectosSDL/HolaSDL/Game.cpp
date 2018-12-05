@@ -104,13 +104,6 @@ void Game::changeState(const States &state)
 }
 
 /// Public
-// Create a new score
-// TODO: This function is currently unused
-void Game::newScore(const string &name, int score, float32 time)
-{
-}
-
-/// Public
 // Gets the game's game manager
 GameManager *Game::getGameManager()
 {

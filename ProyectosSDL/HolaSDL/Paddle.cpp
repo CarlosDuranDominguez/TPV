@@ -1,5 +1,7 @@
 #include "Paddle.h"
 #include "Game.h"
+#include "Bullet.h"
+#include <algorithm>
 
 /// Public
 /// Constructor
@@ -7,7 +9,7 @@ Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anch
     : ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
       _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true)
 {
-  _action = [this]() { splitFromBall(); setSticky(false); };
+  setAction(BEGIN);
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
 
@@ -25,6 +27,10 @@ Paddle::~Paddle()
 // Defines the update behaviour for this instance
 void Paddle::update()
 {
+	for (auto joint : _joints) {
+		b2Vec2 pos = getPosition() + joint->_distance;
+		joint->_ball->setPosition(pos.x, pos.y);
+	}
 }
 
 /// Public Virtual
@@ -73,7 +79,7 @@ void Paddle::handleEvents(SDL_Event event)
       break;
     // If space bar was pressed, call _action()
     case SDLK_SPACE:
-      _action();
+	  State::current->addEvent(_action);
       break;
     }
     break;
@@ -130,50 +136,27 @@ void Paddle::setWidth(float32 width)
 // Creates a joint to a ball (for the sticky paddle)
 void Paddle::jointTo(Ball *ball)
 {
-  // Create a prismatic joint definition
-  b2PrismaticJointDef jointDef;
-  jointDef.bodyB = _body;
-  jointDef.bodyA = ball->getBody();
-  jointDef.enableLimit = true;
-  b2Vec2 a = getPosition() - ball->getPosition();
-  jointDef.localAxisA = a;
-  jointDef.upperTranslation = 0.0f;
-  jointDef.lowerTranslation = 0.0f;
-  _ballJointA = Game::getWorld()->CreateJoint(&jointDef);
-
-  // Create the distance joint definition
-  b2DistanceJointDef jointDefa;
-  jointDefa.bodyB = _body;
-  jointDefa.bodyA = ball->getBody();
-  jointDefa.length = a.LengthSquared();
-
-  // Creates the joint and sets the sticky ball to this
-  _ballJointB = Game::getWorld()->CreateJoint(&jointDefa);
-  _ball = ball;
+	if (!any_of(_joints.begin(), _joints.end(), [ball](ArkanoidJoint* joint) {return joint->_ball == ball; })) {
+		
+		b2Vec2 a =  ball->getPosition() - getPosition();
+		
+		_joints.push_back(new ArkanoidJoint(ball, a));
+		ball->getBody()->SetActive(false);
+	}
+  
 }
 
 /// Public
 // Splits from a ball, releasing it to a direction away from the paddle's center
-void Paddle::splitFromBall()
+void Paddle::splitFromBalls()
 {
-  if (_ball != nullptr)
-  {
-    // TODO: This is a workaround as the paddle destroys its joints and such.
-    // When the paddle is sticky and the ball breaks a block that releases a
-    // reward, and the paddle picks it up, the joint is destroyed but the ball
-    // is not released/kept.
-
-    // TODO: If the paddle picks a ShortenAward, and the ball is in one of the
-    // sides, it should drop into the void (likewise in the original Arkanoid
-    // if my memory serves well) when the shortened paddle does not touch the
-    // paddle anymore. Currently this gets stuck in air.
-    if (_ballJointA != nullptr)
-      Game::getWorld()->DestroyJoint(_ballJointA);
-    if (_ballJointB != nullptr)
-      Game::getWorld()->DestroyJoint(_ballJointB);
-    _ball->setVelocity(_ball->getPosition() - getPosition());
-    _ball = nullptr;
+  for (auto joint : _joints) {
+	joint->_ball->getBody()->SetActive(true);
+	joint->_distance *= (1.0f/(joint->_distance.LengthSquared()*joint->_ball->getSpeed()));
+	joint->_ball->setVelocity(joint->_distance);
+	delete joint;
   }
+  _joints.clear();
 }
 
 /// Public Virtual
@@ -191,7 +174,7 @@ std::istream &Paddle::deserialize(std::istream &out)
   _rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
   _leftMovement = false;
   _rightMovement = false;
-  _action = [this]() { splitFromBall(); setSticky(false); };
+  setAction(BEGIN);
   return out;
 }
 
@@ -244,3 +227,46 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
   // Set up the shape
   setUp(shape, fixtureDef);
 }
+
+/// Public 
+// Defines the setWidth behaviour
+void Paddle::setAction(ACTIONS action)
+{
+	// Set the proper action.
+	switch (action)
+	{
+	case NONE:
+		splitFromBalls();
+		setSticky(false);
+		_action = []() {};
+		break;
+	case BEGIN:
+		splitFromBalls();
+		setSticky(true);
+		_action = [this]() {splitFromBalls(); setSticky(false); };
+		break;
+	case STICKY:
+		setSticky(true);
+		_action = [this]() { splitFromBalls(); };
+		break;
+	case LASER:
+		splitFromBalls();
+		setSticky(false);
+		_action = [this]() { 
+			/*Create Bullet*/
+			Bullet *bullet = new Bullet(getPosition().x, getPosition().y, 10.0f, 1000.0f, Game::current->getTextures()[BALLBLACK]);
+			State::current->add(*bullet);
+			bullet->setVelocity(b2Vec2{ 0, -1000.0f });
+		};
+		break;
+	default:
+		break;
+	}
+}
+
+Paddle::ArkanoidJoint::ArkanoidJoint(Ball* ball, b2Vec2& distance) 
+	: _ball(ball), _distance(distance) {}
+
+Paddle::ArkanoidJoint::~ArkanoidJoint() 
+{ 
+};

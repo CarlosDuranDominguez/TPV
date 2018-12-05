@@ -5,21 +5,27 @@
 #include "Controllable.h"
 #include "Ball.h"
 #include "functional"
+#include <list>
 
 class Game;
-
+enum ACTIONS{NONE, BEGIN, STICKY, LASER};
 class Paddle : public ArkanoidBody, public Controllable
 {
+	class ArkanoidJoint {
+	public:
+		ArkanoidJoint(Ball* ball, b2Vec2& distance);
+		~ArkanoidJoint();
+		b2Vec2 _distance;
+		Ball* _ball;
+	};
 private:
   bool _rightMovement, _leftMovement;
   float32 _speed;
   float32 _leftAnchor, _rightAnchor;
-  b2Joint* _ballJointA, *_ballJointB;
-  Ball* _ball;
+  std::list<ArkanoidJoint*> _joints;
   void setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, b2World &world);
   bool _sticky;
   function<void()> _action;
-
 public:
   Paddle(){};
   Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture);
@@ -31,9 +37,9 @@ public:
   virtual void onBeginContact(RigidBody* rigigbody);
   virtual void setWidth(float32 width);
   void jointTo(Ball* ball);
-  void splitFromBall();
+  void splitFromBalls();
   void setSticky(bool sticky) { _sticky = sticky; };
-  void setAction(function<void()> action) { _action = action; };
   virtual std::istream &deserialize(std::istream &out);
   virtual std::ostream &serialize(std::ostream &is) const;
+  void setAction(ACTIONS action);
 };
