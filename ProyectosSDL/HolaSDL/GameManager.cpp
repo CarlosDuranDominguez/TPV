@@ -35,7 +35,6 @@ void GameManager::finishLevel(float32 time)
 	  _topBoard->pushScore(new PlayerGame{ "Alguien", _score, (int)_totalTime });
 	  _game->changeState(States::SCOREBOARD);
   }
-
 }
 
 /**

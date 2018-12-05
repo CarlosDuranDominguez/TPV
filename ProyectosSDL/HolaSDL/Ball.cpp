@@ -81,9 +81,10 @@ void Ball::onEndContact(RigidBody *rigidBody)
 std::istream &Ball::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
-  float32 posx, posy, radius, velx, vely;
-  out >> posx >> posy >> radius >> velx >> vely >> _speed;
+  float32 posx, posy, radius, velx, vely, speed;
+  out >> posx >> posy >> radius >> velx >> vely >> speed;
   setBody(posx, posy, radius, *Game::getWorld());
+  setSpeed(speed);
   setPosition(posx, posy);
   setVelocity(b2Vec2{velx, vely});
   _size.Set(radius * 2, radius * 2);
@@ -95,7 +96,7 @@ std::istream &Ball::deserialize(std::istream &out)
 std::ostream &Ball::serialize(std::ostream &is) const
 {
   return is << "Ball " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
-            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << _speed;
+            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
 
 /// Public Virtual

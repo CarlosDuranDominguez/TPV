@@ -68,7 +68,7 @@ void Block::contact()
   // Create a new randomized event that throws an award
   State::current->addEvent([this]() {
     Award *award = nullptr;
-    switch (3)//rand() % 40)
+    switch (rand() % 40)
     {
     case 0:
       award = new MultiBallAward(_body->GetPosition().x, _body->GetPosition().y,

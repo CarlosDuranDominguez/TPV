@@ -13,6 +13,8 @@ public:
   Ball(){};
   Ball(float32 x, float32 y, float32 radius, float32 speed, Texture *texture);
   ~Ball();
+  float32 getSpeed() const { return _speed; }
+  void setSpeed(float32 speed) { _speed = speed; }
   virtual void destroy();
   virtual void update();
   virtual void render() const;

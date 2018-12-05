@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Game.h"
 
 Bullet::Bullet(float32 x, float32 y, float32 radius, float32 speed, Texture *texture)
 	:Ball(x,y,radius,speed,texture) {
@@ -35,9 +36,18 @@ Bullet::~Bullet(){}
 void Bullet::onBeginContact(RigidBody *rigidBody) { destroy(); }
 
 std::istream &Bullet::deserialize(std::istream &out) {
-	return out;
+  _texture = readTexture(out);
+  float32 posx, posy, radius, velx, vely, speed;
+  out >> posx >> posy >> radius >> velx >> vely >> speed;
+  setBody(posx, posy, radius, *Game::getWorld());
+  setSpeed(speed);
+  setPosition(posx, posy);
+  setVelocity(b2Vec2{ velx, vely });
+  _size.Set(radius * 2, radius * 2);
+  return out;
 }
 
 std::ostream &Bullet::serialize(std::ostream &is) const {
-	return is;
+  return is << "Bullet " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
+    << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
