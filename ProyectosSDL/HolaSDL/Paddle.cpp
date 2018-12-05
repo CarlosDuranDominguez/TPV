@@ -165,7 +165,8 @@ std::istream &Paddle::deserialize(std::istream &out)
 {
   _texture = readTexture(out);
   float32 posx, posy, sizex, sizey;
-  out >> posx >> posy >> sizex >> sizey >> _speed;
+  int action;
+  out >> posx >> posy >> sizex >> sizey >> _speed >> action;
   setBody(posx, posy, sizex, sizey, ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
           (ArkanoidSettings::sceneWidth) / 2 - ArkanoidSettings::wallWidth, *Game::getWorld());
   setPosition(posx, posy);
@@ -174,7 +175,8 @@ std::istream &Paddle::deserialize(std::istream &out)
   _rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
   _leftMovement = false;
   _rightMovement = false;
-  setAction(BEGIN);
+  _actionType = (ACTIONS) action;
+  setAction(_actionType);
   return out;
 }
 
@@ -183,7 +185,7 @@ std::istream &Paddle::deserialize(std::istream &out)
 std::ostream &Paddle::serialize(std::ostream &is) const
 {
   return is << "Paddle " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
-            << _speed;
+            << _speed << _actionType;
 }
 
 /// Private
@@ -232,6 +234,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 // Defines the setWidth behaviour
 void Paddle::setAction(ACTIONS action)
 {
+	_actionType = action;
 	// Set the proper action.
 	switch (action)
 	{

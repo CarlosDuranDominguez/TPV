@@ -92,8 +92,6 @@ void State::run()
     _events();
     _destroy();
   }
-
-  // TODO: This is defined and declared in State.h, but has no behaviour
   _end();
 }
 

@@ -25,6 +25,7 @@ public:
   int getLevel() const { return _currentLevel; };
   int getLives() const { return _lives; };
   int getScore() const { return _score; };
+  TopBoard* getTopBoard() const { return _topBoard; };
   void addBalls(int balls);
   void addBlock();
   void addLives(int lives);

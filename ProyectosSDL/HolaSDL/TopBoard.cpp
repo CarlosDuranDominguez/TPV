@@ -7,6 +7,7 @@
 TopBoard::TopBoard(const std::string &path) : _scores()
 {
   loadFile(path);
+  sortByScore();
 }
 
 /// Public
@@ -62,7 +63,6 @@ void TopBoard::sortByName()
   sort(_scores.begin(), _scores.end(), _comparename);
 }
 
-// TODO: Use sortByScore and sortByTime
 /// Public
 // Sorts the top leaderboard by the amount of points
 void TopBoard::sortByScore()
@@ -117,12 +117,12 @@ bool TopBoard::_comparename(const PlayerGame *game1, const PlayerGame *game2)
 // The comparing function depending on the player's score
 bool TopBoard::_comparescore(const PlayerGame *game1, const PlayerGame *game2)
 {
-  return game1->score < game2->score;
+  return game1->score > game2->score;
 }
 
 /// Private
 // The comparing function depending on the player's time
 bool TopBoard::_comparetime(const PlayerGame *game1, const PlayerGame *game2)
 {
-  return game1->time > game2->time;
+  return game1->time < game2->time;
 }

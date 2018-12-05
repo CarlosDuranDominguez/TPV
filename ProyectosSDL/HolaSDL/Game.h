@@ -188,7 +188,7 @@ private:
   Font *_fonts[NUMBERFONTS];
   static GameManager *_gamemanager;
   map<States, State *> _states;
-  States _state = States::GAME;
+  States _state = States::MENU;
   static b2World *_world;
 
 public:
@@ -198,7 +198,6 @@ public:
   Texture **getTextures();
   Font **getFonts();
   void changeState(const States &state);
-  void newScore(const string &name, int score, float32 time);
   void run();
   States getState() { return _state; };
   GameState *getGameState() { return dynamic_cast<GameState *>(_states[GAME]); }
