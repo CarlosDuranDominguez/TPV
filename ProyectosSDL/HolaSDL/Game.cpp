@@ -31,10 +31,11 @@ Game::Game()
   _fonts[BIGFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 72);
   _fonts[MEDIUMFONT] = new Font(_renderer, FONTSDIRECTORIES[REGULAR], 40);
 
+  _gamemanager = new GameManager(this);
   _states.insert(std::pair<States, State *>(States::GAME, new GameState(this, _renderer)));
   _states.insert(std::pair<States, State *>(States::MENU, new MenuState(this, _renderer)));
   _states.insert(std::pair<States, State *>(States::SCOREBOARD, new ScoreBoardState(this, _renderer)));
-  _gamemanager = new GameManager(this);
+  
 }
 
 /**
@@ -95,6 +96,7 @@ void Game::run()
 void Game::changeState(const States &state)
 {
   _state = state;
+  State::current->end();
 }
 
 void Game::newScore(const string &name, int score, double time)

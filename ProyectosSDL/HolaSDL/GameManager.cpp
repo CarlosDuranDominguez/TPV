@@ -8,21 +8,34 @@
 GameManager::GameManager(Game *game)
 {
   GameManager::setGame(game);
+  _topBoard = new TopBoard("../saves/save.save");
   reset();
 };
 
 Game *GameManager::_game = nullptr;
 
+
+GameManager::~GameManager() {
+	_topBoard->storeFile("../saves/save.save");
+	delete _topBoard;
+}
 /**
  * Finishes the level and pushes to leaderboard.
  */
 void GameManager::finishLevel(float32 time)
 {
   _totalTime += time;
-  if (_currentLevel != 2)
-    _currentLevel++;
-  else
-    _game->newScore("Alguien", _score, time);
+  if (_currentLevel < ArkanoidSettings::totalLevels) 
+  {
+	  _currentLevel++;
+	  State::current->end();
+  }
+  else 
+  {
+	  _topBoard->pushScore(new PlayerGame{ "Alguien", _score, (int)_totalTime });
+	  _game->changeState(States::SCOREBOARD);
+  }
+
 }
 
 /**
@@ -46,12 +59,8 @@ int GameManager::level()
  */
 void GameManager::reset()
 {
-  _currentLevel = 0;
   _currentBlocks = 0;
   _currentBalls = 0;
-  _score = 0;
-  _totalTime = 0.0;
-  _lives = 0;
 }
 
 void GameManager::setBlocks(int blocksLenght)
@@ -115,6 +124,7 @@ void GameManager::deleteLive()
   if (--_lives == 0)
   {
     _game->changeState(States::MENU);
+	State::current->end();
   }
   else
   {
@@ -134,4 +144,7 @@ void GameManager::newGame()
 {
   reset();
   _currentLevel = 0;
+  _score = 0;
+  _totalTime = 0.0;
+  _lives = ArkanoidSettings::initialLives;
 }

@@ -51,6 +51,7 @@ public:
   State(Game *game, SDL_Renderer *renderer);
   virtual ~State();
   static State *current;
+  virtual void end() { _exit = true; };
   virtual void reset(){};
   virtual void init()
   {

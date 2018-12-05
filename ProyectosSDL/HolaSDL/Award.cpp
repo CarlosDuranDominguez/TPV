@@ -1,6 +1,8 @@
 #include "Award.h"
 #include "Game.h"
 #include "Paddle.h"
+#include <string>
+#include <iostream> 
 
 /// Public
 /// Constructor
@@ -58,6 +60,17 @@ void Award::destroy()
 }
 
 /// Public Virtual
+///
+void Award::afterUpdate() {
+	if (getVelocity().y != _speed)
+	{
+		b2Vec2 v{ 0, _speed };
+		
+		setVelocity(v);
+	}
+}
+
+/// Public Virtual
 /// Defines behaviour when the instance starts to have contact with an element
 void Award::onBeginContact(RigidBody *rigidbody)
 {
@@ -79,7 +92,7 @@ std::istream &Award::deserialize(std::istream &out)
   setBody(posx, posy, sizex, sizey, *Game::getWorld());
   setPosition(posx, posy);
   _size.Set(sizex, sizey);
-  out >> _framerate;
+  out >> _speed >> _framerate;
   return out;
 }
 
@@ -87,8 +100,10 @@ std::istream &Award::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Award::serialize(std::ostream &is) const
 {
-  return is << typeid(*this).name() << " " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
-            << _framerate;
+	string a = typeid(*this).name();
+	a = a.substr(6);
+  return is << a << " " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
+            << _speed << " " << _framerate;
 }
 
 /// Private
@@ -145,7 +160,7 @@ void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World
   // Create the fixture definition for the right side of the capsule
   b2FixtureDef rightfixtureDef;
   rightfixtureDef.density = 1.0f;
-  rightfixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0000;
+  rightfixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0100;
   rightfixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0001;
   rightfixtureDef.friction = 0.0f;
   rightfixtureDef.isSensor = true;

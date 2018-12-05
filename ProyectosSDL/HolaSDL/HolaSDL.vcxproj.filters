@@ -150,6 +150,9 @@
     <ClCompile Include="ArkanoidBody.cpp">
       <Filter>Archivos de código fuente\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="TopBoard.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="ArkanoidBody.h">
       <Filter>Archivos de encabezado\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="TopBoard.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

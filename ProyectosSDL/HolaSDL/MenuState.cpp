@@ -11,8 +11,8 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : State(game, renderer)
   auto _buttons = new Button *[4];
   string nombres[4] = {"New Game", "Continue", "ScoreBoard", "Exit"};
   function<void()> callbacks[4] = {
-      [this, game]() { _exit = true; game->changeState(GAME); game->getGameState()->newGame(true); },
-      [this, game]() { _exit = true; game->changeState(GAME); game->getGameState()->newGame(false); },
+	  [this, game]() { _exit = true; game->changeState(GAME); game->gameManager()->setLevel(1); },
+	  [this, game]() { _exit = true; game->changeState(GAME); game->gameManager()->setLevel(0); },
       [this, game]() { _exit = true; game->changeState(SCOREBOARD); },
       [this, game]() { _exit = true; game->changeState(GAMEOVER); }};
 

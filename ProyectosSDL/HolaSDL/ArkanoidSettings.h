@@ -21,6 +21,8 @@ public:
   const static float32 framerate;
   const static float32 widthRatio;
   const static float32 heightRatio;
+  const static int initialLives;
+  const static uint totalLevels;
   static b2Vec2 sceneUpperLeftCorner;
   static float32 sceneWidth;
   static float32 sceneHeight;

@@ -15,5 +15,5 @@ private:
 public:
   ScoreBoardState(Game *game, SDL_Renderer *renderer);
   ~ScoreBoardState();
-  void pushNewFinishGame(const string &name, int score, int time);
+  virtual void init();
 };

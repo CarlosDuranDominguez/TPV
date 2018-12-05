@@ -6,6 +6,7 @@
 #include "ShortenAward.h"
 #include "NextLevelAward.h"
 
+
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _color(color)
 {
@@ -27,7 +28,8 @@ void Block::update()
 void Block::render() const
 {
   b2Vec2 pos = _body->GetPosition();
-  _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, _color / 3, _color % 3);
+  _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, _color / _texture->getNumCols(),
+	  _color % _texture->getNumCols());
 }
 
 void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)

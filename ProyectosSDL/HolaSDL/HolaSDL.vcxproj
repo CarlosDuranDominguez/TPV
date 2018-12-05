@@ -152,6 +152,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ScoreBoard.cpp" />
+    <ClCompile Include="TopBoard.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ScoreBoard.h" />
+    <ClInclude Include="TopBoard.h" />
     <ClInclude Include="Updatable.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>

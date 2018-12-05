@@ -2,8 +2,10 @@
 
 #include "checkML.h"
 #include "Box2D/Box2D.h"
+#include "TopBoard.h"
 
 class Game;
+
 
 class GameManager
 {
@@ -15,9 +17,11 @@ private:
   int _score;
   int _lives;
   static Game *_game;
+  TopBoard* _topBoard;
 
 public:
   GameManager(Game *game);
+  ~GameManager();
   void finishLevel(float32 time);
   int level();
   void setLevel(int);
@@ -36,6 +40,7 @@ public:
   void addLives(int lives);
   int getLives() const;
   void newGame();
-  static Game *getGame() { return _game; }
-  static void setGame(Game *game) { _game = game; }
+  static Game *getGame() { return _game; };
+  static void setGame(Game *game) { _game = game; };
+  std::vector<PlayerGame*> getScores() const { return _topBoard->showScores(); };
 };

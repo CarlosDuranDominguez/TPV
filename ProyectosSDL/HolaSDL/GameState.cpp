@@ -24,7 +24,7 @@
 #include "FileFormatError.h"
 
 GameState::GameState(Game *game, SDL_Renderer *renderer)
-    : State(game, renderer), _isNewGame(false){};
+    : State(game, renderer){};
 
 GameState::~GameState()
 {
@@ -32,8 +32,7 @@ GameState::~GameState()
 
 void GameState::reset()
 {
-  _isReseting = true;
-  _exit = true;
+	_pendingEvents.push([this]() {_reset(); });
 }
 
 void GameState::_reset()
@@ -44,11 +43,21 @@ void GameState::_reset()
 	  if(dynamic_cast<Ball*>(gameObject)|| dynamic_cast<Paddle*>(gameObject))
 		gameObject->destroy();
   }
-  addCreation(GAME_OBJECTS::ball, b2Vec2{ ArkanoidSettings::sceneUpperLeftCorner.x+ArkanoidSettings::sceneWidth / 2.0f, 
-										  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f });
-  addCreation(GAME_OBJECTS::paddle, b2Vec2{ ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f, 
-											ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight });
-  _isReseting = false;
+  _paddle = new Paddle(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+	  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight,
+	  ArkanoidSettings::paddleWidth,
+	  ArkanoidSettings::paddleHeight,
+	  ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+	  ArkanoidSettings::sceneWidth / 2.0f,
+	  ArkanoidSettings::paddleSpeed,
+	  _game->getTextures()[PADDLE]);
+  add(*_paddle);
+
+  Ball* ball = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+	  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f,
+	  ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
+  add(*ball);
+  Game::gameManager()->setBalls(1);
   _stateTime->reset();
 }
 
@@ -56,8 +65,7 @@ void GameState::init()
 {
   State::init();
   Game::setWorld(*_world);
-  Game::gameManager()->newGame();
-  Game::gameManager()->addLives(3);
+  
 
   GameObject *gameObject = new Timer(ArkanoidSettings::sceneUpperLeftCorner.x, ArkanoidSettings::sceneUpperLeftCorner.y,
                                      ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneHeight / 20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
@@ -76,9 +84,16 @@ void GameState::init()
     addEvent(call);
   });
   add(*gameObject);
-  if (_isNewGame)
+  if (Game::gameManager()->level() > 0)
   {
-    loadLevel("../levels/level01.ark");
+	 int lives = Game::gameManager()->getLives();
+    loadLevel("../levels/level" + to_string(Game::gameManager()->level()) + ".ark");
+	if (Game::gameManager()->level() == 1) {
+		Game::gameManager()->setLives(ArkanoidSettings::initialLives);
+	}
+	else {
+		Game::gameManager()->setLives(lives);
+	}
   }
   else
   {
@@ -89,10 +104,9 @@ void GameState::init()
     catch (exception e)
     {
       loadLevel("../levels/level01.ark");
+	  Game::gameManager()->setLives(ArkanoidSettings::initialLives);
     }
   }
-  _isNewGame = false;
-  _isReseting = false;
 }
 
 void GameState::loadLevel(const string &path)
@@ -106,9 +120,20 @@ void GameState::loadLevel(const string &path)
 
   if (!file.eof())
   {
-    int level;
+    uint level;
     file >> level;
+	if (level == 1)
+		Game::gameManager()->newGame();
+	else
+		Game::gameManager()->reset();
     Game::gameManager()->setLevel(level);
+  }
+
+  if (!file.eof() && !file.fail())
+  {
+	  int lives;
+	  file >> lives;
+	  Game::gameManager()->setLives(lives);
   }
 
   if (!file.eof() && !file.fail())
@@ -139,7 +164,8 @@ void GameState::loadLevel(const string &path)
     }
     else if (name == "Paddle")
     {
-      gameObject = new Paddle();
+	   _paddle = new Paddle();
+	   gameObject = _paddle;
     }
     else if (name == "Enemy")
     {
@@ -194,35 +220,35 @@ void GameState::loadLevel(const string &path)
     file >> *gameObject;
     add(*gameObject);
   }
+  file.close();
 }
 
 void GameState::saveLevel(const string &path)
 {
   ofstream file;
-  file.open(path, std::ofstream::in);
+  file.open(path, std::ofstream::out);
   if (file.fail())
   {
     throw new FileNotFoundError(path);
   }
-  file << Game::gameManager()->level() << ' ' << Game::gameManager()->getScore() << ' ' << _stateTime->getSeconds() << '\n';
+  file << Game::gameManager()->level() << ' ' << Game::gameManager()->getLives() << ' ' << Game::gameManager()->getScore() << ' ' << _stateTime->getSeconds() << '\n';
   for (auto gameObject : _gameObjects)
   {
     if (dynamic_cast<ArkanoidObject *>(gameObject))
       file << *gameObject << "\n";
   }
+  file.close();
+}
+
+void GameState::_destroyAll() {
+	for (auto gameobject : _gameObjects) {
+		delete gameobject;
+	}
+	_gameObjects.clear();
 }
 
 void GameState::_end()
 {
-  if (_isReseting)
-  {
-    _reset();
-    _exit = false;
-    run();
-  }
+	_destroyAll();
 }
 
-void GameState::_destroy()
-{
-  State::_destroy();
-}
