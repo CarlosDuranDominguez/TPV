@@ -4,7 +4,7 @@
 #include "Game.h"
 
 /// Public
-/// Constructor
+// Constructor
 ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 height, SDL_Color color)
     : GameObject(x, y, width, height), _font(font), _color(color)
 {
@@ -26,7 +26,7 @@ ScoreBoard::ScoreBoard(Font *font, float32 x, float32 y, float32 width, float32 
 }
 
 /// Public
-/// Destructor
+// Destructor
 ScoreBoard::~ScoreBoard()
 {
   for (auto text : _texts)
@@ -56,7 +56,7 @@ void ScoreBoard::rewrite()
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void ScoreBoard::render() const
 {
   // Render the first 10 elements

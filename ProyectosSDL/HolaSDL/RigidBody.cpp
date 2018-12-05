@@ -4,7 +4,7 @@
 #include "Game.h"
 
 /// Public
-/// Destructor
+// Destructor
 RigidBody::~RigidBody()
 {
   _body->DestroyFixture(_fixture);
@@ -12,7 +12,7 @@ RigidBody::~RigidBody()
 };
 
 /// Public
-/// Constructor
+// Constructor
 RigidBody::RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef, b2World &world)
 {
   // Set the fixture definition

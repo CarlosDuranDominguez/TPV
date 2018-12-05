@@ -9,15 +9,15 @@
 #include "LaserAward.h"
 
 /// Public
-/// Constructor
+// Constructor
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _color(color)
 {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public Victual
-/// Updates the update behaviour
+/// Public Virtual
+// Updates the update behaviour
 void Block::update()
 {
 }

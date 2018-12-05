@@ -3,7 +3,7 @@
 #include "GameState.h"
 
 /// Public Virtual
-/// Defines behaviour when the instance gets in contact with the instance
+// Defines behaviour when the instance gets in contact with the instance
 void EnlargenAward::contact()
 {
   // Call the default behaviour

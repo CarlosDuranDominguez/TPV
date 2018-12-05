@@ -72,7 +72,7 @@ std::istream &Ball::deserialize(std::istream &out)
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Ball::serialize(std::ostream &is) const
 {
   return is << "Ball " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "

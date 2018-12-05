@@ -16,7 +16,7 @@
 #include "CollisionLogic.h"
 
 /// Public
-/// Constructor
+// Constructor
 State::State(Game *game, SDL_Renderer *renderer)
     : _game(game), _renderer(renderer), _stateTime(new ArkanoidTimer())
 {
@@ -26,7 +26,7 @@ State::State(Game *game, SDL_Renderer *renderer)
 }
 
 /// Public
-/// Destructor
+// Destructor
 State::~State()
 {
   for (auto gameObject : _gameObjects)

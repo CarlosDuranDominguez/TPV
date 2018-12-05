@@ -26,7 +26,7 @@ Enemy::~Enemy()
   delete _animationTimer;
 }
 
-/// Public Victual
+/// Public Virtual
 // Updates the update behaviour
 void Enemy::update()
 {

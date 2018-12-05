@@ -2,7 +2,7 @@
 #include "Game.h"
 
 /// Public
-/// Constructor
+// Constructor
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
     : State(game, renderer)
 {

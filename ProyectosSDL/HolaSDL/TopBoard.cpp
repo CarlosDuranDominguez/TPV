@@ -3,14 +3,14 @@
 #include <fstream>
 
 /// Public
-/// Constructor
+// Constructor
 TopBoard::TopBoard(const std::string &path) : _scores()
 {
   loadFile(path);
 }
 
 /// Public
-/// Destructor
+// Destructor
 TopBoard::~TopBoard()
 {
   for (auto score : _scores)

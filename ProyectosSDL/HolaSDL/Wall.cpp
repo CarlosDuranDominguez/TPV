@@ -9,7 +9,7 @@ Wall::Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public Victual
+/// Public Virtual
 /// Updates the update behaviour
 void Wall::update() {}
 

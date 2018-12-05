@@ -4,9 +4,10 @@
 #include <functional>
 
 /// Public
-/// Constructor
+// Constructor
 MenuState::MenuState(Game *game, SDL_Renderer *renderer) : State(game, renderer)
 {
+  // Create 4 buttons with their names and callbacks
   auto _buttons = new Button *[4];
   string nombres[4] = {"New Game", "Continue", "ScoreBoard", "Exit"};
   function<void()> callbacks[4] = {
@@ -20,5 +21,7 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : State(game, renderer)
     _buttons[i] = new Button(game->getFonts()[BIGFONT], 0.0f, i * 110.0f, 200.0f, 100.0f, WHITE, GREY, nombres[i], callbacks[i]);
     add(*_buttons[i]);
   }
+
+  // Delete the temporary array
   delete[] _buttons;
 }

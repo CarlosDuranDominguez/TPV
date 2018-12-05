@@ -12,7 +12,7 @@ void Texture::liberate()
 }
 
 /// Public
-/// Constructor
+// Constructor
 Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, uint w, uint h, uint fw, uint fh, uint numRows, uint numCols)
     : _renderer(renderer), _texture(texture), _w(w), _h(h), _fw(fw), _fh(fh), _numRows(numRows), _numCols(numCols) {}
 
@@ -35,7 +35,7 @@ void Texture::load(string filename, uint nRows, uint nCols)
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Texture::render(const SDL_Rect &destRect, SDL_RendererFlip flip) const
 {
   SDL_Rect srcRect;

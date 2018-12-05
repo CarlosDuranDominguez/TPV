@@ -19,7 +19,7 @@ Award::~Award()
   delete _animationTimer;
 }
 
-/// Public Victual
+/// Public Virtual
 // Updates the update behaviour
 void Award::update()
 {
