@@ -4,7 +4,7 @@ Bullet::Bullet(float32 x, float32 y, float32 radius, float32 speed, Texture *tex
 	:Ball(x,y,radius,speed,texture) {
 }
 
-void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world) {
+void Bullet::setBody(float32 x, float32 y, float32 radius, b2World &world) {
 	b2BodyDef bodyDef;
 	bodyDef.allowSleep = false;
 	bodyDef.type = b2_dynamicBody;
