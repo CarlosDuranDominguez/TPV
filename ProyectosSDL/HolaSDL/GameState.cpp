@@ -26,13 +26,9 @@
 GameState::GameState(Game *game, SDL_Renderer *renderer)
     : State(game, renderer){};
 
-GameState::~GameState()
-{
-}
-
 void GameState::reset()
 {
-	_pendingEvents.push([this]() {_reset(); });
+  _pendingEvents.push([this]() { _reset(); });
 }
 
 void GameState::_reset()
@@ -40,22 +36,22 @@ void GameState::_reset()
 
   for (auto gameObject : _gameObjects)
   {
-	  if(dynamic_cast<Ball*>(gameObject)|| dynamic_cast<Paddle*>(gameObject))
-		gameObject->destroy();
+    if (dynamic_cast<Ball *>(gameObject) || dynamic_cast<Paddle *>(gameObject))
+      gameObject->destroy();
   }
   _paddle = new Paddle(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
-	  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight,
-	  ArkanoidSettings::paddleWidth,
-	  ArkanoidSettings::paddleHeight,
-	  ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
-	  ArkanoidSettings::sceneWidth / 2.0f,
-	  ArkanoidSettings::paddleSpeed,
-	  _game->getTextures()[PADDLE]);
+                       ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight,
+                       ArkanoidSettings::paddleWidth,
+                       ArkanoidSettings::paddleHeight,
+                       ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+                       ArkanoidSettings::sceneWidth / 2.0f,
+                       ArkanoidSettings::paddleSpeed,
+                       _game->getTextures()[PADDLE]);
   add(*_paddle);
 
-  Ball* ball = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
-	  ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius*2.0f,
-	  ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
+  Ball *ball = new Ball(ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth / 2.0f,
+                        ArkanoidSettings::sceneUpperLeftCorner.y + ArkanoidSettings::wallWidth * 3.0f / 2.0f + ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight - ArkanoidSettings::ballRadius * 2.0f,
+                        ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed, _game->getTextures()[BALL]);
   add(*ball);
   Game::gameManager()->setBalls(1);
   _stateTime->reset();
@@ -65,7 +61,6 @@ void GameState::init()
 {
   State::init();
   Game::setWorld(*_world);
-  
 
   GameObject *gameObject = new Timer(ArkanoidSettings::sceneUpperLeftCorner.x, ArkanoidSettings::sceneUpperLeftCorner.y,
                                      ArkanoidSettings::sceneWidth / 2.0f, ArkanoidSettings::sceneHeight / 20.0f, WHITE, _game->getFonts()[MEDIUMFONT]);
@@ -86,14 +81,16 @@ void GameState::init()
   add(*gameObject);
   if (Game::gameManager()->level() > 0)
   {
-	 int lives = Game::gameManager()->getLives();
+    int lives = Game::gameManager()->getLives();
     loadLevel("../levels/level" + to_string(Game::gameManager()->level()) + ".ark");
-	if (Game::gameManager()->level() == 1) {
-		Game::gameManager()->setLives(ArkanoidSettings::initialLives);
-	}
-	else {
-		Game::gameManager()->setLives(lives);
-	}
+    if (Game::gameManager()->level() == 1)
+    {
+      Game::gameManager()->setLives(ArkanoidSettings::initialLives);
+    }
+    else
+    {
+      Game::gameManager()->setLives(lives);
+    }
   }
   else
   {
@@ -104,10 +101,9 @@ void GameState::init()
     catch (exception e)
     {
       loadLevel("../levels/level01.ark");
-	  Game::gameManager()->setLives(ArkanoidSettings::initialLives);
+      Game::gameManager()->setLives(ArkanoidSettings::initialLives);
     }
   }
-  
 }
 
 void GameState::loadLevel(const string &path)
@@ -123,18 +119,18 @@ void GameState::loadLevel(const string &path)
   {
     uint level;
     file >> level;
-	if (level == 1)
-		Game::gameManager()->newGame();
-	else
-		Game::gameManager()->reset();
+    if (level == 1)
+      Game::gameManager()->newGame();
+    else
+      Game::gameManager()->reset();
     Game::gameManager()->setLevel(level);
   }
 
   if (!file.eof() && !file.fail())
   {
-	  int lives;
-	  file >> lives;
-	  Game::gameManager()->setLives(lives);
+    int lives;
+    file >> lives;
+    Game::gameManager()->setLives(lives);
   }
 
   if (!file.eof() && !file.fail())
@@ -151,7 +147,6 @@ void GameState::loadLevel(const string &path)
     _stateTime->delay(time);
   }
 
-  GameObject *gameObject;
   while (!file.eof() && !file.fail())
   {
     string name;
@@ -165,8 +160,8 @@ void GameState::loadLevel(const string &path)
     }
     else if (name == "Paddle")
     {
-	   _paddle = new Paddle();
-	   gameObject = _paddle;
+      _paddle = new Paddle();
+      gameObject = _paddle;
     }
     else if (name == "Enemy")
     {
@@ -241,15 +236,16 @@ void GameState::saveLevel(const string &path)
   file.close();
 }
 
-void GameState::_destroyAll() {
-	for (auto gameobject : _gameObjects) {
-		delete gameobject;
-	}
-	_gameObjects.clear();
+void GameState::_destroyAll()
+{
+  for (auto gameobject : _gameObjects)
+  {
+    delete gameobject;
+  }
+  _gameObjects.clear();
 }
 
 void GameState::_end()
 {
-	_destroyAll();
+  _destroyAll();
 }
-

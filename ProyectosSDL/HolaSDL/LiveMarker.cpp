@@ -2,9 +2,7 @@
 #include "Game.h"
 
 LiveMarker::LiveMarker(float32 x, float32 y, float32 width, float32 height, Texture *texture)
-    : GameObject(x, y, width, height), Renderable(texture)
-{
-}
+    : GameObject(x, y, width, height), Renderable(texture) {}
 
 /// Public Virtual
 /// Defines the render behaviour

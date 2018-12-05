@@ -8,15 +8,10 @@
 #include "StickyAward.h"
 #include "LaserAward.h"
 
-
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), _color(color)
 {
   setBody(x, y, width, height, *Game::getWorld());
-}
-
-Block::~Block()
-{
 }
 
 /// Public Victual
@@ -31,7 +26,7 @@ void Block::render() const
 {
   b2Vec2 pos = _body->GetPosition();
   _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, _color / _texture->getNumCols(),
-	  _color % _texture->getNumCols());
+                        _color % _texture->getNumCols());
 }
 
 void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
@@ -102,14 +97,14 @@ void Block::contact()
                                  ArkanoidSettings::rewardFramerate,
                                  Game::current->getTextures()[REWARD1]);
       break;
-	case 4:
-		award = new StickyAward(_body->GetPosition().x, _body->GetPosition().y,
-			ArkanoidSettings::rewardWidth,
-			ArkanoidSettings::rewardHeigth,
-			ArkanoidSettings::rewardSpeed,
-			ArkanoidSettings::rewardFramerate,
-			Game::current->getTextures()[REWARD1]);
-		break;
+    case 4:
+      award = new StickyAward(_body->GetPosition().x, _body->GetPosition().y,
+                              ArkanoidSettings::rewardWidth,
+                              ArkanoidSettings::rewardHeigth,
+                              ArkanoidSettings::rewardSpeed,
+                              ArkanoidSettings::rewardFramerate,
+                              Game::current->getTextures()[REWARD1]);
+      break;
     default:
       break;
     }

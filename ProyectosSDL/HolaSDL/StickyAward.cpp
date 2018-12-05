@@ -9,15 +9,15 @@ StickyAward::StickyAward(float32 x, float32 y, float32 width, float32 height, fl
 /// Defines behaviour when the instance gets in contact with the instance
 void StickyAward::contact()
 {
-	// Call the default behaviour
-	Award::contact();
+  // Call the default behaviour
+  Award::contact();
 
-	// Creates an event that skips to the next level
-	State::current->addEvent([]() {
-		Paddle* pad = dynamic_cast<GameState *>(State::current)->paddle();
-		pad->setAction([pad]() {
-			pad->splitFromBall(); 
-			pad->setSticky(false);
-		}); 
-	});
+  // Creates an event that skips to the next level
+  State::current->addEvent([]() {
+    Paddle *pad = dynamic_cast<GameState *>(State::current)->paddle();
+    pad->setAction([pad]() {
+      pad->splitFromBall();
+      pad->setSticky(false);
+    });
+  });
 }

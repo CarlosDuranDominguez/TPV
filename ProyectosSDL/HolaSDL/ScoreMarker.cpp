@@ -1,7 +1,7 @@
 #include "ScoreMarker.h"
 #include "Game.h"
 
-ScoreMarker::ScoreMarker(float x, float y, int width, int height, SDL_Color color, Font *font)
+ScoreMarker::ScoreMarker(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "h")
 {
   _score = Game::gameManager()->getScore();

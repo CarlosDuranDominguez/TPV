@@ -17,13 +17,6 @@ ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
   add(*gameObject);
 }
 
-/**
- * Destructor.
- */
-ScoreBoardState::~ScoreBoardState()
-{
-}
-
 void ScoreBoardState::init() {
 	State::init();
 	_scoreboard->rewrite();

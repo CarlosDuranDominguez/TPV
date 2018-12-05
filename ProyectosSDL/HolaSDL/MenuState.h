@@ -13,5 +13,5 @@ class MenuState : public State
 {
 public:
   MenuState(Game *game, SDL_Renderer *renderer);
-  ~MenuState();
+  ~MenuState(){};
 };

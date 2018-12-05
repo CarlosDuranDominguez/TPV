@@ -1,13 +1,7 @@
 #include "ArkanoidBody.h"
 
 ArkanoidBody::ArkanoidBody(float32 x, float32 y, float32 width, float32 height, Texture *texture)
-    : ArkanoidObject(x, y, width, height, texture)
-{
-}
-
-ArkanoidBody::~ArkanoidBody()
-{
-}
+    : ArkanoidObject(x, y, width, height, texture) {}
 
 b2Vec2 ArkanoidBody::getPosition() const
 {

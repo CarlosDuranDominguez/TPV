@@ -25,12 +25,12 @@ GameManager::~GameManager() {
 void GameManager::finishLevel(float32 time)
 {
   _totalTime += time;
-  if (_currentLevel < ArkanoidSettings::totalLevels) 
+  if (_currentLevel < ArkanoidSettings::totalLevels)
   {
 	  _currentLevel++;
 	  State::current->end();
   }
-  else 
+  else
   {
 	  _topBoard->pushScore(new PlayerGame{ "Alguien", _score, (int)_totalTime });
 	  _game->changeState(States::SCOREBOARD);
@@ -135,10 +135,12 @@ void GameManager::addLives(int lives)
 {
   _lives += lives;
 }
+
 int GameManager::getLives() const
 {
   return _lives;
 }
+
 void GameManager::newGame()
 {
   reset();

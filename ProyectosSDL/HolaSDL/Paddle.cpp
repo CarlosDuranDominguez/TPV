@@ -13,10 +13,10 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
   bodyDef.userData = static_cast<RigidBody *>(this);
   b2Vec2 vs[6];
   vs[0].Set(-width / 2.0f, height / 2.0f);
-  vs[1].Set(-width * 3.0 / 8.0f, -height / 4.0f);
+  vs[1].Set(-width * 3.0f / 8.0f, -height / 4.0f);
   vs[2].Set(-width / 8.0f, -height / 2.0f);
   vs[3].Set(width / 8.0f, -height / 2.0f);
-  vs[4].Set(width * 3.0 / 8.0f, -height / 4.0f);
+  vs[4].Set(width * 3.0f / 8.0f, -height / 4.0f);
   vs[5].Set(width / 2.0f, height / 2.0f);
   b2ChainShape shape;
   shape.CreateChain(vs, 6);

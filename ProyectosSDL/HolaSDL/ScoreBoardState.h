@@ -14,6 +14,6 @@ private:
 
 public:
   ScoreBoardState(Game *game, SDL_Renderer *renderer);
-  ~ScoreBoardState();
+  ~ScoreBoardState(){};
   virtual void init();
 };

@@ -28,6 +28,7 @@ void State::_create()
   }
   _pendingOnCreate.clear();
 }
+
 void State::_render() const
 {
   SDL_RenderClear(_renderer);
@@ -154,6 +155,7 @@ void State::run()
   }
   _end();
 }
+
 void State::addCreation(GAME_OBJECTS type, b2Vec2 &position)
 {
   _pendingOnCreate.push_back(new newInstance(type, position));
@@ -216,5 +218,5 @@ void State::addEvent(function<void()> callback)
 
 float32 State::getTime() const
 {
-  return _stateTime->getSeconds();
+  return (float32)_stateTime->getSeconds();
 }

@@ -12,7 +12,7 @@ private:
 public:
   Block(){};
   Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture);
-  ~Block();
+  ~Block(){};
   virtual void update();
   virtual void render() const;
   virtual void contact();

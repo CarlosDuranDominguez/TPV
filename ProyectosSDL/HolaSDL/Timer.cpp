@@ -5,7 +5,7 @@
 /**
  * Constructors.
  */
-Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *font)
+Timer::Timer(float32 x, float32 y, float32 width, float32 height, SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "HOLA")
 {
   time = State::current->getTime();
@@ -16,9 +16,10 @@ Timer::Timer(float x, float y, int width, int height, SDL_Color color, Font *fon
 /// Updates the update behaviour
 void Timer::update()
 {
-  if (time != State::current->getTime())
+  auto now = (int)State::current->getTime();
+  if (time != now)
   {
-    time = State::current->getTime();
+    time = now;
     setText(to_string(time));
   }
 }

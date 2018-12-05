@@ -3,18 +3,9 @@
 /**
  * Constructor.
  */
-Button::Button(Font *font, double x, double y, int width, int height,
+Button::Button(Font *font, float32 x, float32 y, float32 width, float32 height,
                SDL_Color inColor, SDL_Color outColor, string text, function<void()> callback)
-    : Text(font, x, y, width, height, outColor, text), _inColor(inColor), _outColor(outColor), _callback(callback)
-{
-}
-
-/**
- * Destructor.
- */
-Button::~Button()
-{
-}
+    : Text(font, x, y, width, height, outColor, text), _inColor(inColor), _outColor(outColor), _callback(callback) {}
 
 /**
  * It detects if the cursor is on the button. If it is clicked the call the

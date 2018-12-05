@@ -10,10 +10,10 @@ void Texture::liberate()
   _texture = nullptr;
   _w = _h = 0;
 }
+
 Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, uint w, uint h, uint fw, uint fh, uint numRows, uint numCols)
-    : _renderer(renderer), _texture(texture), _w(w), _h(h), _fw(fw), _fh(fh), _numRows(numRows), _numCols(numCols)
-{
-}
+    : _renderer(renderer), _texture(texture), _w(w), _h(h), _fw(fw), _fh(fh), _numRows(numRows), _numCols(numCols) {}
+
 void Texture::load(string filename, uint nRows, uint nCols)
 {
   SDL_Surface *tempSurface = IMG_Load(filename.c_str());

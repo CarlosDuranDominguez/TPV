@@ -13,8 +13,8 @@ private:
   function<void()> _callback;
 
 public:
-  Button(Font *font, double x, double y, int width, int height, SDL_Color inColor,
+  Button(Font *font, float32 x, float32 y, float32 width, float32 height, SDL_Color inColor,
          SDL_Color outColor, string text, function<void()> callback);
-  ~Button();
+  ~Button(){};
   virtual void handleEvents(SDL_Event event);
 };

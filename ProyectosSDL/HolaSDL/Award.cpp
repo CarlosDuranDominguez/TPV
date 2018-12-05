@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Paddle.h"
 #include <string>
-#include <iostream> 
+#include <iostream>
 
 /// Public
 /// Constructor
@@ -61,13 +61,13 @@ void Award::destroy()
 
 /// Public Virtual
 ///
-void Award::afterUpdate() {
-	if (getVelocity().y != _speed)
-	{
-		b2Vec2 v{ 0, _speed };
-		
-		setVelocity(v);
-	}
+void Award::afterUpdate()
+{
+  if (getVelocity().y != _speed)
+  {
+    b2Vec2 v{0, _speed};
+    setVelocity(v);
+  }
 }
 
 /// Public Virtual
@@ -100,8 +100,8 @@ std::istream &Award::deserialize(std::istream &out)
 /// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Award::serialize(std::ostream &is) const
 {
-	string a = typeid(*this).name();
-	a = a.substr(6);
+  string a = typeid(*this).name();
+  a = a.substr(6);
   return is << a << " " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
             << _speed << " " << _framerate;
 }

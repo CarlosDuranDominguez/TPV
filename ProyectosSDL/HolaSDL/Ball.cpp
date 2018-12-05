@@ -12,10 +12,6 @@ Ball::Ball(float32 x, float32 y, float32 radius, float32 speed, Texture *texture
   setBody(x, y, radius, *Game::getWorld());
 }
 
-Ball::~Ball()
-{
-}
-
 void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world)
 {
   b2BodyDef bodyDef;
@@ -49,13 +45,13 @@ void Ball::update() {}
 
 void Ball::afterUpdate()
 {
-		if (getVelocity().LengthSquared() != _speed)
-		{
-			b2Vec2 v = getVelocity();
-			v.Normalize();
-			v *= _speed;
-			setVelocity(v);
-		}
+  if (getVelocity().LengthSquared() != _speed)
+  {
+    b2Vec2 v = getVelocity();
+    v.Normalize();
+    v *= _speed;
+    setVelocity(v);
+  }
 }
 /// Public Virtual
 /// Defines the render behaviour
