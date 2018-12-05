@@ -160,5 +160,5 @@ void GameManager::setScore(int score)
 // Set the game manager's total time
 void GameManager::setTotalTime(float32 time)
 {
-	_totalTime = time;
+  _totalTime = time;
 }
