@@ -45,6 +45,7 @@ std::ostream &Wall::serialize(std::ostream &is) const
 // setBody method, creates a static polygon shape with Box2D's API
 void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
 {
+  // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;
   bodyDef.fixedRotation = true;
@@ -52,17 +53,23 @@ void Wall::setBody(float32 x, float32 y, float32 width, float32 height, b2World 
   bodyDef.position.y = y;
   bodyDef.linearDamping = 0.0f;
   bodyDef.userData = static_cast<RigidBody *>(this);
+
+  // Create a polygon shape
   b2PolygonShape shape;
   shape.SetAsBox(width / 2.0f, height / 2.0f);
+
+  // Create the fixture definition
   b2FixtureDef fixtureDef;
   fixtureDef.density = 1.0f;
   fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0100;
   fixtureDef.filter.maskBits = 0b0000'0000'0000'0010'0010;
   fixtureDef.friction = 0.0f;
-  //fixtureDef.isSensor = false;
   fixtureDef.restitution = 1.0f;
   fixtureDef.shape = &shape;
-  // Add to world
+
+  // Add the body definition to world
   _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
   setUp(shape, fixtureDef);
 }

@@ -1,7 +1,7 @@
 #include "Text.h"
 
 /// Public
-/// Constructor
+// Constructor
 Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height, const SDL_Color &color, const string &text)
     : _font(font), GameObject(x, y, width, height), _color(color), _text(text)
 {
@@ -13,15 +13,14 @@ Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height, cons
   SDL_FreeSurface(textSurface);
 }
 /// Public
-/// Destructor
+// Destructor
 Text::~Text()
 {
   delete _texture;
 }
 
-/**
- * It changes the text by newText.
- */
+/// Public
+// Sets the text for this instance
 void Text::setText(const string newText)
 {
   _text = newText;
@@ -31,9 +30,8 @@ void Text::setText(const string newText)
   SDL_FreeSurface(textSurface);
 }
 
-/**
- * It gets the rect of the text.
- */
+/// Public
+// Gets the text box
 SDL_Rect Text::getRect() const
 {
   return {
@@ -43,9 +41,8 @@ SDL_Rect Text::getRect() const
       _height};
 }
 
-/**
- * It changes the color of the text.
- */
+/// Public
+// Set the text color
 SDL_Color Text::setColor(const SDL_Color &color)
 {
   SDL_Surface *textSurface = TTF_RenderText_Solid(_font->getFont(), _text.c_str(), color);
@@ -55,7 +52,7 @@ SDL_Color Text::setColor(const SDL_Color &color)
 }
 
 /// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Text::render() const
 {
   SDL_Rect rect{
@@ -67,14 +64,14 @@ void Text::render() const
 }
 
 /// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading a file save
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &Text::deserialize(std::istream &out)
 {
   return out;
 }
 
 /// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Text::serialize(std::ostream &is) const
 {
   return is;
