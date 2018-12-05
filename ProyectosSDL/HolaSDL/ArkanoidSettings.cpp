@@ -1,16 +1,21 @@
 #include "ArkanoidSettings.h"
 
-// Methods
+/// Public
+// Get the window's height
 float32 ArkanoidSettings::getWindowHeight()
 {
   return _windowHeight;
 };
 
+/// Public
+// Get the window's width
 float32 ArkanoidSettings::getWindowWidth()
 {
   return _windowWidth;
 };
 
+/// Public
+// Set the scene's dimensions
 void ArkanoidSettings::setSceneDimensions()
 {
   if (widthRatio / heightRatio > _windowWidth / _windowHeight)
@@ -43,12 +48,8 @@ void ArkanoidSettings::setSceneDimensions()
   wallHeight = ratio * wallHeightRatio;
 };
 
-void ArkanoidSettings::setWindowWidth(float32 width)
-{
-  _windowWidth = width;
-  setSceneDimensions();
-};
-
+/// Public
+// Setup the scene dimensions
 void ArkanoidSettings::setUp(float32 width, float32 height)
 {
   _windowWidth = width;
@@ -56,6 +57,16 @@ void ArkanoidSettings::setUp(float32 width, float32 height)
   setSceneDimensions();
 };
 
+/// Public
+// Set the window's width
+void ArkanoidSettings::setWindowWidth(float32 width)
+{
+  _windowWidth = width;
+  setSceneDimensions();
+};
+
+/// Public
+// Set the window's heigth
 void ArkanoidSettings::setWindowHeight(float32 height)
 {
   _windowHeight = height;

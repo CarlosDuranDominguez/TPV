@@ -130,6 +130,7 @@ void Paddle::setWidth(float32 width)
 // Creates a joint to a ball (for the sticky paddle)
 void Paddle::jointTo(Ball *ball)
 {
+  // Create a prismatic joint definition
   b2PrismaticJointDef jointDef;
   jointDef.bodyB = _body;
   jointDef.bodyA = ball->getBody();
@@ -139,10 +140,14 @@ void Paddle::jointTo(Ball *ball)
   jointDef.upperTranslation = 0.0f;
   jointDef.lowerTranslation = 0.0f;
   _ballJointA = Game::getWorld()->CreateJoint(&jointDef);
+
+  // Create the distance joint definition
   b2DistanceJointDef jointDefa;
   jointDefa.bodyB = _body;
   jointDefa.bodyA = ball->getBody();
   jointDefa.length = a.LengthSquared();
+
+  // Creates the joint and sets the sticky ball to this
   _ballJointB = Game::getWorld()->CreateJoint(&jointDefa);
   _ball = ball;
 }
@@ -162,8 +167,10 @@ void Paddle::splitFromBall()
     // sides, it should drop into the void (likewise in the original Arkanoid
     // if my memory serves well) when the shortened paddle does not touch the
     // paddle anymore. Currently this gets stuck in air.
-    if (_ballJointA != nullptr) Game::getWorld()->DestroyJoint(_ballJointA);
-    if (_ballJointB != nullptr) Game::getWorld()->DestroyJoint(_ballJointB);
+    if (_ballJointA != nullptr)
+      Game::getWorld()->DestroyJoint(_ballJointA);
+    if (_ballJointB != nullptr)
+      Game::getWorld()->DestroyJoint(_ballJointB);
     _ball->setVelocity(_ball->getPosition() - getPosition());
     _ball = nullptr;
   }
@@ -200,7 +207,7 @@ std::ostream &Paddle::serialize(std::ostream &is) const
 // setBody method, creates a kinematic chain shape with Box2D's API
 void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, b2World &world)
 {
-
+  // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_kinematicBody;
   bodyDef.fixedRotation = true;
@@ -208,6 +215,8 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
   bodyDef.position.y = y;
   bodyDef.linearDamping = 0.0f;
   bodyDef.userData = static_cast<RigidBody *>(this);
+
+  // Create an array of 2D vectors
   b2Vec2 vs[6];
   vs[0].Set(-width / 2.0f, height / 2.0f);
   vs[1].Set(-width * 3.0f / 8.0f, -height / 4.0f);
@@ -215,18 +224,23 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
   vs[3].Set(width / 8.0f, -height / 2.0f);
   vs[4].Set(width * 3.0f / 8.0f, -height / 4.0f);
   vs[5].Set(width / 2.0f, height / 2.0f);
+
+  // Create a chain shape and set the array of vectors
   b2ChainShape shape;
   shape.CreateChain(vs, 6);
+
+  // Create the fixture definition
   b2FixtureDef fixtureDef;
   fixtureDef.density = 1000000.0f;
   fixtureDef.filter.categoryBits = 0b0000'0000'0000'0000'0001;
   fixtureDef.filter.maskBits = 0b0000'0000'0000'0011'0010;
   fixtureDef.friction = 0.0f;
-  //fixtureDef.isSensor = false;
   fixtureDef.restitution = 1.0f;
   fixtureDef.shape = &shape;
 
-  // Add to world
+  // Add the body definition to world
   _body = world.CreateBody(&bodyDef);
+
+  // Set up the shape
   setUp(shape, fixtureDef);
 }

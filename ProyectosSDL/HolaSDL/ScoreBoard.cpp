@@ -35,9 +35,8 @@ ScoreBoard::~ScoreBoard()
   }
 }
 
-/**
- * It creates the first ten games.
- */
+/// Public
+// Creates the first ten games.
 void ScoreBoard::rewrite()
 {
   vector<PlayerGame *> scores = Game::getGameManager()->getScores();
@@ -66,11 +65,15 @@ void ScoreBoard::render() const
   }
 }
 
+/// Public Virtual
+// Defines the deserialize method behaviour to patch the instance when loading a file save
 std::istream &ScoreBoard::deserialize(std::istream &out)
 {
   return out;
 }
 
+/// Public Virtual
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &ScoreBoard::serialize(std::ostream &is) const
 {
   return is;
