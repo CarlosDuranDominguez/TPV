@@ -6,7 +6,7 @@
 class Ball : public ArkanoidBody
 {
 private:
-  void setBody(float32 x, float32 y, float32 radius, b2World &world);
+  virtual void setBody(float32 x, float32 y, float32 radius, b2World &world);
   float32 _speed;
 
 public:

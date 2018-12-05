@@ -5,6 +5,8 @@
 #include "EnlargenAward.h"
 #include "ShortenAward.h"
 #include "NextLevelAward.h"
+#include "StickyAward.h"
+#include "LaserAward.h"
 
 
 Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
@@ -66,7 +68,7 @@ void Block::contact()
   // Create a new randomized event that throws an award
   State::current->addEvent([this]() {
     Award *award = nullptr;
-    switch (rand() % 40)
+    switch (3)//rand() % 40)
     {
     case 0:
       award = new MultiBallAward(_body->GetPosition().x, _body->GetPosition().y,
@@ -100,6 +102,14 @@ void Block::contact()
                                  ArkanoidSettings::rewardFramerate,
                                  Game::current->getTextures()[REWARD1]);
       break;
+	case 4:
+		award = new StickyAward(_body->GetPosition().x, _body->GetPosition().y,
+			ArkanoidSettings::rewardWidth,
+			ArkanoidSettings::rewardHeigth,
+			ArkanoidSettings::rewardSpeed,
+			ArkanoidSettings::rewardFramerate,
+			Game::current->getTextures()[REWARD1]);
+		break;
     default:
       break;
     }

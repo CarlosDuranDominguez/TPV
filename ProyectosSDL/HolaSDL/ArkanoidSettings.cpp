@@ -32,6 +32,8 @@ void ArkanoidSettings::setSceneDimensions()
   paddleSpeed = ratio * paddleSpeedRatio;
   paddleWidth = ratio * paddleWidthRatio;
   paddleHeight = ratio * paddleHeightRatio;
+  paddleMaximumWidth = ratio * paddleMaximumWidthRatio;
+  paddleMinimumWidth = ratio * paddleMinimumWidthRatio;
   rewardWidth = ratio * rewardWidthRatio;
   rewardHeigth = ratio * rewardHeigthRatio;
   rewardSpeed = ratio * rewardSpeedRatio;
@@ -85,9 +87,13 @@ float32 ArkanoidSettings::enemySpeed = 0.0f;
 const float32 ArkanoidSettings::paddleSpeedRatio = 1200.0f;
 const float32 ArkanoidSettings::paddleWidthRatio = 200.0f;
 const float32 ArkanoidSettings::paddleHeightRatio = 40.0f;
+const float32 ArkanoidSettings::paddleMinimumWidthRatio = 150.0f;
+const float32 ArkanoidSettings::paddleMaximumWidthRatio = 250.0f;
 float32 ArkanoidSettings::paddleSpeed = 0.0f;
 float32 ArkanoidSettings::paddleWidth = 0.0f;
 float32 ArkanoidSettings::paddleHeight = 0.0f;
+float32 ArkanoidSettings::paddleMinimumWidth = 0.0f;
+float32 ArkanoidSettings::paddleMaximumWidth = 0.0f;
 //Reward
 const float32 ArkanoidSettings::rewardFramerate = 15.0f;
 const float32 ArkanoidSettings::rewardWidthRatio = 100.0f;

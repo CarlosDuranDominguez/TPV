@@ -107,12 +107,6 @@ void GameState::init()
 	  Game::gameManager()->setLives(ArkanoidSettings::initialLives);
     }
   }
-  for (auto gameo : _gameObjects) {
-	  Ball* b;
-	  if ((b=dynamic_cast<Ball*>(gameo))) {
-		  _paddle->jointTo(b);
-	  }
-  }
   
 }
 

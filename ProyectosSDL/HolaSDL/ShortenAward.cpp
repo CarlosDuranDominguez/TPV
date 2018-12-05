@@ -13,5 +13,5 @@ void ShortenAward::contact()
   Award::contact();
 
   // Creates an event that makes the paddle shorter
-  State::current->addEvent([]() { dynamic_cast<GameState *>(State::current)->paddle()->setWidth(50); });
+  State::current->addEvent([]() { dynamic_cast<GameState *>(State::current)->paddle()->setWidth(ArkanoidSettings::paddleMinimumWidth); });
 }

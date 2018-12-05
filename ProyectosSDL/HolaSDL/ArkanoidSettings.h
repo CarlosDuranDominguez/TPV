@@ -46,9 +46,13 @@ public:
   const static float32 paddleSpeedRatio;
   const static float32 paddleWidthRatio;
   const static float32 paddleHeightRatio;
+  const static float32 paddleMinimumWidthRatio;
+  const static float32 paddleMaximumWidthRatio;
   static float32 paddleSpeed;
   static float32 paddleWidth;
   static float32 paddleHeight;
+  static float32 paddleMinimumWidth;
+  static float32 paddleMaximumWidth;
   //Reward
   const static float32 rewardFramerate;
   const static float32 rewardWidthRatio;

@@ -13,5 +13,5 @@ void EnlargenAward::contact()
   Award::contact();
 
   // Creates an event that makes the paddle larger
-  State::current->addEvent([]() { dynamic_cast<GameState *>(State::current)->paddle()->setWidth(200); });
+  State::current->addEvent([]() { dynamic_cast<GameState *>(State::current)->paddle()->setWidth(ArkanoidSettings::paddleMaximumWidth); });
 }

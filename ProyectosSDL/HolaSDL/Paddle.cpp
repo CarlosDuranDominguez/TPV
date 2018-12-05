@@ -37,14 +37,19 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height, float3
 Paddle::Paddle(){};
 
 Paddle::Paddle(float32 x, float32 y, float32 width, float32 height, float32 anchorX, float32 limit, float32 maxSpeed, Texture *texture)
-    : ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
-      _leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed)
+	: ArkanoidBody(x, y, width, height, texture), _rightMovement(false), _leftMovement(false),
+	_leftAnchor(anchorX - limit), _rightAnchor(anchorX + limit), _speed(maxSpeed), _sticky(true)
 {
+  _action = [this]() { splitFromBall(); setSticky(false); };
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
 
 Paddle::~Paddle()
 {
+	/*if (_ball) {
+		Game::getWorld()->DestroyJoint(_ballJointA);
+		Game::getWorld()->DestroyJoint(_ballJointB);
+	}*/
 }
 
 /// Public Victual
@@ -86,6 +91,9 @@ void Paddle::handleEvents(SDL_Event event)
     case SDLK_LEFT:
       _leftMovement = true;
       break;
+	  case SDLK_SPACE:
+		  _action();
+		  break;
     }
     break;
   case SDL_KEYUP:
@@ -97,13 +105,17 @@ void Paddle::handleEvents(SDL_Event event)
     case SDLK_LEFT:
       _leftMovement = false;
       break;
-	case SDLK_UP:
-		splitFromBall();
-		break;
     }
   }
   b2Vec2 v = {(_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f};
   setVelocity(v);
+}
+
+void Paddle::onBeginContact(RigidBody* rigigbody) {
+	Ball*ball;
+	if (_sticky && (ball = dynamic_cast<Ball*>(rigigbody))) {
+		State::current->addEvent([this,ball]() {jointTo(ball); });
+	}
 }
 
 void Paddle::setWidth(float32 width)
@@ -125,13 +137,13 @@ void Paddle::jointTo(Ball* ball) {
 	jointDef.enableLimit = true;
 	b2Vec2 a = getPosition()- ball->getPosition();
 	jointDef.localAxisA = a;
-	jointDef.upperTranslation = a.LengthSquared();
-	jointDef.lowerTranslation = a.LengthSquared();
+	jointDef.upperTranslation = 0.0f;
+	jointDef.lowerTranslation = 0.0f;
 	_ballJointA = Game::getWorld()->CreateJoint(&jointDef);
 	b2DistanceJointDef jointDefa;
 	jointDefa.bodyB = _body;
 	jointDefa.bodyA = ball->getBody();
-	jointDefa.length = 10.0f;
+	jointDefa.length = a.LengthSquared();
 	_ballJointB = Game::getWorld()->CreateJoint(&jointDefa);
 	_ball = ball;
 }
@@ -140,7 +152,7 @@ void Paddle::splitFromBall() {
 	if (_ball != nullptr) {
 		Game::getWorld()->DestroyJoint(_ballJointA);
 		Game::getWorld()->DestroyJoint(_ballJointB);
-		_ball->setVelocity(getPosition() - _ball->getPosition());
+		_ball->setVelocity( _ball->getPosition()- getPosition());
 		_ball = nullptr;
 	}
 }
@@ -160,6 +172,7 @@ std::istream &Paddle::deserialize(std::istream &out)
   _rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
   _leftMovement = false;
   _rightMovement = false;
+  _action = [this]() { splitFromBall(); setSticky(false); };
   return out;
 }
 

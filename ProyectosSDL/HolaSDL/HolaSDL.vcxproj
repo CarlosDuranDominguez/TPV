@@ -126,6 +126,7 @@
     <ClCompile Include="Award.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="DeadZone.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="ArkanoidObject.h" />
     <ClInclude Include="ArkanoidError.h" />
     <ClInclude Include="ArkanoidTimer.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="FileFormatError.h" />
     <ClInclude Include="FileNotFoundError.h" />
     <ClInclude Include="SDLError.h" />
