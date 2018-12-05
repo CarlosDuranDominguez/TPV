@@ -54,7 +54,7 @@ public:
   static float32 paddleMinimumWidth;
   static float32 paddleMaximumWidth;
   // Reward
-  const static float32 rewardFramerate;
+  const static uint rewardFramerate;
   const static float32 rewardWidthRatio;
   const static float32 rewardHeigthRatio;
   const static float32 rewardSpeedRatio;

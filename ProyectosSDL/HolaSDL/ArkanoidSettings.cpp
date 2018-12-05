@@ -101,7 +101,7 @@ float32 ArkanoidSettings::paddleHeight = 0.0f;
 float32 ArkanoidSettings::paddleMinimumWidth = 0.0f;
 float32 ArkanoidSettings::paddleMaximumWidth = 0.0f;
 // Reward
-const float32 ArkanoidSettings::rewardFramerate = 15.0f;
+const uint ArkanoidSettings::rewardFramerate = 15;
 const float32 ArkanoidSettings::rewardWidthRatio = 100.0f;
 const float32 ArkanoidSettings::rewardHeigthRatio = 40.0f;
 const float32 ArkanoidSettings::rewardSpeedRatio = 700.0f;
