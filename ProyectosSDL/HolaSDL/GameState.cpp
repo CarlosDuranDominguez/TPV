@@ -23,6 +23,7 @@
 #include "FileNotFoundError.h"
 #include "FileFormatError.h"
 #include "Bullet.h"
+#include "ScoreBoardState.h"
 
 /// Public Virtual
 // Adds a pending event to reset this state in the next tick
@@ -54,6 +55,10 @@ void GameState::init()
   add(*new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE, GREY, "S", [this]() {
     auto call = [this]() { saveLevel("../saves/level.save"); };
     addEvent(call);
+  }));
+  add(*new Button(_game->getFonts()[MEDIUMFONT], 500, 400, 100, 100, WHITE, GREY, "FINAL SCENE", [this]() {
+	  _exit = true; 
+	  _game->pushState(*new ScoreBoardState(_game, _game->getRenderer()));
   }));
   auto gameManager = Game::getGameManager();
   // If the game's level is above 0, try to load the level

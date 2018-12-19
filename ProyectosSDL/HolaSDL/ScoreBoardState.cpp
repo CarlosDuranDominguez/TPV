@@ -11,7 +11,8 @@ ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
   add(*gameObject);
   gameObject = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY, "Exit", [this, game]() {
     _exit = true;
-    game->changeState(MENU);
+	while(Game::current->loadStates()>1)
+		Game::current->popState();
   });
   add(*gameObject);
   gameObject = new Button(game->getFonts()[0], 200, 400, 200, 100, WHITE, GREY, "By Time", [this, game]() {

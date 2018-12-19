@@ -36,14 +36,6 @@ protected:
   ArkanoidTimer *_stateTime;
   bool _exit = false;
   Game *_game;
-  void _create();
-  void _render() const;
-  void _update();
-  void _handleEvents();
-  void _fixUpdate(float32 time);
-  void _afterUpdate();
-  void _events();
-  virtual void _destroy();
   virtual void _end(){};
 
 public:
@@ -60,7 +52,16 @@ public:
     _exit = false;
   };
   void destroy(list<GameObject *>::iterator &gameObjectId);
-  void run();
+
+  void create();
+  void render() const;
+  void update();
+  void handleEvents();
+  void fixUpdate(float32 time);
+  void afterUpdate();
+  void events();
+  virtual void destroy();
+
   void addCreation(GAME_OBJECTS type, b2Vec2 &position);
   GameObject *create(GAME_OBJECTS type, b2Vec2 &position);
   void add(GameObject &gameObject);

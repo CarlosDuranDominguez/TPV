@@ -1,4 +1,5 @@
 #include "MenuState.h"
+#include "ScoreBoardState.h"
 #include "Button.h"
 #include "Game.h"
 #include <functional>
@@ -11,10 +12,10 @@ MenuState::MenuState(Game *game, SDL_Renderer *renderer) : State(game, renderer)
   auto _buttons = new Button *[4];
   string nombres[4] = {"New Game", "Continue", "ScoreBoard", "Exit"};
   function<void()> callbacks[4] = {
-      [this, game]() { _exit = true; game->changeState(GAME); game->getGameManager()->setLevel(1); },
-      [this, game]() { _exit = true; game->changeState(GAME); game->getGameManager()->setLevel(0); },
-      [this, game]() { _exit = true; game->changeState(SCOREBOARD); },
-      [this, game]() { _exit = true; game->changeState(GAMEOVER); }};
+      [this, game]() { _exit = true; game->pushState(*new GameState(game, game->getRenderer())); game->getGameManager()->setLevel(1); },
+      [this, game]() { _exit = true; game->pushState(*new GameState(game, game->getRenderer())); game->getGameManager()->setLevel(0); },
+	  [this, game]() { _exit = true; game->pushState(*new ScoreBoardState(game, game->getRenderer())); },
+      [this, game]() { _exit = true; game->popState(); }};
 
   for (int i = 0; i < 4; i++)
   {

@@ -14,7 +14,9 @@ private:
 
 public:
   GameState(Game *game, SDL_Renderer *renderer)
-      : State(game, renderer){};
+	  : State(game, renderer) {
+	  init();
+  };
   virtual ~GameState(){};
   virtual void reset();
   virtual void init();

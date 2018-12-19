@@ -8,9 +8,9 @@
 #include "Font.h"
 #include "GameManager.h"
 #include "State.h"
-#include "GameState.h"
-#include <map>
+#include <stack>
 #include "ArkanoidSettings.h"
+#include "GameState.h"
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
@@ -46,50 +46,50 @@ struct TextureInfo
 
 enum Textures
 {
-  BALL,
-  BRICKS,
-  PADDLE,
-  SIDE,
-  TOPSIDE,
-  ENEMY1,
-  ENEMY2,
-  ENEMY3,
-  ENEMY4,
-  ENEMY5,
-  ENEMY6,
-  REWARD1,
-  REWARD2,
-  REWARD3,
-  REWARD4,
-  REWARD5,
-  REWARD6,
-  REWARD7,
-  REWARD8,
-  REWARD9,
-  REWARD10,
-  REWARD11,
-  REWARD12,
-  REWARD13,
-  REWARD14,
-  REWARD15,
-  REWARD16,
-  REWARD17,
-  REWARD18,
-  REWARD19,
-  LIFE,
-  ILUMINATION1,
-  ILUMINATION2,
-  ILUMINATION3,
-  ILUMINATION4,
-  ILUMINATION5,
-  ILUMINATION6,
-  ILUMINATION7,
-  ILUMINATION8,
-  ILUMINATION9,
-  ILUMINATION10,
-  BALLBLACK,
-  BALLCOLOURS,
-  BALLON
+	BALL,
+	BRICKS,
+	PADDLE,
+	SIDE,
+	TOPSIDE,
+	ENEMY1,
+	ENEMY2,
+	ENEMY3,
+	ENEMY4,
+	ENEMY5,
+	ENEMY6,
+	REWARD1,
+	REWARD2,
+	REWARD3,
+	REWARD4,
+	REWARD5,
+	REWARD6,
+	REWARD7,
+	REWARD8,
+	REWARD9,
+	REWARD10,
+	REWARD11,
+	REWARD12,
+	REWARD13,
+	REWARD14,
+	REWARD15,
+	REWARD16,
+	REWARD17,
+	REWARD18,
+	REWARD19,
+	LIFE,
+	ILUMINATION1,
+	ILUMINATION2,
+	ILUMINATION3,
+	ILUMINATION4,
+	ILUMINATION5,
+	ILUMINATION6,
+	ILUMINATION7,
+	ILUMINATION8,
+	ILUMINATION9,
+	ILUMINATION10,
+	BALLBLACK,
+	BALLCOLOURS,
+	BALLON
 };
 
 const TextureInfo TEXTURES[NUMBER_TEXTURES]{
@@ -187,8 +187,8 @@ private:
   Texture *_textures[NUMBER_TEXTURES];
   Font *_fonts[NUMBERFONTS];
   static GameManager *_gamemanager;
-  map<States, State *> _states;
-  States _state = States::MENU;
+  stack<State*> _states;
+  State* _currentState;
   static b2World *_world;
 
 public:
@@ -197,10 +197,12 @@ public:
   static Game *current;
   Texture **getTextures();
   Font **getFonts();
-  void changeState(const States &state);
   void run();
-  States getState() { return _state; };
-  GameState *getGameState() { return dynamic_cast<GameState *>(_states[GAME]); }
+  void popState();
+  void pushState(State& state);
+  State* currentState() { return _currentState; };
+  int loadStates() { return _states.size(); }
+  SDL_Renderer* getRenderer() { return _renderer; };
   static GameManager *getGameManager();
   static b2World *getWorld();
   static void setWorld(b2World &world);

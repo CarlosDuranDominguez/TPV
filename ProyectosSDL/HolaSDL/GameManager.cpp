@@ -1,6 +1,7 @@
 #include "GameManager.h"
 #include "Game.h"
 #include "GameState.h"
+#include "ScoreBoardState.h"
 
 /// Public
 // Constructor
@@ -74,7 +75,7 @@ void GameManager::deleteLive()
   // If there are no lives left, go to the menu and end the current state
   if (--_lives == 0)
   {
-    _game->changeState(States::MENU);
+	  _game->popState();
     State::current->end();
   }
   else
@@ -98,7 +99,7 @@ void GameManager::finishLevel(float32 time)
   else
   {
     _topBoard->pushScore(new PlayerGame{"Alguien", _score, (int)_totalTime});
-    _game->changeState(States::SCOREBOARD);
+    _game->pushState(*new ScoreBoardState(_game,_game->getRenderer()));
   }
 }
 

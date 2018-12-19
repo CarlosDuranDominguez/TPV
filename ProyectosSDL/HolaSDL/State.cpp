@@ -38,6 +38,11 @@ State::~State()
   delete _stateTime;
   delete _world;
   delete _listenerLogic;
+  _renderer = nullptr;
+  _listenerLogic = nullptr;
+  _world = nullptr;
+  _stateTime = nullptr;
+  _game = nullptr;
 }
 
 /// Public Static
@@ -58,41 +63,6 @@ void State::destroy(list<GameObject *>::iterator &gameObjectId)
 
   // Add the id to the pending on destroy list
   _pendingOnDestroy.push_back(gameObjectId);
-}
-
-/// Public
-// Defines the run behaviour for this state
-void State::run()
-{
-  // Set the start time, run state's event loop
-  b2Timer startTime;
-
-  // The event loop follows this scheme:
-  // → Create all pending-to-create game objects
-  // → Handle SDL events (provided by SDL's event poll)
-  // → Handle updates (updates all game objects of the game)
-  // → Handle fixed updates (called every second)
-  // → Handle after updates (called after the physics engine has run)
-  // → Render all the game objects from the scene
-  // → Run all the pending events of this tick from the stack
-  // → Destroy all the elements that are pending to destroy
-  // Once all tasks are done, exit loop, perform cleanup, and finish
-  while (!_exit)
-  {
-    _create();
-    _handleEvents();
-    _update();
-    if (startTime.GetMilliseconds() / 1000.0f >= 1.0f / (ArkanoidSettings::framerate))
-    {
-      _fixUpdate(startTime.GetMilliseconds() / 1000.0f);
-      startTime.Reset();
-    }
-    _afterUpdate();
-    _render();
-    _events();
-    _destroy();
-  }
-  _end();
 }
 
 /// Public
@@ -173,7 +143,7 @@ float32 State::getTime() const
 
 /// Protected
 // Defines the behaviour for the creation
-void State::_create()
+void State::create()
 {
   for (auto instance : _pendingOnCreate)
   {
@@ -185,7 +155,7 @@ void State::_create()
 
 /// Protected
 // Defines the behaviour for the render
-void State::_render() const
+void State::render() const
 {
   // Clear the screen
   SDL_RenderClear(_renderer);
@@ -200,37 +170,47 @@ void State::_render() const
 
 /// Protected
 // Defines the behaviour for the updates
-void State::_update()
+void State::update()
 {
   // Update each game object
-  for (auto gameObject : _gameObjects)
-    gameObject->update();
+	for (auto it = _gameObjects.begin(); !_exit && it != _gameObjects.end();) {
+		auto next = it;
+		++next;
+		(*it)->update();
+		it = next;
+	}
 }
 
 /// Protected
 // Defines the behaviour for the event handler
-void State::_handleEvents()
+void State::handleEvents()
 {
   // Listen to SDL events
   SDL_Event event;
   while (!_exit && SDL_PollEvent(&event))
   {
+	  // For each game object, run the event handler
+	  for (auto it = _gameObjects.begin(); !_exit && it != _gameObjects.end();) {
+			auto next = it;
+			++next;
+			(*it)->handleEvents(event);
+			it = next;
+		}
     // If the event type is quit, change state to GAMEOVER for cleanup
     if (event.type == SDL_QUIT)
     {
       _exit = true;
-      _game->changeState(States::GAMEOVER);
+	  auto game = _game;
+	  while (game!=nullptr&&game->currentState() != nullptr) game->popState();
     }
 
-    // For each game object, run the event handler
-    for (auto gameObject : _gameObjects)
-      gameObject->handleEvents(event);
+    
   }
 }
 
 /// Protected
 // Defines the behaviour for the fixed update
-void State::_fixUpdate(float32 timeStep)
+void State::fixUpdate(float32 timeStep)
 {
   // Advance the world's physics by the time step, running
   // 8 velocity iterations and 3 position iterations
@@ -239,7 +219,7 @@ void State::_fixUpdate(float32 timeStep)
 
 /// Protected
 // Defines the behaviour for the after update
-void State::_afterUpdate()
+void State::afterUpdate()
 {
   // For each game object, run the after update handler
   for (auto gameObject : _gameObjects)
@@ -248,7 +228,7 @@ void State::_afterUpdate()
 
 /// Protected
 // Defines the behaviour for the events
-void State::_events()
+void State::events()
 {
   // Call each event callback from the stack
   while (!_pendingEvents.empty())
@@ -260,7 +240,7 @@ void State::_events()
 
 /// Protected Virtual
 // Defines the behaviour for the destroy
-void State::_destroy()
+void State::destroy()
 {
   // For each object pending to be destroyed, destroy and erase from the game objects
   for (list<GameObject *>::iterator object : _pendingOnDestroy)

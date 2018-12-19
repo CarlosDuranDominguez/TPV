@@ -1,7 +1,5 @@
-#include "Game.h"
-#include "GameState.h"
+﻿#include "Game.h"
 #include "MenuState.h"
-#include "ScoreBoardState.h"
 #include "SDLError.h"
 
 GameManager *Game::_gamemanager = nullptr;
@@ -41,19 +39,18 @@ Game::Game()
 
   // Create the game manager and insert states
   _gamemanager = new GameManager(this);
-  _states.insert(std::pair<States, State *>(States::GAME, new GameState(this, _renderer)));
-  _states.insert(std::pair<States, State *>(States::MENU, new MenuState(this, _renderer)));
-  _states.insert(std::pair<States, State *>(States::SCOREBOARD, new ScoreBoardState(this, _renderer)));
+  _states.push( new MenuState(this, _renderer));
+  _currentState = _states.top();
 }
 
 /// Public
 // Destructor
 Game::~Game()
 {
-  for (auto state : _states)
-  {
-    delete state.second;
-  }
+	while (!_states.empty()) {
+		delete _states.top();
+		_states.pop();
+	}
 
   for (uint i = 0; i < NUMBER_TEXTURES; i++)
   {
@@ -86,21 +83,52 @@ Font **Game::getFonts()
 // Run the game's event loop
 void Game::run()
 {
-  // While it's not gameover (set when exit), run the event loop
-  while (_state != GAMEOVER)
+	// Set the start time, run state's event loop
+	b2Timer startTime;
+
+	// The event loop follows this scheme:
+	// → Create all pending-to-create game objects
+	// → Handle SDL events (provided by SDL's event poll)
+	// → Handle updates (updates all game objects of the game)
+	// → Handle fixed updates (called every second)
+	// → Handle after updates (called after the physics engine has run)
+	// → Render all the game objects from the scene
+	// → Run all the pending events of this tick from the stack
+	// → Destroy all the elements that are pending to destroy
+  while (!_states.empty())
   {
-    State *cur = _states[_state];
-    cur->init();
-    cur->run();
+	  if (_currentState != nullptr)_currentState->create();
+	  if (_currentState != nullptr) _currentState->handleEvents();
+	  if (_currentState != nullptr) _currentState->update();
+	  if (startTime.GetMilliseconds() / 1000.0f >= 1.0f / (ArkanoidSettings::framerate))
+	  {
+		  if (_currentState != nullptr) _currentState->fixUpdate(startTime.GetMilliseconds() / 1000.0f);
+		  startTime.Reset();
+	  }
+	  if (_currentState != nullptr) _currentState->afterUpdate();
+	  if (_currentState != nullptr) _currentState->render();
+	  if (_currentState != nullptr) _currentState->events();
+	  if (_currentState != nullptr) _currentState->destroy();
   }
 }
 
-/// Public
-// Change the current state
-void Game::changeState(const States &state)
-{
-  _state = state;
-  State::current->end();
+void Game::popState() {
+	if (!_states.empty()) {
+		delete _states.top();
+		_states.pop();
+		if (!_states.empty()) {
+			_currentState = _states.top();
+			_currentState->init();
+		}
+		else {
+			_currentState = nullptr;
+		}
+	}
+
+}
+void Game::pushState(State& state) {
+	_states.push(&state);
+	_currentState = &state;
 }
 
 /// Public
