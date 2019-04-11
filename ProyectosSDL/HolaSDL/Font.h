@@ -3,13 +3,12 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 #include "Texture.h"
-#include "checkML.h"
 
 class Font {
  private:
   TTF_Font *_font = nullptr;
   SDL_Renderer *_renderer;
-  uint _size = 8;
+  Uint32 _size = 8;
 
  public:
   Font(){};

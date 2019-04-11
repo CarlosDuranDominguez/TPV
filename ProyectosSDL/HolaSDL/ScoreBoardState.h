@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Button.h"
 #include "ScoreBoard.h"
 #include "State.h"
-#include "checkML.h"
 
 class Game;
 

@@ -2,7 +2,6 @@
 #include <iostream>
 #include "Game.h"
 #include "SDL.h"
-#include "SDL_image.h"
 #include "checkML.h"
 
 using namespace std;

@@ -1,6 +1,5 @@
 #include "NextLevelAward.h"
 #include "Game.h"
-#include "GameState.h"
 
 /// Public
 // Constructor

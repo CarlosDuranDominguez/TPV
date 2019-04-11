@@ -1,8 +1,6 @@
 #pragma once
-#include <iostream>
 #include <string>
 #include <vector>
-#include "checkML.h"
 
 struct PlayerGame {
   std::string name;

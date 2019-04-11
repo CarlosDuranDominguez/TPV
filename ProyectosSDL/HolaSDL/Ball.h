@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ArkanoidBody.h"
-#include "checkML.h"
 
 class Ball : public ArkanoidBody {
  private:

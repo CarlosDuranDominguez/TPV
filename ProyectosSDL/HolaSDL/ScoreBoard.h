@@ -1,11 +1,8 @@
 #pragma once
 
-#include <algorithm>
 #include <string>
-#include <vector>
 #include "Font.h"
 #include "Text.h"
-#include "checkML.h"
 
 class ScoreBoard : public GameObject, public Renderable {
  private:

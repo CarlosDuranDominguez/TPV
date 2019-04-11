@@ -7,7 +7,7 @@
 
 class ArkanoidObject : public GameObject, public Renderable, public Updatable {
  protected:
-  uint textureIndex() const;
+  Uint32 textureIndex() const;
   Texture *readTexture(std::istream &out);
 
  public:

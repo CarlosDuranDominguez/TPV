@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Text.h"
-#include "checkML.h"
 
 class Timer : public Text {
  private:

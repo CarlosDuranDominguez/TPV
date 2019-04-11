@@ -3,7 +3,6 @@
 #include "Font.h"
 #include "GameObject.h"
 #include "Renderable.h"
-#include "checkML.h"
 
 class Text : public GameObject, public Renderable {
  private:

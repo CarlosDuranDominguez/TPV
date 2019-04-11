@@ -1,13 +1,14 @@
 #include "Texture.h"
 #include <iostream>
 #include "SDLError.h"
+#include "SDL_image.h"
 
 using namespace std;
 
 /// Public
 // Constructor
-Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, uint w, uint h,
-                 uint fw, uint fh, uint numRows, uint numCols)
+Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, Uint32 w,
+                 Uint32 h, Uint32 fw, Uint32 fh, Uint32 numRows, Uint32 numCols)
     : _renderer(renderer),
       _texture(texture),
       _w(w),
@@ -19,7 +20,7 @@ Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, uint w, uint h,
 
 /// Public
 // Loads a texture by its file name
-void Texture::load(string filename, uint nRows, uint nCols) {
+void Texture::load(string filename, Uint32 nRows, Uint32 nCols) {
   SDL_Surface *tempSurface = IMG_Load(filename.c_str());
   if (tempSurface == nullptr)
     throw new (SDLError)("Error loading surface from " + filename);

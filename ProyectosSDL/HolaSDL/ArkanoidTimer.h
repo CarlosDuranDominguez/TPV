@@ -1,4 +1,5 @@
 #include <ctime>
+#include "SDL.h"
 
 class ArkanoidTimer {
  private:
@@ -15,6 +16,6 @@ class ArkanoidTimer {
     time(&now);
     return (float32)difftime(now, *_firstTime);
   }
-  void delay(uint time) { *_firstTime -= time; }
+  void delay(Uint32 time) { *_firstTime -= time; }
   void reset() { time(_firstTime); }
 };

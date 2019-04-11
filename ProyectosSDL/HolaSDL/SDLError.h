@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL.h>
 #include "ArkanoidError.h"
 
 class SDLError : public ArkanoidError {

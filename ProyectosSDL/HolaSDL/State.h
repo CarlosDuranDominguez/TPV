@@ -5,11 +5,8 @@
 #include <list>
 #include <stack>
 #include "ArkanoidTimer.h"
-#include "Controllable.h"
 #include "GameObject.h"
-#include "Renderable.h"
 #include "SDL.h"
-#include "Updatable.h"
 
 class Game;
 class CollisionLogic;

@@ -2,7 +2,6 @@
 
 #include "ArkanoidObject.h"
 #include "RigidBody.h"
-#include "checkML.h"
 
 class ArkanoidBody : public ArkanoidObject, public RigidBody {
  public:

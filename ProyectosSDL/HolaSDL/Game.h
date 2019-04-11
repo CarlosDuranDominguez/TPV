@@ -6,11 +6,8 @@
 #include "GameManager.h"
 #include "GameState.h"
 #include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
 #include "State.h"
 #include "Texture.h"
-#include "checkML.h"
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
@@ -165,7 +162,7 @@ class Game {
   Font *_fonts[NUMBERFONTS];
   static GameManager *_gamemanager;
   map<States, State *> _states;
-  States _state = States::MENU;
+  States _state = MENU;
   static b2World *_world;
 
  public:

@@ -1,19 +1,12 @@
 #include "State.h"
-#include <fstream>
 #include "Award.h"
 #include "Ball.h"
 #include "Block.h"
 #include "Button.h"
 #include "CollisionLogic.h"
-#include "EnlargenAward.h"
 #include "Game.h"
-#include "LaserAward.h"
 #include "MultiBallAward.h"
-#include "NextLevelAward.h"
 #include "Paddle.h"
-#include "ShortenAward.h"
-#include "StickyAward.h"
-#include "Wall.h"
 
 /// Public
 // Constructor

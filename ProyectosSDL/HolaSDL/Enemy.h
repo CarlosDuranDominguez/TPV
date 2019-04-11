@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ArkanoidBody.h"
-#include "checkML.h"
 
 class Game;
 
@@ -13,7 +12,7 @@ class Enemy : public ArkanoidBody {
   float32 _framerate;
   b2Timer *_timer;
   b2Timer *_animationTimer;
-  uint _frame;
+  Uint32 _frame;
   void setBody(float32 x, float32 y, float32 radius, b2World &world);
 
  public:

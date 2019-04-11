@@ -1,7 +1,5 @@
 #include "GameState.h"
-#include <algorithm>
 #include <fstream>
-#include <iostream>
 #include "Ball.h"
 #include "Block.h"
 #include "Bullet.h"
@@ -20,7 +18,6 @@
 #include "Scoremarker.h"
 #include "ShortenAward.h"
 #include "StickyAward.h"
-#include "Text.h"
 #include "Timer.h"
 #include "Wall.h"
 
@@ -162,7 +159,7 @@ void GameState::loadLevel(const string &path) {
     if (name == "") continue;
 
     // Create a GameObject pointer and identify the kind of object
-    GameObject *gameObject = nullptr;
+    GameObject *gameObject;
     if (name == "Wall") {
       gameObject = new Wall();
     } else if (name == "Paddle") {

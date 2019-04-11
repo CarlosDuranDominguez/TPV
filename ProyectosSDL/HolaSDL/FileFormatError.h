@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL.h>
 #include "ArkanoidError.h"
 
 class FileFormatError : public ArkanoidError {

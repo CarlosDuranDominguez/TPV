@@ -1,5 +1,4 @@
 #include "Timer.h"
-#include <math.h>
 #include "State.h"
 
 /// Public

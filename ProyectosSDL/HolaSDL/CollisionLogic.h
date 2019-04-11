@@ -1,5 +1,4 @@
 #include <Box2D/Box2D.h>
-#include "GameObject.h"
 #include "RigidBody.h"
 
 class CollisionLogic : public b2ContactListener {

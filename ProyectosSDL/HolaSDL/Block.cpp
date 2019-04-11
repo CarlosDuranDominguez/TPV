@@ -2,7 +2,6 @@
 #include "Award.h"
 #include "EnlargenAward.h"
 #include "Game.h"
-#include "LaserAward.h"
 #include "MultiBallAward.h"
 #include "NextLevelAward.h"
 #include "ShortenAward.h"
