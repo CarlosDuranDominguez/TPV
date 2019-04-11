@@ -7,6 +7,7 @@
 
 class Game;
 enum Actions { NONE, BEGIN, STICKY, LASER };
+
 class Paddle final : public ArkanoidBody, public Controllable {
   class ArkanoidJoint {
    public:
@@ -35,12 +36,11 @@ class Paddle final : public ArkanoidBody, public Controllable {
   void afterUpdate() override;
   void render() const override;
   void handleEvents(SDL_Event event) override;
-  void onBeginContact(RigidBody *rigigBody) override;
+  void onBeginContact(RigidBody *rigidBody) override;
   void setWidth(float32 width);
   void jointTo(Ball *ball);
   void splitFromBalls();
   void setSticky(bool sticky);
-  ;
   std::istream &deserialize(std::istream &out) override;
   std::ostream &serialize(std::ostream &is) const override;
   void setAction(Actions action);

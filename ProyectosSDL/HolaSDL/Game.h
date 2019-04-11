@@ -1,12 +1,13 @@
 #pragma once
 
-#include <map>
 #include "Font.h"
 #include "GameManager.h"
 #include "GameState.h"
 #include "SDL.h"
 #include "State.h"
 #include "Texture.h"
+
+class GameStateMachine;
 
 const Uint32 kWinWidth = 800;
 const Uint32 kWinHeight = 600;
@@ -151,16 +152,13 @@ const Uint32 kNumberFonts = 2;
 const SDL_Color kWhite = {255, 255, 255, 255};
 const SDL_Color kGrey = {80, 80, 80, 255};
 
-enum States { GAMEOVER, SCOREBOARD, GAME, MENU };
-
 class Game {
   SDL_Window *window_ = nullptr;
   SDL_Renderer *renderer_ = nullptr;
   Texture *textures_[kNumberTextures];
   Font *fonts_[kNumberFonts];
   static GameManager *gameManager_;
-  map<States, State *> states_;
-  States state_ = MENU;
+  GameStateMachine *states_;
   static b2World *world_;
 
  public:
@@ -169,10 +167,11 @@ class Game {
   static Game *current_;
   Texture **getTextures();
   Font **getFonts();
-  void changeState(const States &state);
-  void run();
-  States getState() const;
-  GameState *getGameState();
+  void run() const;
+  GameState *getGameState() const;
+  GameStateMachine *getGameStateMachine() const;
+  void flushStates() const;
+  SDL_Renderer *getRenderer() const;
   static GameManager *getGameManager();
   static b2World *getWorld();
   static void setWorld(b2World &world);

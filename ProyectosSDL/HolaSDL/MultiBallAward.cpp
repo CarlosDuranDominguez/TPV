@@ -23,10 +23,10 @@ void MultiBallAward::contact() {
     auto pos = dynamic_cast<RigidBody *>(this)->getPosition();
     pos.y -= 10;
     pos.x -= 5.0f;
-    reinterpret_cast<RigidBody *>(gs->create(kBall, pos))
+    dynamic_cast<RigidBody *>(gs->create(kBall, pos))
         ->setVelocity(b2Vec2{1000, -1000});
     pos.x += 10.0f;
-    reinterpret_cast<RigidBody *>(gs->create(kBall, pos))
+    dynamic_cast<RigidBody *>(gs->create(kBall, pos))
         ->setVelocity(b2Vec2{-1000, -1000});
   });
 }

@@ -113,9 +113,9 @@ void Paddle::handleEvents(const SDL_Event event) {
 }
 
 // Defines behaviour when the instance starts to have contact with an element
-void Paddle::onBeginContact(RigidBody *rigigBody) {
+void Paddle::onBeginContact(RigidBody *rigidBody) {
   Ball *ball;
-  if (sticky_ && (ball = dynamic_cast<Ball *>(rigigBody))) {
+  if (sticky_ && (ball = dynamic_cast<Ball *>(rigidBody))) {
     State::current_->addEvent([this, ball]() { jointTo(ball); });
   }
 }

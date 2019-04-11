@@ -10,13 +10,6 @@ GameObject::GameObject(const float32 x, const float32 y, const float32 width,
 // Destroys this game object from the current state in the game
 GameObject::~GameObject() = default;
 
-list<GameObject *>::iterator GameObject::getId() const { return id_; }
-
-list<GameObject *>::iterator GameObject::setId(
-    list<GameObject *>::iterator &id) {
-  return id_ = id;
-}
-
 void GameObject::render() const {}
 
 void GameObject::update() {}
@@ -25,7 +18,7 @@ void GameObject::afterUpdate() {}
 
 void GameObject::handleEvents(SDL_Event) {}
 
-void GameObject::destroy() { State::current_->destroy(id_); }
+void GameObject::destroy() { State::current_->destroy(this); }
 
 // Sets this game object's position
 void GameObject::setPosition(const float32 x, const float32 y) {

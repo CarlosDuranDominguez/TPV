@@ -5,6 +5,7 @@
 #include "Button.h"
 #include "CollisionLogic.h"
 #include "Game.h"
+#include "GameStateMachine.h"
 #include "MultiBallAward.h"
 #include "Paddle.h"
 
@@ -24,10 +25,10 @@ State::State(Game *game, SDL_Renderer *renderer)
 
 // Destructor
 State::~State() {
+  destroy();
   for (auto gameObject : gameObjects_) {
     delete gameObject;
   }
-  pendingOnDestroy_.clear();
   gameObjects_.clear();
   delete stateTime_;
   delete world_;
@@ -38,49 +39,16 @@ State::~State() {
 State *State::current_ = nullptr;
 
 // Defines the destroy behaviour for this state
-void State::destroy(list<GameObject *>::iterator &gameObjectId) {
+void State::destroy(GameObject *gameObject) {
   // For each element pending to destroy, check if it was already pending to be
   // destroyed
-  for (auto it = pendingOnDestroy_.begin(); it != pendingOnDestroy_.end();
-       ++it) {
+  for (auto &it : pendingOnDestroy_) {
     // If it was already pending to be destroyed, skip
-    if (*it == gameObjectId) return;
+    if (it == gameObject) return;
   }
 
   // Add the id to the pending on destroy list
-  pendingOnDestroy_.push_back(gameObjectId);
-}
-
-// Defines the run behaviour for this state
-void State::run() {
-  // Set the start time, run state's event loop
-  b2Timer startTime;
-
-  // The event loop follows this scheme:
-  // → Create all pending-to-create game objects
-  // → Handle SDL events (provided by SDL's event poll)
-  // → Handle updates (updates all game objects of the game)
-  // → Handle fixed updates (called every second)
-  // → Handle after updates (called after the physics engine has run)
-  // → Render all the game objects from the scene
-  // → Run all the pending events of this tick from the stack
-  // → Destroy all the elements that are pending to destroy
-  // Once all tasks are done, exit loop, perform cleanup, and finish
-  while (!exit_) {
-    create();
-    handleEvents();
-    update();
-    if (startTime.GetMilliseconds() / 1000.0f >=
-        1.0f / (ArkanoidSettings::framerate_)) {
-      fixUpdate(startTime.GetMilliseconds() / 1000.0f);
-      startTime.Reset();
-    }
-    afterUpdate();
-    render();
-    events();
-    destroy();
-  }
-  _end();
+  pendingOnDestroy_.push_back(gameObject);
 }
 
 // Pushes a new instance for creation for the task queue
@@ -138,7 +106,6 @@ GameObject *State::create(const GameObjects type, b2Vec2 &position) {
 // Adds a game object to the game objects list and sets its id
 void State::add(GameObject &gameObject) {
   gameObjects_.push_front(&gameObject);
-  gameObject.setId(gameObjects_.begin());
 }
 
 // Adds an event to the task queue
@@ -186,7 +153,12 @@ void State::render() const {
 // Defines the behaviour for the updates
 void State::update() {
   // Update each game object
-  for (auto gameObject : gameObjects_) gameObject->update();
+  for (auto it = gameObjects_.begin(); !exit_ && it != gameObjects_.end();) {
+    auto next = it;
+    ++next;
+    (*it)->update();
+    it = next;
+  }
 }
 
 // Defines the behaviour for the event handler
@@ -194,14 +166,17 @@ void State::handleEvents() {
   // Listen to SDL events
   SDL_Event event;
   while (!exit_ && SDL_PollEvent(&event)) {
-    // If the event type is quit, change state to GAMEOVER for cleanup
-    if (event.type == SDL_QUIT) {
-      exit_ = true;
-      game_->changeState(States::GAMEOVER);
+    for (auto it = gameObjects_.begin(); !exit_ && it != gameObjects_.end();) {
+      auto next = it;
+      ++next;
+      (*it)->handleEvents(event);
+      it = next;
     }
 
-    // For each game object, run the event handler
-    for (auto gameObject : gameObjects_) gameObject->handleEvents(event);
+    // If the event type is quit, change state to GAMEOVER for cleanup
+    if (event.type == SDL_QUIT) {
+      addEvent([this]() { game_->flushStates(); });
+    }
   }
 }
 
@@ -221,23 +196,32 @@ void State::afterUpdate() {
 // Defines the behaviour for the events
 void State::events() {
   // Call each event callback from the stack
-  while (!pendingEvents_.empty()) {
-    pendingEvents_.top()();
+  while (!exit_ && !pendingEvents_.empty()) {
+    auto cb = pendingEvents_.top();
     pendingEvents_.pop();
+    cb();
   }
 }
 
 // Defines the behaviour for the destroy
 void State::destroy() {
-  // For each object pending to be destroyed, destroy and erase from the game
-  // objects
-  for (auto object : pendingOnDestroy_) {
-    if (*object != nullptr) {
-      delete *object;
-      gameObjects_.erase(object);
+  for (auto gameObject : pendingOnDestroy_) {
+    // If the gameObject was already deleted from memory,
+    // skip this search
+    if (gameObject == nullptr) continue;
+
+    auto it = gameObjects_.begin();
+    while (it != gameObjects_.end()) {
+      if (*it == gameObject) {
+        gameObjects_.erase(it);
+        delete gameObject;
+        break;
+      }
+      ++it;
     }
   }
 
-  // Clear the queue
   pendingOnDestroy_.clear();
 }
+
+bool State::finished() const { return exit_; }

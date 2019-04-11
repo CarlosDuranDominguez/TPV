@@ -11,11 +11,13 @@
 #include "FileFormatError.h"
 #include "FileNotFoundError.h"
 #include "Game.h"
+#include "GameStateMachine.h"
 #include "LaserAward.h"
 #include "LiveMarker.h"
 #include "MultiBallAward.h"
 #include "NextLevelAward.h"
 #include "Paddle.h"
+#include "ScoreBoardState.h"
 #include "ScoreMarker.h"
 #include "ShortenAward.h"
 #include "StickyAward.h"
@@ -23,7 +25,9 @@
 #include "Wall.h"
 
 GameState::GameState(Game *game, SDL_Renderer *renderer)
-    : State(game, renderer), paddle_(nullptr) {}
+    : State(game, renderer), paddle_(nullptr) {
+  init();
+}
 
 GameState::~GameState() = default;
 
@@ -67,6 +71,12 @@ void GameState::init() {
                       saveLevel("../saves/level.save");
                     };
                     addEvent(call);
+                  }));
+  add(*new Button(game_->getFonts()[MEDIUM_FONT], kWinWidth - 200,
+                  kWinHeight - 150, 100, 100, kWhite, kGrey, "FINAL SCENE",
+                  [this]() {
+                    game_->getGameStateMachine()->pushState(
+                        new ScoreBoardState(game_, game_->getRenderer()));
                   }));
   auto gameManager = Game::getGameManager();
   // If the game's level is above 0, try to load the level

@@ -5,7 +5,7 @@
 class Award : public ArkanoidBody {
   Uint32 frameRate_;
   Uint32 frame_;
-  b2Timer *animationTimer_;
+  Uint32 animationTimer_;
   float32 speed_;
   bool contacted_;
   void setBody(float32 x, float32 y, float32 width, float32 height,

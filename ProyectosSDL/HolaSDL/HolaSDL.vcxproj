@@ -137,6 +137,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateMachine.cpp" />
     <ClCompile Include="LaserAward.cpp" />
     <ClCompile Include="LiveMarker.cpp" />
     <ClCompile Include="MultiBallAward.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="FileFormatError.h" />
     <ClInclude Include="FileNotFoundError.h" />
+    <ClInclude Include="GameStateMachine.h" />
     <ClInclude Include="SDLError.h" />
     <ClInclude Include="ArkanoidSettings.h" />
     <ClInclude Include="Award.h" />

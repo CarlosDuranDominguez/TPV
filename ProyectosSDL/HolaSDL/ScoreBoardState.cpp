@@ -1,6 +1,7 @@
 #include "ScoreBoardState.h"
 #include "Button.h"
 #include "Game.h"
+#include "GameStateMachine.h"
 
 // Constructor
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
@@ -8,29 +9,28 @@ ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
   GameObject *gameObject = scoreboard_ =
       new ScoreBoard(game->getFonts()[MEDIUM_FONT], 0, 0, 200, 40, kWhite);
   add(*gameObject);
-  gameObject = new Button(game->getFonts()[0], 0, 400, 200, 100, kWhite, kGrey,
-                          "Exit", [this, game]() {
-                            exit_ = true;
-                            game->changeState(MENU);
-                          });
+  gameObject = new Button(
+      game->getFonts()[0], 0, 400, 200, 100, kWhite, kGrey, "Exit", [this]() {
+        addEvent([this]() { game_->getGameStateMachine()->popState(); });
+      });
   add(*gameObject);
   gameObject = new Button(game->getFonts()[0], 200, 400, 200, 100, kWhite,
-                          kGrey, "By Time", [this, game]() {
+                          kGrey, "By Time", [this]() {
                             Game::getGameManager()->getTopBoard()->sortByTime();
-                            this->scoreboard_->rewrite();
+                            scoreboard_->rewrite();
                           });
   add(*gameObject);
   gameObject = new Button(game->getFonts()[0], 400, 400, 200, 100, kWhite,
-                          kGrey, "By Name", [this, game]() {
+                          kGrey, "By Name", [this]() {
                             Game::getGameManager()->getTopBoard()->sortByName();
-                            this->scoreboard_->rewrite();
+                            scoreboard_->rewrite();
                           });
   add(*gameObject);
   gameObject =
       new Button(game->getFonts()[0], 600, 400, 200, 100, kWhite, kGrey,
-                 "By Score", [this, game]() {
+                 "By Score", [this]() {
                    Game::getGameManager()->getTopBoard()->sortByScore();
-                   this->scoreboard_->rewrite();
+                   scoreboard_->rewrite();
                  });
   add(*gameObject);
 }

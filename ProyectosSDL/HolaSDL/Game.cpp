@@ -1,6 +1,7 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include "ArkanoidSettings.h"
 #include "GameState.h"
+#include "GameStateMachine.h"
 #include "MenuState.h"
 #include "SDLError.h"
 #include "ScoreBoardState.h"
@@ -10,7 +11,7 @@ b2World *Game::world_ = nullptr;
 Game *Game::current_ = nullptr;
 
 // Constructor
-Game::Game() {
+Game::Game() : states_(new GameStateMachine()) {
   // Set up the Arkanoid settings for the window's width and height
   ArkanoidSettings::setUp(kWinWidth, kWinHeight);
   current_ = this;
@@ -41,20 +42,12 @@ Game::Game() {
 
   // Create the game manager and insert states
   gameManager_ = new GameManager(this);
-  states_.insert(
-      std::pair<States, State *>(GAME, new GameState(this, renderer_)));
-  states_.insert(
-      std::pair<States, State *>(MENU, new MenuState(this, renderer_)));
-  states_.insert(std::pair<States, State *>(
-      SCOREBOARD, new ScoreBoardState(this, renderer_)));
+  states_->pushState(new MenuState(this, renderer_));
 }
 
 // Destructor
 Game::~Game() {
-  for (auto state : states_) {
-    delete state.second;
-  }
-
+  delete states_;
   for (auto &texture : textures_) {
     delete texture;
   }
@@ -74,26 +67,53 @@ Texture **Game::getTextures() { return textures_; }
 Font **Game::getFonts() { return fonts_; }
 
 // Run the game's event loop
-void Game::run() {
-  // While it's not gameover (set when exit), run the event loop
-  while (state_ != GAMEOVER) {
-    auto cur = states_[state_];
-    cur->init();
-    cur->run();
+void Game::run() const {
+  // Set the start time, run state's event loop
+  b2Timer startTime;
+  State *state;
+
+  // The event loop follows this scheme:
+  // → Create all pending-to-create game objects
+  // → Handle SDL events (provided by SDL's event poll)
+  // → Handle updates (updates all game objects of the game)
+  // → Handle fixed updates (called every second)
+  // → Handle after updates (called after the physics engine has run)
+  // → Render all the game objects from the scene
+  // → Run all the pending events of this tick from the stack
+  // → Destroy all the elements that are pending to destroy
+  while ((state = states_->currentState())) {
+    State::current_ = state;
+    if (!state->finished()) state->create();
+    if (!state->finished()) state->handleEvents();
+    if (!state->finished()) state->update();
+    if (startTime.GetMilliseconds() / 1000.0f >=
+        1.0f / ArkanoidSettings::framerate_) {
+      if (!state->finished())
+        state->fixUpdate(startTime.GetMilliseconds() / 1000.0f);
+      startTime.Reset();
+    }
+    if (!state->finished()) state->afterUpdate();
+    if (!state->finished()) state->render();
+    if (!state->finished()) state->events();
+    if (!state->finished()) state->destroy();
   }
 }
 
-States Game::getState() const { return state_; }
-
-GameState *Game::getGameState() {
-  return dynamic_cast<GameState *>(states_[GAME]);
+GameState *Game::getGameState() const {
+  return dynamic_cast<GameState *>(states_->currentState());
 }
 
-// Change the current state
-void Game::changeState(const States &state) {
-  state_ = state;
-  State::current_->end();
+GameStateMachine *Game::getGameStateMachine() const { return states_; }
+
+void Game::flushStates() const {
+  while (!states_->empty()) {
+    const auto state = states_->currentState();
+    state->end();
+    states_->popState();
+  }
 }
+
+SDL_Renderer *Game::getRenderer() const { return renderer_; }
 
 // Gets the game's game manager
 GameManager *Game::getGameManager() { return gameManager_; }

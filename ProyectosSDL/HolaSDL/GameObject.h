@@ -6,15 +6,7 @@
 #include "SDL.h"
 #include "Texture.h"
 
-const enum GameObjects {
-  kBlock,
-  kWall,
-  kBall,
-  kPaddle,
-  kButton,
-  kAward,
-  kCounter
-};
+enum GameObjects { kBlock, kWall, kBall, kPaddle, kButton, kAward, kCounter };
 const string kGameObjectNames[]{"Block",  "Wall",  "Ball",   "Paddle",
                                 "Button", "Award", "Counter"};
 const int kGameObjectCount = 7;
@@ -24,7 +16,6 @@ const int kGameObjectCount = 7;
  */
 class GameObject {
  protected:
-  list<GameObject *>::iterator id_;
   b2Vec2 position_;
   b2Vec2 size_;
 
@@ -32,8 +23,6 @@ class GameObject {
   GameObject();
   GameObject(float32 x, float32 y, float32 width, float32 height);
   virtual ~GameObject();
-  list<GameObject *>::iterator getId() const;
-  list<GameObject *>::iterator setId(list<GameObject *>::iterator &id);
   virtual void destroy();
   virtual void render() const;
   virtual void update();

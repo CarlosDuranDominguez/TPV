@@ -1,4 +1,5 @@
 #include "RigidBody.h"
+#include <iostream>
 #include "Game.h"
 
 RigidBody::RigidBody() : body_(nullptr), fixture_(nullptr) {}
@@ -13,8 +14,13 @@ RigidBody::RigidBody(b2BodyDef &, b2Shape &shape, b2FixtureDef &fixtureDef,
 
 // Destructor
 RigidBody::~RigidBody() {
-  body_->DestroyFixture(fixture_);
-  Game::getWorld()->DestroyBody(body_);
+  if (body_) {
+    body_->DestroyFixture(fixture_);
+    Game::getWorld()->DestroyBody(body_);
+    body_ = nullptr;
+  } else {
+    cerr << "Attempted to destroy a null body.";
+  }
 }
 
 // Sets the linear velocity for this rigid body

@@ -2,6 +2,8 @@
 #include "ArkanoidSettings.h"
 #include "Game.h"
 #include "GameState.h"
+#include "GameStateMachine.h"
+#include "ScoreBoardState.h"
 
 // Constructor
 GameManager::GameManager(Game* game) {
@@ -67,8 +69,7 @@ void GameManager::deleteBlock() {
 void GameManager::deleteLive() {
   // If there are no lives left, go to the menu and end the current state
   if (--lives_ == 0) {
-    game_->changeState(States::MENU);
-    State::current_->end();
+    game_->getGameStateMachine()->popState();
   } else {
     // Or reset the state if there are enough lives to continue playing
     State::current_->reset();
@@ -82,10 +83,12 @@ void GameManager::finishLevel(const float32 time) {
   // errors
   if (Uint32(currentLevel_) < ArkanoidSettings::totalLevels_) {
     currentLevel_++;
-    State::current_->end();
+    game_->getGameStateMachine()->pushState(
+        new GameState(game_, game_->getRenderer()));
   } else {
     topBoard_->pushScore(new PlayerGame{"Somebody", score_, int(totalTime_)});
-    game_->changeState(States::SCOREBOARD);
+    game_->getGameStateMachine()->pushState(
+        new ScoreBoardState(game_, game_->getRenderer()));
   }
 }
 

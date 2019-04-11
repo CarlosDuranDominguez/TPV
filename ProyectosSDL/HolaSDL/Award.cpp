@@ -3,6 +3,7 @@
 #include <string>
 #include "Game.h"
 #include "Paddle.h"
+#include "SDL.h"
 
 // Constructor
 Award::Award(const float32 x, const float32 y, const float32 width,
@@ -11,7 +12,7 @@ Award::Award(const float32 x, const float32 y, const float32 width,
     : ArkanoidBody(x, y, width, height, texture),
       frameRate_(frameRate),
       frame_(0),
-      animationTimer_(new b2Timer()),
+      animationTimer_(SDL_GetTicks()),
       speed_(speed),
       contacted_(false) {
   setBody(x, y, width, height, *Game::getWorld());
@@ -20,18 +21,18 @@ Award::Award(const float32 x, const float32 y, const float32 width,
 Award::Award()
     : frameRate_(0),
       frame_(0),
-      animationTimer_(new b2Timer()),
+      animationTimer_(SDL_GetTicks()),
       speed_(0),
       contacted_(false) {}
 
 // Destructor
-Award::~Award() { delete animationTimer_; }
+Award::~Award() = default;
 
 // Updates the update behaviour
 void Award::update() {
   // If the counter's milliseconds counted over 1000 milliseconds divided by
   // the framerate frequency, go to the next frame to continue the animation
-  if (animationTimer_->GetMilliseconds() > 1000.0f / frameRate_) {
+  if (SDL_GetTicks() - animationTimer_ > 1000.0f / frameRate_) {
     // If the next frame is outside the animation range, go to to the first
     // frame
     if (++frame_ > texture_->getNumCols() * texture_->getNumRows()) {
@@ -39,7 +40,7 @@ void Award::update() {
     }
 
     // Reset the timer
-    animationTimer_->Reset();
+    animationTimer_ = SDL_GetTicks();
   }
 }
 
