@@ -7,46 +7,46 @@
 /// Public
 // Constructor
 Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed,
-             uint framerate, Texture *texture)
+             Uint32 framerate, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture),
-      _framerate(framerate),
-      _animationTimer(new b2Timer()),
-      _frame(0),
-      _contacted(false),
-      _speed(speed) {
+      frameRate_(framerate),
+      animationTimer_(new b2Timer()),
+      frame_(0),
+      contacted_(false),
+      speed_(speed) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
 /// Public
 // Destructor
-Award::~Award() { delete _animationTimer; }
+Award::~Award() { delete animationTimer_; }
 
 /// Public Virtual
 // Updates the update behaviour
 void Award::update() {
   // If the counter's milliseconds counted over 1000 milliseconds divided by
   // the framerate frequency, go to the next frame to continue the animation
-  if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate) {
+  if (animationTimer_->GetMilliseconds() > 1000.0f / frameRate_) {
     // If the next frame is outside the animation range, go to to the first
     // frame
-    if ((++_frame) > _texture->getNumCols() * _texture->getNumRows()) {
-      _frame = 0;
+    if ((++frame_) > texture_->getNumCols() * texture_->getNumRows()) {
+      frame_ = 0;
     }
 
     // Reset the timer
-    _animationTimer->Reset();
+    animationTimer_->Reset();
   }
 }
 
 /// Public Virtual
 // Defines the render behaviour
 void Award::render() const {
-  b2Vec2 pos = _body->GetPosition();
+  b2Vec2 pos = body_->GetPosition();
 
-  _texture->renderFrame(
+  texture_->renderFrame(
       {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
        (int)getSize().x, (int)getSize().y},
-      _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
+      frame_ / (texture_->getNumCols() + 1), frame_ % texture_->getNumCols());
 }
 
 /// Public Virtual
@@ -63,8 +63,8 @@ void Award::destroy() {
 /// Public Virtual
 // Defines behaviour after every update cycle
 void Award::afterUpdate() {
-  if (getVelocity().y != _speed) {
-    b2Vec2 v{0, _speed};
+  if (getVelocity().y != speed_) {
+    b2Vec2 v{0, speed_};
     setVelocity(v);
   }
 }
@@ -73,8 +73,8 @@ void Award::afterUpdate() {
 // Defines behaviour when the instance starts to have contact with an element
 void Award::onBeginContact(RigidBody *rigidbody) {
   // If the contact was done with the paddle, set _contacted to true
-  if (!_contacted && dynamic_cast<Paddle *>(rigidbody)) {
-    _contacted = true;
+  if (!contacted_ && dynamic_cast<Paddle *>(rigidbody)) {
+    contacted_ = true;
     contact();
   }
 }
@@ -83,13 +83,13 @@ void Award::onBeginContact(RigidBody *rigidbody) {
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Award::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey;
   setBody(posx, posy, sizex, sizey, *Game::getWorld());
   setPosition(posx, posy);
-  _size.Set(sizex, sizey);
-  out >> _speed >> _framerate;
+  size_.Set(sizex, sizey);
+  out >> speed_ >> frameRate_;
   return out;
 }
 
@@ -100,7 +100,7 @@ std::ostream &Award::serialize(std::ostream &is) const {
   a = a.substr(6);
   return is << a << " " << textureIndex() << " " << getPosition().x << " "
             << getPosition().y << " " << getSize().x << " " << getSize().y
-            << " " << _speed << " " << _framerate;
+            << " " << speed_ << " " << frameRate_;
 }
 
 /// Private
@@ -165,10 +165,14 @@ void Award::setBody(float32 x, float32 y, float32 width, float32 height,
   rightfixtureDef.shape = &leftshape;
 
   // Add the body definition to world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shapes
   setUp(shape, fixtureDef);
   setUp(rightshape, rightfixtureDef);
   setUp(leftshape, leftfixtureDef);
 }
+
+Award::Award() { animationTimer_ = new b2Timer(); }
+
+int Award::getFramerate() const { return frameRate_; }

@@ -1,10 +1,11 @@
+#pragma once
 #include "Award.h"
 
-class ShortenAward : public Award {
+class ShortenAward final : public Award {
  public:
-  ShortenAward(){};
+  ShortenAward();
   ShortenAward(float32 x, float32 y, float32 width, float32 height,
-               float32 speed, Uint32 framerate, Texture *texture)
-      : Award(x, y, width, height, speed, framerate, texture){};
-  virtual void contact();
+               float32 speed, Uint32 framerate, Texture* texture);
+
+  void contact() override;
 };

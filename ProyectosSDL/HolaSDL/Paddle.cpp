@@ -1,21 +1,24 @@
 #include "Paddle.h"
 #include <algorithm>
+#include "ArkanoidSettings.h"
 #include "Bullet.h"
 #include "Game.h"
 
-/// Public
+Paddle::Paddle() {}  /// Public
 /// Constructor
+void Paddle::setSticky(bool sticky) { sticky_ = sticky; }
+
 Paddle::Paddle(float32 x, float32 y, float32 width, float32 height,
-               float32 anchorX, float32 limit, float32 maxSpeed, ACTIONS action,
+               float32 anchorX, float32 limit, float32 maxSpeed, Actions action,
                Texture *texture)
     : ArkanoidBody(x, y, width, height, texture),
-      _rightMovement(false),
-      _leftMovement(false),
-      _leftAnchor(anchorX - limit),
-      _rightAnchor(anchorX + limit),
-      _speed(maxSpeed),
-      _sticky(true),
-      _actionType(action) {
+      rightMovement_(false),
+      leftMovement_(false),
+      leftAnchor_(anchorX - limit),
+      rightAnchor_(anchorX + limit),
+      speed_(maxSpeed),
+      sticky_(true),
+      actionType_(action) {
   setAction(action);
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
@@ -23,18 +26,18 @@ Paddle::Paddle(float32 x, float32 y, float32 width, float32 height,
 /// Public
 // Destructor
 Paddle::~Paddle() {
-  for (auto joint : _joints) {
+  for (auto joint : joints_) {
     delete joint;
   }
-  _joints.clear();
+  joints_.clear();
 }
 
 /// Public Virtual
 // Defines the update behaviour for this instance
 void Paddle::update() {
-  for (auto joint : _joints) {
-    b2Vec2 pos = getPosition() + joint->_distance;
-    joint->_ball->setPosition(pos.x, pos.y);
+  for (auto joint : joints_) {
+    b2Vec2 pos = getPosition() + joint->distance_;
+    joint->ball_->setPosition(pos.x, pos.y);
   }
 }
 
@@ -42,22 +45,22 @@ void Paddle::update() {
 // Defines the after update behaviour for this instance
 void Paddle::afterUpdate() {
   // Get position
-  b2Vec2 pos = _body->GetPosition();
+  b2Vec2 pos = body_->GetPosition();
 
   // If the paddle is in the walls, move it inside the area
-  if (pos.x - _size.x / 2.0f < _leftAnchor) {
-    setPosition(_leftAnchor + _size.x / 2.0f, pos.y);
-  } else if (pos.x + _size.x / 2.0f > _rightAnchor) {
-    setPosition(_rightAnchor - _size.x / 2.0f, pos.y);
+  if (pos.x - size_.x / 2.0f < leftAnchor_) {
+    setPosition(leftAnchor_ + size_.x / 2.0f, pos.y);
+  } else if (pos.x + size_.x / 2.0f > rightAnchor_) {
+    setPosition(rightAnchor_ - size_.x / 2.0f, pos.y);
   }
 }
 
 /// Public Virtual
 // Defines the render behaviour
 void Paddle::render() const {
-  b2Vec2 pos = _body->GetPosition();
-  _texture->render({(int)pos.x - (int)_size.x / 2,
-                    (int)pos.y - (int)_size.y / 2, (int)_size.x, (int)_size.y});
+  b2Vec2 pos = body_->GetPosition();
+  texture_->render({(int)pos.x - (int)size_.x / 2,
+                    (int)pos.y - (int)size_.y / 2, (int)size_.x, (int)size_.y});
 }
 
 /// Publc Virtual
@@ -69,15 +72,15 @@ void Paddle::handleEvents(SDL_Event event) {
       switch (event.key.keysym.sym) {
         // If right arrow was pressed, set rightMovement to true
         case SDLK_RIGHT:
-          _rightMovement = true;
+          rightMovement_ = true;
           break;
         // If left arrow was pressed, set leftMovement to true
         case SDLK_LEFT:
-          _leftMovement = true;
+          leftMovement_ = true;
           break;
         // If space bar was pressed, call _action()
         case SDLK_SPACE:
-          State::current->addEvent(_action);
+          State::current_->addEvent(action_);
           break;
       }
       break;
@@ -86,26 +89,26 @@ void Paddle::handleEvents(SDL_Event event) {
       switch (event.key.keysym.sym) {
         // If the right arrow was unpressed, set rightMovement to false
         case SDLK_RIGHT:
-          _rightMovement = false;
+          rightMovement_ = false;
           break;
         // If the left arrow was unpressed, set leftMovement to false
         case SDLK_LEFT:
-          _leftMovement = false;
+          leftMovement_ = false;
           break;
       }
   }
 
   // Set the velocity
   setVelocity(b2Vec2{
-      (_rightMovement ? _speed : 0) + (_leftMovement ? -_speed : 0), 0.0f});
+      (rightMovement_ ? speed_ : 0) + (leftMovement_ ? -speed_ : 0), 0.0f});
 }
 
 /// Public Virtual
 // Defines behaviour when the instance starts to have contact with an element
 void Paddle::onBeginContact(RigidBody *rigigbody) {
   Ball *ball;
-  if (_sticky && (ball = dynamic_cast<Ball *>(rigigbody))) {
-    State::current->addEvent([this, ball]() { jointTo(ball); });
+  if (sticky_ && (ball = dynamic_cast<Ball *>(rigigbody))) {
+    State::current_->addEvent([this, ball]() { jointTo(ball); });
   }
 }
 
@@ -114,26 +117,26 @@ void Paddle::onBeginContact(RigidBody *rigigbody) {
 void Paddle::setWidth(float32 width) {
   // Gets the position and linear velocity, then destroy the fixture and the
   // body
-  b2Vec2 pos = _body->GetPosition();
-  b2Vec2 vel = _body->GetLinearVelocity();
-  _body->DestroyFixture(_fixture);
-  Game::getWorld()->DestroyBody(_body);
+  b2Vec2 pos = body_->GetPosition();
+  b2Vec2 vel = body_->GetLinearVelocity();
+  body_->DestroyFixture(fixture_);
+  Game::getWorld()->DestroyBody(body_);
 
   // Sets the new width and creates a new body and velocity
-  _size.x = width;
-  setBody(pos.x, pos.y, width, _size.y, _leftAnchor - _rightAnchor,
-          (_rightAnchor - _leftAnchor) / 2.0f, *Game::getWorld());
+  size_.x = width;
+  setBody(pos.x, pos.y, width, size_.y, leftAnchor_ - rightAnchor_,
+          (rightAnchor_ - leftAnchor_) / 2.0f, *Game::getWorld());
   setVelocity(vel);
 }
 
 /// Public
 // Creates a joint to a ball (for the sticky paddle)
 void Paddle::jointTo(Ball *ball) {
-  if (!any_of(_joints.begin(), _joints.end(),
-              [ball](ArkanoidJoint *joint) { return joint->_ball == ball; })) {
+  if (!any_of(joints_.begin(), joints_.end(),
+              [ball](ArkanoidJoint *joint) { return joint->ball_ == ball; })) {
     b2Vec2 a = ball->getPosition() - getPosition();
 
-    _joints.push_back(new ArkanoidJoint(ball, a));
+    joints_.push_back(new ArkanoidJoint(ball, a));
     ball->getBody()->SetActive(false);
   }
 }
@@ -141,39 +144,39 @@ void Paddle::jointTo(Ball *ball) {
 /// Public
 // Splits from a ball, releasing it to a direction away from the paddle's center
 void Paddle::splitFromBalls() {
-  for (auto joint : _joints) {
-    joint->_ball->getBody()->SetActive(true);
-    joint->_distance *=
-        (1.0f / (joint->_distance.LengthSquared() * joint->_ball->getSpeed()));
-    joint->_ball->setVelocity(joint->_distance);
+  for (auto joint : joints_) {
+    joint->ball_->getBody()->SetActive(true);
+    joint->distance_ *=
+        (1.0f / (joint->distance_.LengthSquared() * joint->ball_->getSpeed()));
+    joint->ball_->setVelocity(joint->distance_);
     delete joint;
   }
-  _joints.clear();
+  joints_.clear();
 }
 
 /// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Paddle::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, sizex, sizey;
   int action;
-  out >> posx >> posy >> sizex >> sizey >> _speed >> action;
+  out >> posx >> posy >> sizex >> sizey >> speed_ >> action;
   setBody(posx, posy, sizex, sizey,
-          ArkanoidSettings::sceneUpperLeftCorner.x +
-              ArkanoidSettings::sceneWidth / 2.0f,
-          (ArkanoidSettings::sceneWidth) / 2 - ArkanoidSettings::wallWidth,
+          ArkanoidSettings::sceneUpperLeftCorner_.x +
+              ArkanoidSettings::sceneWidth_ / 2.0f,
+          (ArkanoidSettings::sceneWidth_) / 2 - ArkanoidSettings::wallWidth_,
           *Game::getWorld());
   setPosition(posx, posy);
-  _size.Set(sizex, sizey);
-  _leftAnchor =
-      ArkanoidSettings::sceneUpperLeftCorner.x + ArkanoidSettings::wallWidth;
-  _rightAnchor = ArkanoidSettings::sceneUpperLeftCorner.x +
-                 ArkanoidSettings::sceneWidth - ArkanoidSettings::wallWidth;
-  _leftMovement = false;
-  _rightMovement = false;
-  _actionType = (ACTIONS)action;
-  setAction(_actionType);
+  size_.Set(sizex, sizey);
+  leftAnchor_ =
+      ArkanoidSettings::sceneUpperLeftCorner_.x + ArkanoidSettings::wallWidth_;
+  rightAnchor_ = ArkanoidSettings::sceneUpperLeftCorner_.x +
+                 ArkanoidSettings::sceneWidth_ - ArkanoidSettings::wallWidth_;
+  leftMovement_ = false;
+  rightMovement_ = false;
+  actionType_ = (Actions)action;
+  setAction(actionType_);
   return out;
 }
 
@@ -182,7 +185,7 @@ std::istream &Paddle::deserialize(std::istream &out) {
 std::ostream &Paddle::serialize(std::ostream &is) const {
   return is << "Paddle " << textureIndex() << " " << getPosition().x << " "
             << getPosition().y << " " << getSize().x << " " << getSize().y
-            << " " << _speed << _actionType;
+            << " " << speed_ << actionType_;
 }
 
 /// Private
@@ -221,7 +224,7 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height,
   fixtureDef.shape = &shape;
 
   // Add the body definition to world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);
@@ -229,36 +232,36 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height,
 
 /// Public
 // Defines the setWidth behaviour
-void Paddle::setAction(ACTIONS action) {
-  _actionType = action;
+void Paddle::setAction(Actions action) {
+  actionType_ = action;
   // Set the proper action.
   switch (action) {
     case NONE:
       splitFromBalls();
       setSticky(false);
-      _action = []() {};
+      action_ = []() {};
       break;
     case BEGIN:
       splitFromBalls();
       setSticky(true);
-      _action = [this]() {
+      action_ = [this]() {
         splitFromBalls();
         setSticky(false);
       };
       break;
     case STICKY:
       setSticky(true);
-      _action = [this]() { splitFromBalls(); };
+      action_ = [this]() { splitFromBalls(); };
       break;
     case LASER:
       splitFromBalls();
       setSticky(false);
-      _action = [this]() {
+      action_ = [this]() {
         /*Create Bullet*/
         Bullet *bullet =
             new Bullet(getPosition().x, getPosition().y, 10.0f, 1000.0f,
-                       Game::current->getTextures()[BALLBLACK]);
-        State::current->add(*bullet);
+                       Game::current_->getTextures()[BALLBLACK]);
+        State::current_->add(*bullet);
         bullet->setVelocity(b2Vec2{0, -1000.0f});
       };
       break;
@@ -268,6 +271,6 @@ void Paddle::setAction(ACTIONS action) {
 }
 
 Paddle::ArkanoidJoint::ArkanoidJoint(Ball *ball, b2Vec2 &distance)
-    : _ball(ball), _distance(distance) {}
+    : ball_(ball), distance_(distance) {}
 
 Paddle::ArkanoidJoint::~ArkanoidJoint(){};

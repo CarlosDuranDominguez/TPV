@@ -1,33 +1,28 @@
 #pragma once
-
 #include "ArkanoidBody.h"
 
 class Game;
 
-class Enemy : public ArkanoidBody {
- private:
-  float32 _speed;
-  float32 _halfLife;
-  float32 _changeProbability;
-  float32 _framerate;
-  b2Timer *_timer;
-  b2Timer *_animationTimer;
-  Uint32 _frame;
+class Enemy final : public ArkanoidBody {
+  float32 speed_;
+  float32 halfLife_;
+  float32 changeProbability_;
+  float32 framerate_;
+  b2Timer *timer_;
+  b2Timer *animationTimer_;
+  Uint32 frame_;
   void setBody(float32 x, float32 y, float32 radius, b2World &world);
 
  public:
-  Enemy(){};
+  Enemy();
   Enemy(float32 x, float32 y, float32 width, float32 height, float32 maxSpeed,
         float32 halfLife, float32 changeProbability, float32 framerate,
         Texture *texture);
   ~Enemy();
-  virtual void update();
-  virtual void onBeginContact(RigidBody *rigidBody);
-  virtual void render() const;
-  virtual void setPosition(float32 x, float32 y) {
-    RigidBody::setPosition(b2Vec2{x, y});
-    GameObject::setPosition(x, y);
-  };
-  virtual std::istream &deserialize(std::istream &out);
-  virtual std::ostream &serialize(std::ostream &is) const;
+  void update() override;
+  void onBeginContact(RigidBody *rigidBody) override;
+  void render() const override;
+  void setPosition(float32 x, float32 y) override;
+  std::istream &deserialize(std::istream &out) override;
+  std::ostream &serialize(std::ostream &is) const override;
 };

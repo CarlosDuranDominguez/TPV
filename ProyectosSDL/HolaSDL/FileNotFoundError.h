@@ -1,9 +1,8 @@
 #pragma once
-
 #include "ArkanoidError.h"
 
-class FileNotFoundError : public ArkanoidError {
+class FileNotFoundError final : public ArkanoidError {
  public:
-  FileNotFoundError(const string &name)
+  explicit FileNotFoundError(const string &name)
       : ArkanoidError("[File Not Found]: " + name) {}
 };

@@ -4,7 +4,7 @@
 
 /// Public
 // Constructor
-TopBoard::TopBoard(const std::string &path) : _scores() {
+TopBoard::TopBoard(const std::string &path) : scores_() {
   loadFile(path);
   sortByScore();
 }
@@ -12,7 +12,7 @@ TopBoard::TopBoard(const std::string &path) : _scores() {
 /// Public
 // Destructor
 TopBoard::~TopBoard() {
-  for (auto score : _scores) {
+  for (auto score : scores_) {
     delete score;
   }
 }
@@ -28,7 +28,7 @@ void TopBoard::loadFile(const std::string &path) {
     if (game->name == "" && game->score == 0 && game->time == 0) {
       delete game;
     } else {
-      _scores.push_back(game);
+      scores_.push_back(game);
     }
   }
   file.close();
@@ -39,7 +39,7 @@ void TopBoard::loadFile(const std::string &path) {
 void TopBoard::storeFile(const std::string &path) {
   std::ofstream file;
   file.open(path, std::ofstream::in);
-  for (auto game : _scores) {
+  for (auto game : scores_) {
     file << *game << "\n";
   }
   file.close();
@@ -48,31 +48,31 @@ void TopBoard::storeFile(const std::string &path) {
 /// Public
 // Sorts the top leaderboard by name
 void TopBoard::sortByName() {
-  sort(_scores.begin(), _scores.end(), _comparename);
+  sort(scores_.begin(), scores_.end(), compareName);
 }
 
 /// Public
 // Sorts the top leaderboard by the amount of points
 void TopBoard::sortByScore() {
-  sort(_scores.begin(), _scores.end(), _comparescore);
+  sort(scores_.begin(), scores_.end(), compareScore);
 }
 
 /// Public
 // Sorts the top leaderboard by the amount of seconds
 void TopBoard::sortByTime() {
-  sort(_scores.begin(), _scores.end(), _comparetime);
+  sort(scores_.begin(), scores_.end(), compareTime);
 }
 
 /// Public
 // Adds a new line to the leaderboard
 void TopBoard::pushScore(PlayerGame *game) {
-  _scores.push_back(game);
+  scores_.push_back(game);
   sortByName();
 }
 
 /// Public
 // Gets the scores
-std::vector<PlayerGame *> TopBoard::showScores() const { return _scores; }
+std::vector<PlayerGame *> TopBoard::showScores() const { return scores_; }
 
 /// Public
 // Inserts the PlayerGame on a stream
@@ -88,18 +88,21 @@ std::istream &operator>>(std::istream &os, PlayerGame &v) {
 
 /// Private
 // The comparing function depending on the player's name
-bool TopBoard::_comparename(const PlayerGame *game1, const PlayerGame *game2) {
+bool TopBoard::compareName(const PlayerGame *game1, const PlayerGame *game2) {
   return game1->name < game2->name;
 }
 
 /// Private
 // The comparing function depending on the player's score
-bool TopBoard::_comparescore(const PlayerGame *game1, const PlayerGame *game2) {
+bool TopBoard::compareScore(const PlayerGame *game1, const PlayerGame *game2) {
   return game1->score > game2->score;
 }
 
 /// Private
 // The comparing function depending on the player's time
-bool TopBoard::_comparetime(const PlayerGame *game1, const PlayerGame *game2) {
+bool TopBoard::compareTime(const PlayerGame *game1, const PlayerGame *game2) {
   return game1->time < game2->time;
+}
+
+TopBoard::TopBoard() {
 }

@@ -4,54 +4,54 @@
 // Constructor
 Text::Text(Font *font, float32 x, float32 y, float32 width, float32 height,
            const SDL_Color &color, const string &text)
-    : _font(font), GameObject(x, y, width, height), _color(color), _text(text) {
-  TTF_SizeText(_font->getFont(), text.c_str(), &_width, &_height);
+    : font_(font), GameObject(x, y, width, height), color_(color), text_(text) {
+  TTF_SizeText(font_->getFont(), text.c_str(), &width_, &height_);
   SDL_Surface *textSurface =
       TTF_RenderText_Solid(font->getFont(), text.c_str(), color);
   SDL_Texture *_textTexture =
       SDL_CreateTextureFromSurface(font->getRenderer(), textSurface);
-  _texture = new Texture(_textTexture, font->getRenderer(), _width, _height,
-                         _width, _height, 1, 1);
+  texture_ = new Texture(_textTexture, font->getRenderer(), width_, height_,
+                         width_, height_, 1, 1);
   SDL_FreeSurface(textSurface);
 }
 /// Public
 // Destructor
-Text::~Text() { delete _texture; }
+Text::~Text() { delete texture_; }
 
 /// Public
 // Sets the text for this instance
 void Text::setText(const string newText) {
-  _text = newText;
-  TTF_SizeText(_font->getFont(), newText.c_str(), &_width, &_height);
+  text_ = newText;
+  TTF_SizeText(font_->getFont(), newText.c_str(), &width_, &height_);
   SDL_Surface *textSurface =
-      TTF_RenderText_Solid(_font->getFont(), newText.c_str(), _color);
-  _texture->setTexture(
-      SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface));
+      TTF_RenderText_Solid(font_->getFont(), newText.c_str(), color_);
+  texture_->setTexture(
+      SDL_CreateTextureFromSurface(font_->getRenderer(), textSurface));
   SDL_FreeSurface(textSurface);
 }
 
 /// Public
 // Gets the text box
 SDL_Rect Text::getRect() const {
-  return {(int)_position.x, (int)_position.y, _width, _height};
+  return {(int)position_.x, (int)position_.y, width_, height_};
 }
 
 /// Public
 // Set the text color
 SDL_Color Text::setColor(const SDL_Color &color) {
   SDL_Surface *textSurface =
-      TTF_RenderText_Solid(_font->getFont(), _text.c_str(), color);
-  _texture->setTexture(
-      SDL_CreateTextureFromSurface(_font->getRenderer(), textSurface));
+      TTF_RenderText_Solid(font_->getFont(), text_.c_str(), color);
+  texture_->setTexture(
+      SDL_CreateTextureFromSurface(font_->getRenderer(), textSurface));
   SDL_FreeSurface(textSurface);
-  return this->_color = color;
+  return this->color_ = color;
 }
 
 /// Public Virtual
 // Defines the render behaviour
 void Text::render() const {
-  SDL_Rect rect{(int)_position.x, (int)_position.y, _width, _height};
-  SDL_RenderCopy(_font->getRenderer(), _texture->getTexture(), nullptr, &rect);
+  SDL_Rect rect{(int)position_.x, (int)position_.y, width_, height_};
+  SDL_RenderCopy(font_->getRenderer(), texture_->getTexture(), nullptr, &rect);
 }
 
 /// Public Virtual

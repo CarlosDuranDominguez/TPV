@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include "ArkanoidSettings.h"
 #include "Font.h"
 #include "GameManager.h"
 #include "GameState.h"
@@ -9,34 +8,34 @@
 #include "State.h"
 #include "Texture.h"
 
-const uint WIN_WIDTH = 800;
-const uint WIN_HEIGHT = 600;
-const uint NUMBER_TEXTURES = 44;
-const uint NUMBER_FONT_STYLES = 15;
-const float32 PADDLESPEED = 5;
+const Uint32 kWinWidth = 800;
+const Uint32 kWinHeight = 600;
+const Uint32 kNumberTextures = 44;
+const Uint32 kNumberFontStyles = 15;
+const float32 kPaddleSpeed = 5;
 
 enum FontsStyles {
   BOLD,
-  BOLDITALIC,
+  BOLD_ITALIC,
   DEMIBOLD,
-  DEMIBOLDITALIC,
-  EXTRALIGHT,
-  EXTRALIGHTITALIC,
+  DEMIBOLD_ITALIC,
+  EXTRA_LIGHT,
+  EXTRA_LIGHT_ITALIC,
   HEAVY,
-  HEAVYITALIC,
+  HEAVY_ITALIC,
   LIGHT,
-  LIGHTITALIC,
+  LIGHT_ITALIC,
   MEDIUM,
-  MEDIUMITALIC,
+  MEDIUM_ITALIC,
   REGULAR,
-  REGULARITALIC,
+  REGULAR_ITALIC,
   STENCIL
 };
 
 struct TextureInfo {
   string path;
-  uint columns;
-  uint rows;
+  Uint32 columns;
+  Uint32 rows;
 };
 
 enum Textures {
@@ -86,7 +85,7 @@ enum Textures {
   BALLON
 };
 
-const TextureInfo TEXTURES[NUMBER_TEXTURES]{
+const TextureInfo kTextures[kNumberTextures]{
     TextureInfo{"../images/ball.png", 1, 1},
     TextureInfo{"../images/bricks.png", 3, 2},
     TextureInfo{"../images/paddle.png", 1, 1},
@@ -132,7 +131,7 @@ const TextureInfo TEXTURES[NUMBER_TEXTURES]{
     TextureInfo{"../images/BallColours.png", 3, 1},
     TextureInfo{"../images/Ballon.png", 2, 1}};
 
-const string FONTSDIRECTORIES[NUMBER_FONT_STYLES]{
+const string kFontsdirectories[kNumberFontStyles]{
     "../fonts/Oswald-Bold.ttf",       "../fonts/Oswald-BoldItalic.ttf",
     "../fonts/Oswald-DemiBold.ttf",   "../fonts/Oswald-Demi-BoldItalic.ttf",
     "../fonts/Oswald-ExtraLight.ttf", "../fonts/Oswald-Extra-LightItalic.ttf",
@@ -142,39 +141,38 @@ const string FONTSDIRECTORIES[NUMBER_FONT_STYLES]{
     "../fonts/Oswald-Regular.ttf",    "../fonts/Oswald-RegularItalic.ttf",
     "../fonts/Oswald-Stencil.ttf"};
 
-const string LEVEL[3]{"../levels/level01.ark", "../levels/level02.ark",
-                      "../levels/level03.ark"};
+const string kLevel[3]{"../levels/level01.ark", "../levels/level02.ark",
+                       "../levels/level03.ark"};
 
-enum Fonts { BIGFONT, MEDIUMFONT };
+enum Fonts { BIG_FONT, MEDIUM_FONT };
 
-const uint NUMBERFONTS = 2;
+const Uint32 kNumberFonts = 2;
 
-const SDL_Color WHITE = {255, 255, 255, 255};
-const SDL_Color GREY = {80, 80, 80, 255};
+const SDL_Color kWhite = {255, 255, 255, 255};
+const SDL_Color kGrey = {80, 80, 80, 255};
 
 enum States { GAMEOVER, SCOREBOARD, GAME, MENU };
 
 class Game {
- private:
-  SDL_Window *_window = nullptr;
-  SDL_Renderer *_renderer = nullptr;
-  Texture *_textures[NUMBER_TEXTURES];
-  Font *_fonts[NUMBERFONTS];
-  static GameManager *_gamemanager;
-  map<States, State *> _states;
-  States _state = MENU;
-  static b2World *_world;
+  SDL_Window *window_ = nullptr;
+  SDL_Renderer *renderer_ = nullptr;
+  Texture *textures_[kNumberTextures];
+  Font *fonts_[kNumberFonts];
+  static GameManager *gameManager_;
+  map<States, State *> states_;
+  States state_ = MENU;
+  static b2World *world_;
 
  public:
   Game();
   ~Game();
-  static Game *current;
+  static Game *current_;
   Texture **getTextures();
   Font **getFonts();
   void changeState(const States &state);
   void run();
-  States getState() { return _state; };
-  GameState *getGameState() { return dynamic_cast<GameState *>(_states[GAME]); }
+  States getState();
+  GameState *getGameState();
   static GameManager *getGameManager();
   static b2World *getWorld();
   static void setWorld(b2World &world);

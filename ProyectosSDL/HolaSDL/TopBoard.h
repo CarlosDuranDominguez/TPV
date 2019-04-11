@@ -9,14 +9,13 @@ struct PlayerGame {
 };
 
 class TopBoard {
- private:
-  std::vector<PlayerGame *> _scores;
-  bool static _comparename(const PlayerGame *game1, const PlayerGame *game2);
-  bool static _comparescore(const PlayerGame *, const PlayerGame *);
-  bool static _comparetime(const PlayerGame *, const PlayerGame *);
+  std::vector<PlayerGame *> scores_;
+  bool static compareName(const PlayerGame *game1, const PlayerGame *game2);
+  bool static compareScore(const PlayerGame *, const PlayerGame *);
+  bool static compareTime(const PlayerGame *, const PlayerGame *);
 
  public:
-  TopBoard(){};
+  TopBoard();
   TopBoard(const std::string &path);
   ~TopBoard();
   void loadFile(const std::string &path);
@@ -29,5 +28,4 @@ class TopBoard {
 };
 
 std::ostream &operator<<(std::ostream &os, const PlayerGame &v);
-
 std::istream &operator>>(std::istream &os, PlayerGame &v);

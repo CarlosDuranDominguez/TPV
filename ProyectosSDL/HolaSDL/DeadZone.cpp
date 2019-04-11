@@ -23,15 +23,15 @@ std::istream &DeadZone::deserialize(std::istream &out) {
   out >> posx >> posy >> sizex >> sizey;
   setBody(posx, posy, sizex, sizey, *Game::getWorld());
   setPosition(posx, posy);
-  _size.Set(sizex, sizey);
+  size_.Set(sizex, sizey);
   return out;
 }
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &DeadZone::serialize(std::ostream &is) const {
-  return is << "DeadZone " << 0 << " " << _position.x << " " << _position.y
-            << " " << _size.x << " " << _size.y;
+  return is << "DeadZone " << 0 << " " << position_.x << " " << position_.y
+            << " " << size_.x << " " << size_.y;
 }
 
 /// Private
@@ -62,8 +62,20 @@ void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height,
   fixtureDef.shape = &shape;
 
   // Add the body definition to the world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);
+}
+
+DeadZone::DeadZone() {
+}
+
+DeadZone::~DeadZone() {
+}
+
+void DeadZone::update() {
+}
+
+void DeadZone::render() const {
 }

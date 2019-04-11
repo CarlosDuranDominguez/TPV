@@ -1,44 +1,34 @@
 #pragma once
-
 #include <string>
 #include "SDL.h"
 
 using namespace std;
 
 class Texture {
- private:
-  SDL_Texture *_texture = nullptr;
-  SDL_Renderer *_renderer = nullptr;
-  Uint32 _w = 0;
-  Uint32 _h = 0;
-  Uint32 _fw = 0;  // Frame width
-  Uint32 _fh = 0;  // Frame height
-  Uint32 _numCols = 1;
-  Uint32 _numRows = 1;
+  SDL_Texture *texture_ = nullptr;
+  SDL_Renderer *renderer_ = nullptr;
+  Uint32 w_ = 0;
+  Uint32 h_ = 0;
+  Uint32 fw_ = 0;  // Frame width
+  Uint32 fh_ = 0;  // Frame height
+  Uint32 numCols_ = 1;
+  Uint32 numRows_ = 1;
 
  public:
-  Texture(SDL_Renderer *r) : _renderer(r){};
+  explicit Texture(SDL_Renderer *r);
   Texture(SDL_Renderer *r, string filename, Uint32 numRows = 1,
-          Uint32 numCols = 1)
-      : _renderer(r) {
-    load(filename, numRows, numCols);
-  };
+          Uint32 numCols = 1);
   Texture(SDL_Texture *texture, SDL_Renderer *renderer, Uint32 w, Uint32 h,
           Uint32 fw, Uint32 fh, Uint32 numRows, Uint32 numCols);
-  ~Texture() { liberate(); };
+  ~Texture();
   void liberate();
 
-  int getW() const { return _w; };
-  int getH() const { return _h; };
-  Uint32 getNumCols() const { return _numCols; };
-  Uint32 getNumRows() const { return _numRows; };
-  void setTexture(SDL_Texture *texture) {
-    if (texture != _texture) {
-      SDL_DestroyTexture(_texture);
-      _texture = texture;
-    }
-  }
-  SDL_Texture *getTexture() const { return _texture; };
+  int getW() const;
+  int getH() const;
+  Uint32 getNumCols() const;
+  Uint32 getNumRows() const;
+  void setTexture(SDL_Texture *texture);
+  SDL_Texture *getTexture() const;
 
   void load(string filename, Uint32 numRows = 1, Uint32 numCols = 1);
   void render(const SDL_Rect &rect,

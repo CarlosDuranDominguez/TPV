@@ -1,4 +1,4 @@
-#include <time.h>
+#include <ctime>
 #include <iostream>
 #include "Game.h"
 #include "SDL.h"
@@ -10,7 +10,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |
                  _CRTDBG_LEAK_CHECK_DF);  // Check Memory Leaks
-  srand((uint)time(NULL));
+  srand((Uint32)time(nullptr));
   try {
     Game *game = new Game();
     game->run();

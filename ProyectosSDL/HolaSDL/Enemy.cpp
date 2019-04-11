@@ -10,55 +10,55 @@ Enemy::Enemy(float32 x, float32 y, float32 width, float32 height,
              float32 maxSpeed, float32 halfLife, float32 changeProbability,
              float32 framerate, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture),
-      _speed(maxSpeed),
-      _halfLife(halfLife),
-      _changeProbability(changeProbability),
-      _timer(new b2Timer()),
-      _animationTimer(new b2Timer()),
-      _framerate(framerate),
-      _frame(0) {
+      speed_(maxSpeed),
+      halfLife_(halfLife),
+      changeProbability_(changeProbability),
+      timer_(new b2Timer()),
+      animationTimer_(new b2Timer()),
+      framerate_(framerate),
+      frame_(0) {
   setBody(x, y, width / 2.0f, *Game::getWorld());
   float32 ra = (float32)rand() / (RAND_MAX + 1.0f) * (float32)M_PI * 2.0f;
-  setVelocity(b2Vec2{sin(ra) * _speed, cos(ra) * _speed});
-  _timer->Reset();
-  _animationTimer->Reset();
+  setVelocity(b2Vec2{sin(ra) * speed_, cos(ra) * speed_});
+  timer_->Reset();
+  animationTimer_->Reset();
 }
 
 /// Public
 // Destructor
 Enemy::~Enemy() {
-  delete _timer;
-  delete _animationTimer;
+  delete timer_;
+  delete animationTimer_;
 }
 
 /// Public Virtual
 // Updates the update behaviour
 void Enemy::update() {
-  if (_timer->GetMilliseconds() > _halfLife * 1000.0f) {
-    if (rand() / (RAND_MAX + 1.) <= _changeProbability) {
+  if (timer_->GetMilliseconds() > halfLife_ * 1000.0f) {
+    if (rand() / (RAND_MAX + 1.) <= changeProbability_) {
       float32 ra = (float32)rand() / (RAND_MAX + 1.0f) * (float32)M_PI * 2.0f;
-      setVelocity(b2Vec2{sin(ra) * _speed, cos(ra) * _speed});
+      setVelocity(b2Vec2{sin(ra) * speed_, cos(ra) * speed_});
     }
-    _timer->Reset();
+    timer_->Reset();
   }
-  if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate) {
-    if ((++_frame) > _texture->getNumCols() * _texture->getNumRows()) {
-      _frame = 0;
+  if (animationTimer_->GetMilliseconds() > 1000.0f / framerate_) {
+    if ((++frame_) > texture_->getNumCols() * texture_->getNumRows()) {
+      frame_ = 0;
     }
-    _animationTimer->Reset();
+    animationTimer_->Reset();
   }
 }
 
 /// Public Virtual
 // Defines the render behaviour
 void Enemy::render() const {
-  b2Vec2 pos = _body->GetPosition();
+  b2Vec2 pos = body_->GetPosition();
 
-  _texture->renderFrame(
+  texture_->renderFrame(
       {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-       (int)_fixture->GetShape()->m_radius * 2,
-       (int)_fixture->GetShape()->m_radius * 2},
-      _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
+       (int)fixture_->GetShape()->m_radius * 2,
+       (int)fixture_->GetShape()->m_radius * 2},
+      frame_ / (texture_->getNumCols() + 1), frame_ % texture_->getNumCols());
 }
 
 /// Public Virtual
@@ -76,26 +76,26 @@ void Enemy::onBeginContact(RigidBody *rigidBody) {
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Enemy::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, radius, velx, vely;
-  out >> posx >> posy >> radius >> velx >> vely >> _speed >> _halfLife >>
-      _changeProbability >> _framerate >> _frame;
+  out >> posx >> posy >> radius >> velx >> vely >> speed_ >> halfLife_ >>
+      changeProbability_ >> framerate_ >> frame_;
   setBody(posx, posy, radius, *Game::getWorld());
   setPosition(posx, posy);
   setVelocity(b2Vec2{velx, vely});
-  _timer = new b2Timer();
-  _animationTimer = new b2Timer();
+  timer_ = new b2Timer();
+  animationTimer_ = new b2Timer();
   return out;
 }
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Enemy::serialize(std::ostream &is) const {
-  return is << "Enemy " << textureIndex() << " " << _position.x << " "
-            << _position.y << " " << _fixture->GetShape()->m_radius << " "
-            << getVelocity().x << " " << getVelocity().y << " " << _speed << " "
-            << _halfLife << " " << _changeProbability << " " << _framerate
-            << " " << _frame;
+  return is << "Enemy " << textureIndex() << " " << position_.x << " "
+            << position_.y << " " << fixture_->GetShape()->m_radius << " "
+            << getVelocity().x << " " << getVelocity().y << " " << speed_ << " "
+            << halfLife_ << " " << changeProbability_ << " " << framerate_
+            << " " << frame_;
 }
 
 /// Private
@@ -127,8 +127,16 @@ void Enemy::setBody(float32 x, float32 y, float32 radius, b2World &world) {
   fixtureDef.shape = &shape;
 
   // Add the body definition to world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);
+}
+
+Enemy::Enemy() {
+}
+
+void Enemy::setPosition(float32 x, float32 y) {
+    RigidBody::setPosition(b2Vec2{x, y});
+    GameObject::setPosition(x, y);
 }

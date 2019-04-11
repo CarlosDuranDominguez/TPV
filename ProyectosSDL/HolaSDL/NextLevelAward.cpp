@@ -1,10 +1,12 @@
 #include "NextLevelAward.h"
 #include "Game.h"
 
+NextLevelAward::NextLevelAward() {}
+
 /// Public
 // Constructor
 NextLevelAward::NextLevelAward(float32 x, float32 y, float32 width,
-                               float32 height, float32 speed, uint framerate,
+                               float32 height, float32 speed, Uint32 framerate,
                                Texture *texture)
     : Award(x, y, width, height, speed, framerate, texture) {}
 
@@ -15,6 +17,6 @@ void NextLevelAward::contact() {
   Award::contact();
 
   // Creates an event that skips to the next level
-  State::current->addEvent(
-      []() { Game::getGameManager()->finishLevel(State::current->getTime()); });
+  State::current_->addEvent(
+      []() { Game::getGameManager()->finishLevel(State::current_->getTime()); });
 }

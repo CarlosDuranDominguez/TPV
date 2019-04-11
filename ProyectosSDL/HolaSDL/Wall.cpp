@@ -16,8 +16,8 @@ void Wall::update() {}
 /// Public Virtual
 /// Defines the render behaviour
 void Wall::render() const {
-  b2Vec2 pos = _body->GetPosition();
-  _texture->renderFrame(
+  b2Vec2 pos = body_->GetPosition();
+  texture_->renderFrame(
       {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
        (int)getSize().x, (int)getSize().y},
       0, 0);
@@ -27,12 +27,12 @@ void Wall::render() const {
 /// Defines the deserialize method behaviour to patch the instance when loading
 /// a file save
 std::istream &Wall::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey;
   setBody(posx, posy, sizex, sizey, *Game::getWorld());
   setPosition(posx, posy);
-  _size.Set(sizex, sizey);
+  size_.Set(sizex, sizey);
   return out;
 }
 
@@ -70,8 +70,14 @@ void Wall::setBody(float32 x, float32 y, float32 width, float32 height,
   fixtureDef.shape = &shape;
 
   // Add the body definition to world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);
+}
+
+Wall::Wall() {
+}
+
+Wall::~Wall() {
 }

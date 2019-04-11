@@ -10,12 +10,12 @@ LiveMarker::LiveMarker(float32 x, float32 y, float32 width, float32 height,
 /// Public Virtual
 // Defines the render behaviour
 void LiveMarker::render() const {
-  SDL_Rect rect{(int)_position.x, (int)_position.y, _texture->getW(),
-                _texture->getH()};
+  SDL_Rect rect{(int)position_.x, (int)position_.y, texture_->getW(),
+                texture_->getH()};
   int lives = Game::getGameManager()->getLives();
   for (int i = 0; i < lives; i++) {
-    rect.x = (int)_position.x + i * _texture->getW();
-    _texture->render(rect);
+    rect.x = (int)position_.x + i * texture_->getW();
+    texture_->render(rect);
   }
 }
 

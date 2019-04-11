@@ -6,16 +6,19 @@
 ScoreMarker::ScoreMarker(float32 x, float32 y, float32 width, float32 height,
                          SDL_Color color, Font *font)
     : Text(font, x, y, width, height, color, "h") {
-  _score = Game::getGameManager()->getScore();
-  setText(to_string(_score));
+  score_ = Game::getGameManager()->getScore();
+  setText(to_string(score_));
+}
+
+ScoreMarker::~ScoreMarker() {
 }
 
 /// Public Virtual
 // Updates the update behaviour
 void ScoreMarker::update() {
-  if (_score != Game::getGameManager()->getScore()) {
-    _score = Game::getGameManager()->getScore();
-    setText(to_string(_score));
+  if (score_ != Game::getGameManager()->getScore()) {
+    score_ = Game::getGameManager()->getScore();
+    setText(to_string(score_));
   }
 }
 

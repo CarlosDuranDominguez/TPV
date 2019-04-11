@@ -1,5 +1,6 @@
 #include "GameState.h"
 #include <fstream>
+#include "ArkanoidSettings.h"
 #include "Ball.h"
 #include "Block.h"
 #include "Bullet.h"
@@ -24,41 +25,41 @@
 /// Public Virtual
 // Adds a pending event to reset this state in the next tick
 void GameState::reset() {
-  _pendingEvents.push([this]() { _reset(); });
+  pendingEvents_.push([this]() { _reset(); });
 }
 
 /// Public Virtual
 // Initializes this state
 void GameState::init() {
   State::init();
-  Game::setWorld(*_world);
+  Game::setWorld(*world_);
 
   // Add the game's timer
-  add(*new Timer(ArkanoidSettings::sceneUpperLeftCorner.x,
-                 ArkanoidSettings::sceneUpperLeftCorner.y,
-                 ArkanoidSettings::sceneWidth / 2.0f,
-                 ArkanoidSettings::sceneHeight / 20.0f, WHITE,
-                 _game->getFonts()[MEDIUMFONT]));
+  add(*new Timer(ArkanoidSettings::sceneUpperLeftCorner_.x,
+                 ArkanoidSettings::sceneUpperLeftCorner_.y,
+                 ArkanoidSettings::sceneWidth_ / 2.0f,
+                 ArkanoidSettings::sceneHeight_ / 20.0f, kWhite,
+                 game_->getFonts()[MEDIUM_FONT]));
 
   // Add the game's score marker
-  add(*new ScoreMarker(ArkanoidSettings::sceneUpperLeftCorner.x +
-                           ArkanoidSettings::sceneWidth / 2.0f,
-                       ArkanoidSettings::sceneUpperLeftCorner.y,
-                       ArkanoidSettings::sceneWidth / 2.0f,
-                       ArkanoidSettings::sceneHeight / 20.0f, WHITE,
-                       _game->getFonts()[MEDIUMFONT]));
+  add(*new ScoreMarker(ArkanoidSettings::sceneUpperLeftCorner_.x +
+                           ArkanoidSettings::sceneWidth_ / 2.0f,
+                       ArkanoidSettings::sceneUpperLeftCorner_.y,
+                       ArkanoidSettings::sceneWidth_ / 2.0f,
+                       ArkanoidSettings::sceneHeight_ / 20.0f, kWhite,
+                       game_->getFonts()[MEDIUM_FONT]));
 
   // Add the game's live marker
-  add(*new LiveMarker(ArkanoidSettings::sceneUpperLeftCorner.x,
-                      ArkanoidSettings::sceneUpperLeftCorner.y +
-                          ArkanoidSettings::sceneHeight * 19.0f / 20.0f,
-                      ArkanoidSettings::sceneHeight / 20.0f,
-                      ArkanoidSettings::sceneHeight / 20.0f,
-                      _game->getTextures()[LIFE]));
+  add(*new LiveMarker(ArkanoidSettings::sceneUpperLeftCorner_.x,
+                      ArkanoidSettings::sceneUpperLeftCorner_.y +
+                          ArkanoidSettings::sceneHeight_ * 19.0f / 20.0f,
+                      ArkanoidSettings::sceneHeight_ / 20.0f,
+                      ArkanoidSettings::sceneHeight_ / 20.0f,
+                      game_->getTextures()[LIFE]));
 
   // Adds the save button
-  add(*new Button(_game->getFonts()[MEDIUMFONT], 400, 400, 100, 100, WHITE,
-                  GREY, "S", [this]() {
+  add(*new Button(game_->getFonts()[MEDIUM_FONT], 400, 400, 100, 100, kWhite,
+                  kGrey, "S", [this]() {
                     auto call = [this]() { saveLevel("../saves/level.save"); };
                     addEvent(call);
                   }));
@@ -73,11 +74,11 @@ void GameState::init() {
               to_string(Game::getGameManager()->getLevel()) + ".ark");
     // If the current level is the first one, give three lives
     if (gameManager->getLevel() == 1) {
-      gameManager->setLives(ArkanoidSettings::initialLives);
+      gameManager->setLives(ArkanoidSettings::initialLives_);
     } else {
       gameManager->setLives(lives);
       gameManager->setScore(score);
-      gameManager->setTotalTime(totalTime);
+      gameManager->setTotalTime(static_cast<float32>(totalTime));
     }
   } else {
     // Try to load the latest save, else load the first level
@@ -85,7 +86,7 @@ void GameState::init() {
       loadLevel("../saves/level.save");
     } catch (exception e) {
       loadLevel("../levels/level1.ark");
-      Game::getGameManager()->setLives(ArkanoidSettings::initialLives);
+      Game::getGameManager()->setLives(ArkanoidSettings::initialLives_);
     }
   }
 }
@@ -102,7 +103,7 @@ void GameState::loadLevel(const string &path) {
     // If the name could not be recognized, throw an error
     throw(FileFormatError)(path);
 
-  uint level, timer;
+  Uint32 level, timer;
   int lives, score;
 
   // Read and set the level
@@ -138,7 +139,7 @@ void GameState::loadLevel(const string &path) {
 
   // Read and set the timer second delay
   file >> timer;
-  _stateTime->delay(timer);
+  stateTime_->delay(timer);
 
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
@@ -147,7 +148,7 @@ void GameState::loadLevel(const string &path) {
 
   // Read and set the timer second delay
   file >> timer;
-  Game::getGameManager()->setTotalTime(timer);
+  Game::getGameManager()->setTotalTime(static_cast<float32>(timer));
 
   // While good (!eof && !fail && !bad), load lines
   while (file.good()) {
@@ -163,8 +164,8 @@ void GameState::loadLevel(const string &path) {
     if (name == "Wall") {
       gameObject = new Wall();
     } else if (name == "Paddle") {
-      _paddle = new Paddle();
-      gameObject = _paddle;
+      paddle_ = new Paddle();
+      gameObject = paddle_;
     } else if (name == "Enemy") {
       gameObject = new Enemy();
     } else if (name == "DeadZone") {
@@ -218,11 +219,11 @@ void GameState::saveLevel(const string &path) {
   // Save the level, lives, score, and seconds
   file << Game::getGameManager()->getLevel() << " "
        << Game::getGameManager()->getLives() << " "
-       << Game::getGameManager()->getScore() << " " << _stateTime->getSeconds()
+       << Game::getGameManager()->getScore() << " " << stateTime_->getSeconds()
        << "\n";
 
   // Save each one of the objects from this state
-  for (auto gameObject : _gameObjects) {
+  for (auto gameObject : gameObjects_) {
     if (dynamic_cast<ArkanoidObject *>(gameObject)) file << *gameObject << "\n";
   }
 
@@ -238,39 +239,40 @@ void GameState::_end() { _destroyAll(); }
 // Sets the reset behaviour for this state
 void GameState::_reset() {
   // Destroy all the balls
-  for (auto gameObject : _gameObjects) {
+  for (auto gameObject : gameObjects_) {
     if (dynamic_cast<Ball *>(gameObject)) gameObject->destroy();
   }
 
   // Destroy the paddle
-  _paddle->destroy();
+  paddle_->destroy();
 
   // Creates the paddle in the middle of the scene
-  _paddle = new Paddle(
-      ArkanoidSettings::sceneUpperLeftCorner.x +
-          ArkanoidSettings::sceneWidth / 2.0f,
-      ArkanoidSettings::sceneUpperLeftCorner.y +
-          ArkanoidSettings::wallWidth * 3.0f / 2.0f +
-          ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight,
-      ArkanoidSettings::paddleWidth, ArkanoidSettings::paddleHeight,
-      ArkanoidSettings::sceneUpperLeftCorner.x +
-          ArkanoidSettings::sceneWidth / 2.0f,
-      ArkanoidSettings::sceneWidth / 2.0f - ArkanoidSettings::wallWidth,
-      ArkanoidSettings::paddleSpeed, BEGIN, _game->getTextures()[PADDLE]);
-  add(*_paddle);
+  paddle_ = new Paddle(
+      ArkanoidSettings::sceneUpperLeftCorner_.x +
+          ArkanoidSettings::sceneWidth_ / 2.0f,
+      ArkanoidSettings::sceneUpperLeftCorner_.y +
+          ArkanoidSettings::wallWidth_ * 3.0f / 2.0f +
+          ArkanoidSettings::sceneHeight_ / 20.0f +
+          ArkanoidSettings::wallHeight_,
+      ArkanoidSettings::paddleWidth_, ArkanoidSettings::paddleHeight_,
+      ArkanoidSettings::sceneUpperLeftCorner_.x +
+          ArkanoidSettings::sceneWidth_ / 2.0f,
+      ArkanoidSettings::sceneWidth_ / 2.0f - ArkanoidSettings::wallWidth_,
+      ArkanoidSettings::paddleSpeed_, BEGIN, game_->getTextures()[PADDLE]);
+  add(*paddle_);
 
   // Creates the ball on top of the paddle
   Ball *ball = new Ball(
-      ArkanoidSettings::sceneUpperLeftCorner.x +
-          ArkanoidSettings::sceneWidth / 2.0f +
-          ArkanoidSettings::paddleWidth / 4.0f,
-      ArkanoidSettings::sceneUpperLeftCorner.y +
-          ArkanoidSettings::wallWidth * 3.0f / 2.0f +
-          ArkanoidSettings::sceneHeight / 20.0f + ArkanoidSettings::wallHeight -
-          ArkanoidSettings::ballRadius * 2.0f -
-          ArkanoidSettings::paddleHeight / 2.0f,
-      ArkanoidSettings::ballRadius, ArkanoidSettings::ballSpeed,
-      _game->getTextures()[BALL]);
+      ArkanoidSettings::sceneUpperLeftCorner_.x +
+          ArkanoidSettings::sceneWidth_ / 2.0f +
+          ArkanoidSettings::paddleWidth_ / 4.0f,
+      ArkanoidSettings::sceneUpperLeftCorner_.y +
+          ArkanoidSettings::wallWidth_ * 3.0f / 2.0f +
+          ArkanoidSettings::sceneHeight_ / 20.0f +
+          ArkanoidSettings::wallHeight_ - ArkanoidSettings::ballRadius_ * 2.0f -
+          ArkanoidSettings::paddleHeight_ / 2.0f,
+      ArkanoidSettings::ballRadius_, ArkanoidSettings::ballSpeed_,
+      game_->getTextures()[BALL]);
   ball->setVelocity(b2Vec2(0.0f, 1.0f));
   add(*ball);
 
@@ -278,15 +280,22 @@ void GameState::_reset() {
   Game::getGameManager()->setBalls(1);
 
   // Reset the timer
-  _stateTime->reset();
+  stateTime_->reset();
 }
 
 /// Private
 // Sets the behaviour to destroy all objects
 void GameState::_destroyAll() {
   // Delete all game objects
-  for (auto gameobject : _gameObjects) delete gameobject;
+  for (auto gameobject : gameObjects_) delete gameobject;
 
   // Clear the state
-  _gameObjects.clear();
+  gameObjects_.clear();
 }
+
+GameState::GameState(Game *game, SDL_Renderer *renderer)
+    : State(game, renderer) {}
+
+GameState::~GameState() {}
+
+Paddle *GameState::paddle() const { return paddle_; }

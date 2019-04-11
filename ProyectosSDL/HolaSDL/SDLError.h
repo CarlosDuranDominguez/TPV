@@ -1,8 +1,7 @@
 #pragma once
-
 #include "ArkanoidError.h"
 
-class SDLError : public ArkanoidError {
+class SDLError final : public ArkanoidError {
  public:
-  SDLError(const string &m) : ArkanoidError("[SDL]: " + m) {}
+  explicit SDLError(const string &m) : ArkanoidError("[SDL]: " + m) {}
 };

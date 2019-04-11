@@ -1,8 +1,8 @@
 #pragma once
-
 #include "ArkanoidError.h"
 
-class FileFormatError : public ArkanoidError {
+class FileFormatError final : public ArkanoidError {
  public:
-  FileFormatError(const string &m) : ArkanoidError("[File Format]: " + m) {}
+  explicit FileFormatError(const string &m)
+      : ArkanoidError("[File Format]: " + m) {}
 };

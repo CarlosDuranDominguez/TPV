@@ -156,6 +156,12 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>Archivos de código fuente\GameObjects\ArkanoidObjects</Filter>
     </ClCompile>
+    <ClCompile Include="ArkanoidTimer.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionLogic.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">

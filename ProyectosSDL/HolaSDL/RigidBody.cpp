@@ -6,8 +6,8 @@
 /// Public
 // Destructor
 RigidBody::~RigidBody() {
-  _body->DestroyFixture(_fixture);
-  Game::getWorld()->DestroyBody(_body);
+  body_->DestroyFixture(fixture_);
+  Game::getWorld()->DestroyBody(body_);
 };
 
 /// Public
@@ -21,49 +21,49 @@ RigidBody::RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef,
 /// Public
 // Sets the linear velocity for this rigid body
 void RigidBody::setVelocity(b2Vec2 &velocity) {
-  _body->SetLinearVelocity(velocity);
+  body_->SetLinearVelocity(velocity);
 }
 
 /// Public
 // Sets the position for this rigid body, keeping the angle
 void RigidBody::setPosition(b2Vec2 &position) {
-  _body->SetTransform(position, _body->GetAngle());
+  body_->SetTransform(position, body_->GetAngle());
 }
 
 /// Public
 // Sets the angle for this rigid body
 void RigidBody::setAngle(float32 angle) {
-  _body->SetTransform(_body->GetPosition(), angle);
+  body_->SetTransform(body_->GetPosition(), angle);
 }
 
 /// Public
 // Sets the position and angle for this rigid body
 void RigidBody::setTransform(b2Vec2 &position, float32 angle) {
-  _body->SetTransform(position, angle);
+  body_->SetTransform(position, angle);
 }
 
 /// Public
 // Applies a force to this rigid body
 void RigidBody::applyForce(b2Vec2 &force, b2Vec2 &point) {
-  _body->ApplyForce(force, point, true);
+  body_->ApplyForce(force, point, true);
 }
 
 /// Public
 // Applies a force to the body's center
 void RigidBody::applyForceToCenter(b2Vec2 &force) {
-  _body->ApplyForceToCenter(force, true);
+  body_->ApplyForceToCenter(force, true);
 }
 
 /// Public
 // Applies a linear impulse to this rigid body
-void RigidBody::ApplyLinearImpulse(b2Vec2 &impulse, b2Vec2 &point) {
-  _body->ApplyLinearImpulse(impulse, point, true);
+void RigidBody::applyLinearImpulse(b2Vec2 &impulse, b2Vec2 &point) {
+  body_->ApplyLinearImpulse(impulse, point, true);
 }
 
 /// Public
 // Applies a linear impuse to this rigid body's center
-void RigidBody::ApplyLinearImpulseToCenter(b2Vec2 &impulse) {
-  _body->ApplyLinearImpulseToCenter(impulse, true);
+void RigidBody::applyLinearImpulseToCenter(b2Vec2 &impulse) {
+  body_->ApplyLinearImpulseToCenter(impulse, true);
 }
 
 /// Protected
@@ -72,5 +72,22 @@ void RigidBody::setUp(b2Shape &shape, b2FixtureDef &fixture) {
   // Join the fixture to the shape
   fixture.shape = &shape;
   // Create the fixture
-  _fixture = _body->CreateFixture(&fixture);
+  fixture_ = body_->CreateFixture(&fixture);
 }
+
+RigidBody::RigidBody() {
+}
+
+b2Body* RigidBody::getBody() { return body_; }
+
+void RigidBody::onBeginContact(RigidBody* body) {
+}
+
+void RigidBody::onEndContact(RigidBody* body) {
+}
+
+b2Vec2 RigidBody::getPosition() const { return body_->GetPosition(); }
+
+b2Vec2 RigidBody::getVelocity() const { return body_->GetLinearVelocity(); }
+
+float32 RigidBody::getAngle() const { return body_->GetAngle(); }

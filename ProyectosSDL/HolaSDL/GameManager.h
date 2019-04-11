@@ -6,24 +6,23 @@
 class Game;
 
 class GameManager {
- private:
-  int _currentLevel;
-  float32 _totalTime;
-  int _currentBlocks;
-  int _currentBalls;
-  int _score;
-  int _lives;
-  static Game *_game;
-  TopBoard *_topBoard;
+  int currentLevel_;
+  float32 totalTime_;
+  int currentBlocks_;
+  int currentBalls_;
+  int score_;
+  int lives_;
+  static Game *game_;
+  TopBoard *topBoard_;
 
  public:
-  GameManager(Game *game);
+  explicit GameManager(Game *game);
   ~GameManager();
-  int getLevel() const { return _currentLevel; };
-  int getLives() const { return _lives; };
-  int getScore() const { return _score; };
-  int getTotalTime() const { return _totalTime; };
-  TopBoard *getTopBoard() const { return _topBoard; };
+  int getLevel() const;
+  int getLives() const;
+  int getScore() const;
+  int getTotalTime() const;
+  TopBoard *getTopBoard() const;
   void addBalls(int balls);
   void addBlock();
   void addLives(int lives);
@@ -40,9 +39,7 @@ class GameManager {
   void setLives(int lives);
   void setScore(int score);
   void setTotalTime(float32 time);
-  static Game *getGame() { return _game; };
-  static void setGame(Game *game) { _game = game; };
-  std::vector<PlayerGame *> getScores() const {
-    return _topBoard->showScores();
-  };
+  static Game *getGame();
+  static void setGame(Game *game);
+  std::vector<PlayerGame *> getScores() const;
 };

@@ -2,11 +2,19 @@
 #include "Block.h"
 #include "Game.h"
 
+Ball::Ball() {
+} 
+Ball::~Ball() {
+} 
+float32 Ball::getSpeed() const { return speed_; }
+
+void Ball::setSpeed(float32 speed) { speed_ = speed; }
+
 /// Public
 // Constructor
 Ball::Ball(float32 x, float32 y, float32 radius, float32 speed,
            Texture *texture)
-    : ArkanoidBody(x, y, radius * 2, radius * 2, texture), _speed(speed) {
+    : ArkanoidBody(x, y, radius * 2, radius * 2, texture), speed_(speed) {
   setBody(x, y, radius, *Game::getWorld());
 }
 
@@ -19,11 +27,11 @@ void Ball::update() {}
 void Ball::afterUpdate() {
   // Check if the speed is not the maximum speed
   float32 speed = getVelocity().LengthSquared();
-  if (speed != _speed) {
+  if (speed != speed_) {
     // Set the normalized speed to the maximum one
     b2Vec2 v = getVelocity();
     v.Normalize();
-    v *= _speed;
+    v *= speed_;
     setVelocity(v);
   } else if (speed < b2_epsilon) {
     setVelocity(b2Vec2{0.0f, speed});
@@ -34,10 +42,10 @@ void Ball::afterUpdate() {
 // Defines the render behaviour
 void Ball::render() const {
   // Gets the position, size, and diameter, and renders
-  auto pos = _body->GetPosition();
+  auto pos = body_->GetPosition();
   auto size = getSize();
-  auto diameter = (int)_fixture->GetShape()->m_radius * 2;
-  _texture->renderFrame({(int)pos.x - (int)size.x / 2,
+  auto diameter = (int)fixture_->GetShape()->m_radius * 2;
+  texture_->renderFrame({(int)pos.x - (int)size.x / 2,
                          (int)pos.y - (int)size.y / 2, diameter, diameter},
                         0, 0);
 }
@@ -56,14 +64,14 @@ void Ball::onEndContact(RigidBody *rigidBody) {
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Ball::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, radius, velx, vely, speed;
   out >> posx >> posy >> radius >> velx >> vely >> speed;
   setBody(posx, posy, radius, *Game::getWorld());
   setSpeed(speed);
   setPosition(posx, posy);
   setVelocity(b2Vec2{velx, vely});
-  _size.Set(radius * 2, radius * 2);
+  size_.Set(radius * 2, radius * 2);
   return out;
 }
 
@@ -71,7 +79,7 @@ std::istream &Ball::deserialize(std::istream &out) {
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Ball::serialize(std::ostream &is) const {
   return is << "Ball " << textureIndex() << " " << getPosition().x << " "
-            << getPosition().y << " " << _fixture->GetShape()->m_radius << " "
+            << getPosition().y << " " << fixture_->GetShape()->m_radius << " "
             << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
 
@@ -112,7 +120,7 @@ void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world) {
   fixtureDef.shape = &shape;
 
   // Add the body definition to the world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);

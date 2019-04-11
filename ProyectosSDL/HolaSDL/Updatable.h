@@ -5,7 +5,11 @@
  */
 class Updatable {
  public:
-  Updatable(){};
-  ~Updatable(){};
+  Updatable();
+  virtual ~Updatable();
   virtual void update() = 0;
 };
+
+inline Updatable::Updatable() {}
+
+inline Updatable::~Updatable() {}

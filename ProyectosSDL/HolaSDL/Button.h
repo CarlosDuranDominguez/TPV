@@ -1,23 +1,17 @@
 #pragma once
-
 #include <functional>
 #include "Text.h"
 
 class Button : public Text {
- private:
-  SDL_Color _inColor;
-  SDL_Color _outColor;
-  bool _mouseIn = false;
-  function<void()> _callback;
+  SDL_Color inColor_;
+  SDL_Color outColor_;
+  bool mouseIn_ = false;
+  function<void()> callback_;
 
  public:
-  Button(Font *font, float32 x, float32 y, float32 width, float32 height,
+  Button(Font* font, float32 x, float32 y, float32 width, float32 height,
          SDL_Color inColor, SDL_Color outColor, string text,
-         function<void()> callback)
-      : Text(font, x, y, width, height, outColor, text),
-        _inColor(inColor),
-        _outColor(outColor),
-        _callback(callback){};
-  ~Button(){};
+         function<void()> callback);
+  ~Button();
   virtual void handleEvents(SDL_Event event);
 };

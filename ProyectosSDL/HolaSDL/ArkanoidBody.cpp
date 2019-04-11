@@ -1,7 +1,9 @@
 #include "ArkanoidBody.h"
 
-/// Public
-// Constructor
+ArkanoidBody::ArkanoidBody() {
+} /// Public
+ArkanoidBody::~ArkanoidBody() {
+} // Constructor
 ArkanoidBody::ArkanoidBody(float32 x, float32 y, float32 width, float32 height,
                            Texture *texture)
     : ArkanoidObject(x, y, width, height, texture) {}

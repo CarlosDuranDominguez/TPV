@@ -7,37 +7,40 @@
 ScoreBoardState::ScoreBoardState(Game *game, SDL_Renderer *renderer)
     : State(game, renderer) {
   GameObject *gameObject;
-  gameObject = _scoreboard =
-      new ScoreBoard(game->getFonts()[MEDIUMFONT], 0, 0, 200, 40, WHITE);
+  gameObject = scoreboard_ =
+      new ScoreBoard(game->getFonts()[MEDIUM_FONT], 0, 0, 200, 40, kWhite);
   add(*gameObject);
-  gameObject = new Button(game->getFonts()[0], 0, 400, 200, 100, WHITE, GREY,
+  gameObject = new Button(game->getFonts()[0], 0, 400, 200, 100, kWhite, kGrey,
                           "Exit", [this, game]() {
-                            _exit = true;
+                            exit_ = true;
                             game->changeState(MENU);
                           });
   add(*gameObject);
-  gameObject = new Button(game->getFonts()[0], 200, 400, 200, 100, WHITE, GREY,
+  gameObject = new Button(game->getFonts()[0], 200, 400, 200, 100, kWhite, kGrey,
                           "By Time", [this, game]() {
                             Game::getGameManager()->getTopBoard()->sortByTime();
-                            this->_scoreboard->rewrite();
+                            this->scoreboard_->rewrite();
                           });
   add(*gameObject);
-  gameObject = new Button(game->getFonts()[0], 400, 400, 200, 100, WHITE, GREY,
+  gameObject = new Button(game->getFonts()[0], 400, 400, 200, 100, kWhite, kGrey,
                           "By Name", [this, game]() {
                             Game::getGameManager()->getTopBoard()->sortByName();
-                            this->_scoreboard->rewrite();
+                            this->scoreboard_->rewrite();
                           });
   add(*gameObject);
   gameObject =
-      new Button(game->getFonts()[0], 600, 400, 200, 100, WHITE, GREY,
+      new Button(game->getFonts()[0], 600, 400, 200, 100, kWhite, kGrey,
                  "By Score", [this, game]() {
                    Game::getGameManager()->getTopBoard()->sortByScore();
-                   this->_scoreboard->rewrite();
+                   this->scoreboard_->rewrite();
                  });
   add(*gameObject);
 }
 
+ScoreBoardState::~ScoreBoardState() {
+}
+
 void ScoreBoardState::init() {
   State::init();
-  _scoreboard->rewrite();
+  scoreboard_->rewrite();
 }

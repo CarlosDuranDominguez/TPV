@@ -123,11 +123,13 @@
     <ClCompile Include="ArkanoidBody.cpp" />
     <ClCompile Include="ArkanoidObject.cpp" />
     <ClCompile Include="ArkanoidSettings.cpp" />
+    <ClCompile Include="ArkanoidTimer.cpp" />
     <ClCompile Include="Award.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CollisionLogic.cpp" />
     <ClCompile Include="DeadZone.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnlargenAward.cpp" />

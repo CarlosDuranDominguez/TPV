@@ -1,16 +1,14 @@
 #pragma once
-
 #include "ScoreBoard.h"
 #include "State.h"
 
 class Game;
 
-class ScoreBoardState : public State {
- private:
-  ScoreBoard *_scoreboard;
+class ScoreBoardState final : public State {
+  ScoreBoard *scoreboard_;
 
  public:
   ScoreBoardState(Game *game, SDL_Renderer *renderer);
-  ~ScoreBoardState(){};
-  virtual void init();
+  ~ScoreBoardState();
+  void init() override;
 };

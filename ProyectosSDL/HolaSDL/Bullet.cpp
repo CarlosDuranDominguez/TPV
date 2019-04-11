@@ -9,14 +9,14 @@ void Bullet::onBeginContact(RigidBody *rigidBody) { destroy(); }
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Bullet::deserialize(std::istream &out) {
-  _texture = readTexture(out);
+  texture_ = readTexture(out);
   float32 posx, posy, radius, velx, vely, speed;
   out >> posx >> posy >> radius >> velx >> vely >> speed;
   setBody(posx, posy, radius, *Game::getWorld());
   setSpeed(speed);
   setPosition(posx, posy);
   setVelocity(b2Vec2{velx, vely});
-  _size.Set(radius * 2, radius * 2);
+  size_.Set(radius * 2, radius * 2);
   return out;
 }
 
@@ -24,7 +24,7 @@ std::istream &Bullet::deserialize(std::istream &out) {
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Bullet::serialize(std::ostream &is) const {
   return is << "Bullet " << textureIndex() << " " << getPosition().x << " "
-            << getPosition().y << " " << _fixture->GetShape()->m_radius << " "
+            << getPosition().y << " " << fixture_->GetShape()->m_radius << " "
             << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
 
@@ -57,8 +57,18 @@ void Bullet::setBody(float32 x, float32 y, float32 radius, b2World &world) {
   fixtureDef.shape = &shape;
 
   // Add the body definition to the world
-  _body = world.CreateBody(&bodyDef);
+  body_ = world.CreateBody(&bodyDef);
 
   // Set up the shape
   setUp(shape, fixtureDef);
+}
+
+Bullet::Bullet() {
+}
+
+Bullet::Bullet(float32 x, float32 y, float32 radius, float32 speed, Texture* texture): Ball(
+    x, y, radius, speed, texture) {
+}
+
+Bullet::~Bullet() {
 }

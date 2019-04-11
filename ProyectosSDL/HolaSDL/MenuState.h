@@ -5,10 +5,10 @@
 
 class Game;
 
-const unsigned int NUMBER_BUTTONS_MENU = 3;
+const unsigned int kNumberButtonsMenu = 3;
 
-class MenuState : public State {
+class MenuState final : public State {
  public:
   MenuState(Game *game, SDL_Renderer *renderer);
-  ~MenuState(){};
+  ~MenuState();
 };

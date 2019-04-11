@@ -6,7 +6,11 @@
  */
 class Controllable {
  public:
-  Controllable(){};
-  ~Controllable(){};
+  Controllable();
+  virtual ~Controllable();
   virtual void handleEvents(SDL_Event event) = 0;
 };
+
+inline Controllable::Controllable() {}
+
+inline Controllable::~Controllable() {}

@@ -1,9 +1,8 @@
 #pragma once
-
 #include <stdexcept>
-using namespace std;
 
-class ArkanoidError : public logic_error {
+class ArkanoidError : public std::logic_error {
  public:
-  ArkanoidError(const string &m) : logic_error("Arkanoid Error " + m) {}
+  explicit ArkanoidError(const string &m)
+      : std::logic_error("Arkanoid Error " + m) {}
 };
