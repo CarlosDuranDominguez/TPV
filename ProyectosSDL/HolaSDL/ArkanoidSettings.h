@@ -3,13 +3,12 @@
 #include <Box2D/Box2D.h>
 
 typedef unsigned int uint;
-class ArkanoidSettings
-{
-private:
+class ArkanoidSettings {
+ private:
   static float32 _windowHeight;
   static float32 _windowWidth;
 
-public:
+ public:
   // Methods
   static float32 getWindowHeight();
   static float32 getWindowWidth();

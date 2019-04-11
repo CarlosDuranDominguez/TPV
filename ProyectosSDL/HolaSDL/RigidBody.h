@@ -1,16 +1,16 @@
 #pragma once
 #include <Box2D/Box2D.h>
 
-class RigidBody
-{
-protected:
+class RigidBody {
+ protected:
   b2Body *_body;
   b2Fixture *_fixture;
   void setUp(b2Shape &shape, b2FixtureDef &fixture);
 
-public:
+ public:
   RigidBody(){};
-  RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef, b2World &world);
+  RigidBody(b2BodyDef &body, b2Shape &shape, b2FixtureDef &fixtureDef,
+            b2World &world);
   ~RigidBody();
   b2Body *getBody() { return _body; };
   void setVelocity(b2Vec2 &velocity);

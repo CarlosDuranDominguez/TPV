@@ -1,31 +1,29 @@
 #pragma once
 
+#include <Box2D/Box2D.h>
+#include <functional>
 #include <list>
 #include <stack>
-#include <functional>
-#include "SDL.h"
-#include <Box2D/Box2D.h>
+#include "ArkanoidTimer.h"
+#include "Controllable.h"
 #include "GameObject.h"
 #include "Renderable.h"
-#include "Controllable.h"
+#include "SDL.h"
 #include "Updatable.h"
-#include "ArkanoidTimer.h"
 
 class Game;
 class CollisionLogic;
 
-class State
-{
-  class newInstance
-  {
-  public:
+class State {
+  class newInstance {
+   public:
     newInstance(GAME_OBJECTS type, b2Vec2 &position)
         : type(type), position(position){};
     GAME_OBJECTS type;
     b2Vec2 position;
   };
 
-protected:
+ protected:
   SDL_Renderer *_renderer = nullptr;
   list<GameObject *> _gameObjects;
   list<list<GameObject *>::iterator> _pendingOnDestroy;
@@ -46,15 +44,14 @@ protected:
   virtual void _destroy();
   virtual void _end(){};
 
-public:
+ public:
   State(){};
   State(Game *game, SDL_Renderer *renderer);
   virtual ~State();
   static State *current;
   virtual void end() { _exit = true; };
   virtual void reset(){};
-  virtual void init()
-  {
+  virtual void init() {
     current = this;
     _stateTime->reset();
     _exit = false;

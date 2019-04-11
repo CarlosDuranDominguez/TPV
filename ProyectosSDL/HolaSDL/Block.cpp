@@ -1,95 +1,86 @@
 #include "Block.h"
-#include "Game.h"
 #include "Award.h"
-#include "MultiBallAward.h"
 #include "EnlargenAward.h"
-#include "ShortenAward.h"
-#include "NextLevelAward.h"
-#include "StickyAward.h"
+#include "Game.h"
 #include "LaserAward.h"
+#include "MultiBallAward.h"
+#include "NextLevelAward.h"
+#include "ShortenAward.h"
+#include "StickyAward.h"
 
 /// Public
 // Constructor
-Block::Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture)
-    : ArkanoidBody(x, y, width, height, texture), _color(color)
-{
+Block::Block(float32 x, float32 y, float32 width, float32 height, int color,
+             Texture *texture)
+    : ArkanoidBody(x, y, width, height, texture), _color(color) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
 /// Public Virtual
 // Updates the update behaviour
-void Block::update()
-{
-}
+void Block::update() {}
 
 /// Public Virtual
 // Defines the render behaviour
-void Block::render() const
-{
+void Block::render() const {
   b2Vec2 pos = _body->GetPosition();
-  _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2, (int)getSize().x, (int)getSize().y}, _color / _texture->getNumCols(),
-                        _color % _texture->getNumCols());
+  _texture->renderFrame(
+      {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
+       (int)getSize().x, (int)getSize().y},
+      _color / _texture->getNumCols(), _color % _texture->getNumCols());
 }
 
 /// Public Virtual
 // Defines behaviour when the instance gets in contact with the instance
-void Block::contact()
-{
+void Block::contact() {
   // Destroy the block on contact
   destroy();
 
   // Create a new randomized event that throws an award
   State::current->addEvent([this]() {
     Award *award = nullptr;
-    switch (rand() % 40)
-    {
-    case 0:
-      award = new MultiBallAward(_body->GetPosition().x, _body->GetPosition().y,
-                                 ArkanoidSettings::rewardWidth,
-                                 ArkanoidSettings::rewardHeigth,
-                                 ArkanoidSettings::rewardSpeed,
-                                 ArkanoidSettings::rewardFramerate,
-                                 Game::current->getTextures()[REWARD6]);
-      break;
-    case 1:
-      award = new EnlargenAward(_body->GetPosition().x, _body->GetPosition().y,
-                                ArkanoidSettings::rewardWidth,
-                                ArkanoidSettings::rewardHeigth,
-                                ArkanoidSettings::rewardSpeed,
-                                ArkanoidSettings::rewardFramerate,
-                                Game::current->getTextures()[REWARD2]);
-      break;
-    case 2:
-      award = new ShortenAward(_body->GetPosition().x, _body->GetPosition().y,
-                               ArkanoidSettings::rewardWidth,
-                               ArkanoidSettings::rewardHeigth,
-                               ArkanoidSettings::rewardSpeed,
-                               ArkanoidSettings::rewardFramerate,
-                               Game::current->getTextures()[REWARD4]);
-      break;
-    case 3:
-      award = new NextLevelAward(_body->GetPosition().x, _body->GetPosition().y,
-                                 ArkanoidSettings::rewardWidth,
-                                 ArkanoidSettings::rewardHeigth,
-                                 ArkanoidSettings::rewardSpeed,
-                                 ArkanoidSettings::rewardFramerate,
-                                 Game::current->getTextures()[REWARD1]);
-      break;
-    case 4:
-      award = new StickyAward(_body->GetPosition().x, _body->GetPosition().y,
-                              ArkanoidSettings::rewardWidth,
-                              ArkanoidSettings::rewardHeigth,
-                              ArkanoidSettings::rewardSpeed,
-                              ArkanoidSettings::rewardFramerate,
-                              Game::current->getTextures()[REWARD1]);
-      break;
-    default:
-      break;
+    switch (rand() % 40) {
+      case 0:
+        award = new MultiBallAward(
+            _body->GetPosition().x, _body->GetPosition().y,
+            ArkanoidSettings::rewardWidth, ArkanoidSettings::rewardHeigth,
+            ArkanoidSettings::rewardSpeed, ArkanoidSettings::rewardFramerate,
+            Game::current->getTextures()[REWARD6]);
+        break;
+      case 1:
+        award = new EnlargenAward(
+            _body->GetPosition().x, _body->GetPosition().y,
+            ArkanoidSettings::rewardWidth, ArkanoidSettings::rewardHeigth,
+            ArkanoidSettings::rewardSpeed, ArkanoidSettings::rewardFramerate,
+            Game::current->getTextures()[REWARD2]);
+        break;
+      case 2:
+        award = new ShortenAward(
+            _body->GetPosition().x, _body->GetPosition().y,
+            ArkanoidSettings::rewardWidth, ArkanoidSettings::rewardHeigth,
+            ArkanoidSettings::rewardSpeed, ArkanoidSettings::rewardFramerate,
+            Game::current->getTextures()[REWARD4]);
+        break;
+      case 3:
+        award = new NextLevelAward(
+            _body->GetPosition().x, _body->GetPosition().y,
+            ArkanoidSettings::rewardWidth, ArkanoidSettings::rewardHeigth,
+            ArkanoidSettings::rewardSpeed, ArkanoidSettings::rewardFramerate,
+            Game::current->getTextures()[REWARD1]);
+        break;
+      case 4:
+        award = new StickyAward(
+            _body->GetPosition().x, _body->GetPosition().y,
+            ArkanoidSettings::rewardWidth, ArkanoidSettings::rewardHeigth,
+            ArkanoidSettings::rewardSpeed, ArkanoidSettings::rewardFramerate,
+            Game::current->getTextures()[REWARD1]);
+        break;
+      default:
+        break;
     }
 
     // If award is not null, add it and set its velocity
-    if (award != nullptr)
-    {
+    if (award != nullptr) {
       State::current->add(*award);
       award->setVelocity(b2Vec2{0, 500.0f});
     }
@@ -98,17 +89,16 @@ void Block::contact()
 
 /// Public Virtual
 // Defines behaviour when the instance is to be destroyed
-void Block::destroy()
-{
+void Block::destroy() {
   // Call inherited destroy method from GameObject
   GameObject::destroy();
   Game::getGameManager()->deleteBlock();
 }
 
 /// Public Virtual
-// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &Block::deserialize(std::istream &out)
-{
+// Defines the deserialize method behaviour to patch the instance when loading a
+// file save
+std::istream &Block::deserialize(std::istream &out) {
   _texture = readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey >> _color;
@@ -120,16 +110,16 @@ std::istream &Block::deserialize(std::istream &out)
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
-std::ostream &Block::serialize(std::ostream &is) const
-{
-  return is << "Block " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y
+std::ostream &Block::serialize(std::ostream &is) const {
+  return is << "Block " << textureIndex() << " " << getPosition().x << " "
+            << getPosition().y << " " << getSize().x << " " << getSize().y
             << " " << _color;
 }
 
 /// Private
 // setBody method, creates a static polygon shape with Box2D's API
-void Block::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
-{
+void Block::setBody(float32 x, float32 y, float32 width, float32 height,
+                    b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;

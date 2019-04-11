@@ -4,9 +4,8 @@
 /*
  *Controllable interface
  */
-class Controllable
-{
-public:
+class Controllable {
+ public:
   Controllable(){};
   ~Controllable(){};
   virtual void handleEvents(SDL_Event event) = 0;

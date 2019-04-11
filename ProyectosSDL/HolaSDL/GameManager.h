@@ -1,15 +1,13 @@
 #pragma once
 
-#include "checkML.h"
 #include "Box2D/Box2D.h"
 #include "TopBoard.h"
+#include "checkML.h"
 
 class Game;
 
-
-class GameManager
-{
-private:
+class GameManager {
+ private:
   int _currentLevel;
   float32 _totalTime;
   int _currentBlocks;
@@ -17,16 +15,16 @@ private:
   int _score;
   int _lives;
   static Game *_game;
-  TopBoard* _topBoard;
+  TopBoard *_topBoard;
 
-public:
+ public:
   GameManager(Game *game);
   ~GameManager();
   int getLevel() const { return _currentLevel; };
   int getLives() const { return _lives; };
   int getScore() const { return _score; };
   int getTotalTime() const { return _totalTime; };
-  TopBoard* getTopBoard() const { return _topBoard; };
+  TopBoard *getTopBoard() const { return _topBoard; };
   void addBalls(int balls);
   void addBlock();
   void addLives(int lives);
@@ -45,5 +43,7 @@ public:
   void setTotalTime(float32 time);
   static Game *getGame() { return _game; };
   static void setGame(Game *game) { _game = game; };
-  std::vector<PlayerGame*> getScores() const { return _topBoard->showScores(); };
+  std::vector<PlayerGame *> getScores() const {
+    return _topBoard->showScores();
+  };
 };

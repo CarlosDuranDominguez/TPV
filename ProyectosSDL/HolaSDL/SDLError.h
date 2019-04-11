@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ArkanoidError.h"
 #include <SDL.h>
+#include "ArkanoidError.h"
 
-class SDLError : public ArkanoidError
-{
-  public:
-    SDLError(const string &m) : ArkanoidError("[SDL]: " + m) {}
+class SDLError : public ArkanoidError {
+ public:
+  SDLError(const string &m) : ArkanoidError("[SDL]: " + m) {}
 };

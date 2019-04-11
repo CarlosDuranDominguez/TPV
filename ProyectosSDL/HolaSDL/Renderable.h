@@ -5,12 +5,11 @@
 /*
  *Renderable interface
  */
-class Renderable
-{
-protected:
+class Renderable {
+ protected:
   Texture *_texture;
 
-public:
+ public:
   Renderable(){};
   Renderable(Texture *texture) : _texture(texture){};
   ~Renderable(){};

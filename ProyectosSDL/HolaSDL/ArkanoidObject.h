@@ -1,19 +1,19 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Texture.h"
 #include "Renderable.h"
+#include "Texture.h"
 #include "Updatable.h"
 
-class ArkanoidObject : public GameObject, public Renderable, public Updatable
-{
-protected:
+class ArkanoidObject : public GameObject, public Renderable, public Updatable {
+ protected:
   uint textureIndex() const;
   Texture *readTexture(std::istream &out);
 
-public:
+ public:
   ArkanoidObject(){};
-  ArkanoidObject(float32 x, float32 y, float32 width, float32 height, Texture *texture)
+  ArkanoidObject(float32 x, float32 y, float32 width, float32 height,
+                 Texture *texture)
       : GameObject(x, y, width, height), Renderable(texture), Updatable(){};
   ~ArkanoidObject(){};
   virtual void render() const;

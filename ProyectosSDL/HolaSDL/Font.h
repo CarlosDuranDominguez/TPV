@@ -1,19 +1,17 @@
 #pragma once
 
-#include "checkML.h"
 #include "SDL.h"
 #include "SDL_ttf.h"
-#include "checkML.h"
 #include "Texture.h"
+#include "checkML.h"
 
-class Font
-{
-private:
+class Font {
+ private:
   TTF_Font *_font = nullptr;
   SDL_Renderer *_renderer;
   uint _size = 8;
 
-public:
+ public:
   Font(){};
   Font(SDL_Renderer *renderer, string filename, int size);
   ~Font();

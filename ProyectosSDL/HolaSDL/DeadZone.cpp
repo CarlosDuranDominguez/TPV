@@ -4,22 +4,20 @@
 /// Public
 // Constructor
 DeadZone::DeadZone(float32 x, float32 y, float32 width, float32 height)
-    : ArkanoidBody(x, y, width, height, nullptr)
-{
+    : ArkanoidBody(x, y, width, height, nullptr) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
 /// Public Virtual
 // Defines behaviour when the instance starts to have contact with an element
-void DeadZone::onBeginContact(RigidBody *rigidBody)
-{
+void DeadZone::onBeginContact(RigidBody *rigidBody) {
   dynamic_cast<GameObject *>(rigidBody)->destroy();
 }
 
 /// Public Virtual
-// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &DeadZone::deserialize(std::istream &out)
-{
+// Defines the deserialize method behaviour to patch the instance when loading a
+// file save
+std::istream &DeadZone::deserialize(std::istream &out) {
   readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey;
@@ -31,15 +29,15 @@ std::istream &DeadZone::deserialize(std::istream &out)
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
-std::ostream &DeadZone::serialize(std::ostream &is) const
-{
-  return is << "DeadZone " << 0 << " " << _position.x << " " << _position.y << " " << _size.x << " " << _size.y;
+std::ostream &DeadZone::serialize(std::ostream &is) const {
+  return is << "DeadZone " << 0 << " " << _position.x << " " << _position.y
+            << " " << _size.x << " " << _size.y;
 }
 
 /// Private
 // setBody method, creates a static polygon shape with Box2D's API
-void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
-{
+void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height,
+                       b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;

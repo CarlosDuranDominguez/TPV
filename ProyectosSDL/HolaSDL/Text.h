@@ -1,21 +1,21 @@
 #pragma once
 
-#include "checkML.h"
 #include "Font.h"
 #include "GameObject.h"
 #include "Renderable.h"
+#include "checkML.h"
 
-class Text : public GameObject, public Renderable
-{
-private:
+class Text : public GameObject, public Renderable {
+ private:
   Font *_font;
   Texture *_texture;
   string _text;
   SDL_Color _color;
   int _width, _height;
 
-public:
-  Text(Font *font, float32 x, float32 y, float32 width, float32 height, const SDL_Color &color, const string &text);
+ public:
+  Text(Font *font, float32 x, float32 y, float32 width, float32 height,
+       const SDL_Color &color, const string &text);
   ~Text();
   void setText(const string newText);
   SDL_Rect getRect() const;

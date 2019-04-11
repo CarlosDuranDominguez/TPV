@@ -1,35 +1,35 @@
 #include "Award.h"
+#include <iostream>
+#include <string>
 #include "Game.h"
 #include "Paddle.h"
-#include <string>
-#include <iostream>
 
 /// Public
 // Constructor
-Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed, uint framerate, Texture *texture)
-    : ArkanoidBody(x, y, width, height, texture), _framerate(framerate), _animationTimer(new b2Timer()), _frame(0), _contacted(false), _speed(speed)
-{
+Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed,
+             uint framerate, Texture *texture)
+    : ArkanoidBody(x, y, width, height, texture),
+      _framerate(framerate),
+      _animationTimer(new b2Timer()),
+      _frame(0),
+      _contacted(false),
+      _speed(speed) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
 /// Public
 // Destructor
-Award::~Award()
-{
-  delete _animationTimer;
-}
+Award::~Award() { delete _animationTimer; }
 
 /// Public Virtual
 // Updates the update behaviour
-void Award::update()
-{
+void Award::update() {
   // If the counter's milliseconds counted over 1000 milliseconds divided by
   // the framerate frequency, go to the next frame to continue the animation
-  if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate)
-  {
-    // If the next frame is outside the animation range, go to to the first frame
-    if ((++_frame) > _texture->getNumCols() * _texture->getNumRows())
-    {
+  if (_animationTimer->GetMilliseconds() > 1000.0f / _framerate) {
+    // If the next frame is outside the animation range, go to to the first
+    // frame
+    if ((++_frame) > _texture->getNumCols() * _texture->getNumRows()) {
       _frame = 0;
     }
 
@@ -40,36 +40,30 @@ void Award::update()
 
 /// Public Virtual
 // Defines the render behaviour
-void Award::render() const
-{
+void Award::render() const {
   b2Vec2 pos = _body->GetPosition();
 
-  _texture->renderFrame({(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-                         (int)getSize().x, (int)getSize().y},
-                        _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
+  _texture->renderFrame(
+      {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
+       (int)getSize().x, (int)getSize().y},
+      _frame / (_texture->getNumCols() + 1), _frame % _texture->getNumCols());
 }
 
 /// Public Virtual
 // Defines behaviour when the instance gets in contact with the instance
-void Award::contact()
-{
-  destroy();
-}
+void Award::contact() { destroy(); }
 
 /// Public Virtual
 // Defines behaviour when the instance is to be destroyed
-void Award::destroy()
-{
+void Award::destroy() {
   // Call inherited destroy method from GameObject
   GameObject::destroy();
 }
 
 /// Public Virtual
 // Defines behaviour after every update cycle
-void Award::afterUpdate()
-{
-  if (getVelocity().y != _speed)
-  {
+void Award::afterUpdate() {
+  if (getVelocity().y != _speed) {
     b2Vec2 v{0, _speed};
     setVelocity(v);
   }
@@ -77,20 +71,18 @@ void Award::afterUpdate()
 
 /// Public Virtual
 // Defines behaviour when the instance starts to have contact with an element
-void Award::onBeginContact(RigidBody *rigidbody)
-{
+void Award::onBeginContact(RigidBody *rigidbody) {
   // If the contact was done with the paddle, set _contacted to true
-  if (!_contacted && dynamic_cast<Paddle *>(rigidbody))
-  {
+  if (!_contacted && dynamic_cast<Paddle *>(rigidbody)) {
     _contacted = true;
     contact();
   }
 }
 
 /// Public Virtual
-// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &Award::deserialize(std::istream &out)
-{
+// Defines the deserialize method behaviour to patch the instance when loading a
+// file save
+std::istream &Award::deserialize(std::istream &out) {
   _texture = readTexture(out);
   float32 posx, posy, sizex, sizey;
   out >> posx >> posy >> sizex >> sizey;
@@ -103,18 +95,18 @@ std::istream &Award::deserialize(std::istream &out)
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
-std::ostream &Award::serialize(std::ostream &is) const
-{
+std::ostream &Award::serialize(std::ostream &is) const {
   string a = typeid(*this).name();
   a = a.substr(6);
-  return is << a << " " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " " << getSize().x << " " << getSize().y << " "
-            << _speed << " " << _framerate;
+  return is << a << " " << textureIndex() << " " << getPosition().x << " "
+            << getPosition().y << " " << getSize().x << " " << getSize().y
+            << " " << _speed << " " << _framerate;
 }
 
 /// Private
 // setBody method, creates a dynamic polygon shape with Box2D's API
-void Award::setBody(float32 x, float32 y, float32 width, float32 height, b2World &world)
-{
+void Award::setBody(float32 x, float32 y, float32 width, float32 height,
+                    b2World &world) {
   float32 radius = height / 2.0f;
 
   // Create the body definition

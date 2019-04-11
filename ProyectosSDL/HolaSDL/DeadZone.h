@@ -1,14 +1,14 @@
 #pragma once
 
-#include "checkML.h"
 #include "ArkanoidBody.h"
+#include "checkML.h"
 
-class DeadZone : public ArkanoidBody
-{
-private:
-  void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+class DeadZone : public ArkanoidBody {
+ private:
+  void setBody(float32 x, float32 y, float32 width, float32 height,
+               b2World &world);
 
-public:
+ public:
   DeadZone(){};
   DeadZone(float32 x, float32 y, float32 width, float32 height);
   ~DeadZone(){};

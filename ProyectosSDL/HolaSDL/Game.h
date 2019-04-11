@@ -1,16 +1,16 @@
 #pragma once
 
+#include <map>
+#include "ArkanoidSettings.h"
+#include "Font.h"
+#include "GameManager.h"
+#include "GameState.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_ttf.h"
-#include "checkML.h"
-#include "Texture.h"
-#include "Font.h"
-#include "GameManager.h"
 #include "State.h"
-#include "GameState.h"
-#include <map>
-#include "ArkanoidSettings.h"
+#include "Texture.h"
+#include "checkML.h"
 
 const uint WIN_WIDTH = 800;
 const uint WIN_HEIGHT = 600;
@@ -18,8 +18,7 @@ const uint NUMBER_TEXTURES = 44;
 const uint NUMBER_FONT_STYLES = 15;
 const float32 PADDLESPEED = 5;
 
-enum FontsStyles
-{
+enum FontsStyles {
   BOLD,
   BOLDITALIC,
   DEMIBOLD,
@@ -37,15 +36,13 @@ enum FontsStyles
   STENCIL
 };
 
-struct TextureInfo
-{
+struct TextureInfo {
   string path;
   uint columns;
   uint rows;
 };
 
-enum Textures
-{
+enum Textures {
   BALL,
   BRICKS,
   PADDLE,
@@ -139,49 +136,29 @@ const TextureInfo TEXTURES[NUMBER_TEXTURES]{
     TextureInfo{"../images/Ballon.png", 2, 1}};
 
 const string FONTSDIRECTORIES[NUMBER_FONT_STYLES]{
-    "../fonts/Oswald-Bold.ttf",
-    "../fonts/Oswald-BoldItalic.ttf",
-    "../fonts/Oswald-DemiBold.ttf",
-    "../fonts/Oswald-Demi-BoldItalic.ttf",
-    "../fonts/Oswald-ExtraLight.ttf",
-    "../fonts/Oswald-Extra-LightItalic.ttf",
-    "../fonts/Oswald-Heavy.ttf",
-    "../fonts/Oswald-HeavyItalic.ttf",
-    "../fonts/Oswald-Light.ttf",
-    "../fonts/Oswald-LightItalic.ttf",
-    "../fonts/Oswald-Medium.ttf",
-    "../fonts/Oswald-MediumItalic.ttf",
-    "../fonts/Oswald-Regular.ttf",
-    "../fonts/Oswald-RegularItalic.ttf",
+    "../fonts/Oswald-Bold.ttf",       "../fonts/Oswald-BoldItalic.ttf",
+    "../fonts/Oswald-DemiBold.ttf",   "../fonts/Oswald-Demi-BoldItalic.ttf",
+    "../fonts/Oswald-ExtraLight.ttf", "../fonts/Oswald-Extra-LightItalic.ttf",
+    "../fonts/Oswald-Heavy.ttf",      "../fonts/Oswald-HeavyItalic.ttf",
+    "../fonts/Oswald-Light.ttf",      "../fonts/Oswald-LightItalic.ttf",
+    "../fonts/Oswald-Medium.ttf",     "../fonts/Oswald-MediumItalic.ttf",
+    "../fonts/Oswald-Regular.ttf",    "../fonts/Oswald-RegularItalic.ttf",
     "../fonts/Oswald-Stencil.ttf"};
 
-const string LEVEL[3]{
-    "../levels/level01.ark",
-    "../levels/level02.ark",
-    "../levels/level03.ark"};
+const string LEVEL[3]{"../levels/level01.ark", "../levels/level02.ark",
+                      "../levels/level03.ark"};
 
-enum Fonts
-{
-  BIGFONT,
-  MEDIUMFONT
-};
+enum Fonts { BIGFONT, MEDIUMFONT };
 
 const uint NUMBERFONTS = 2;
 
 const SDL_Color WHITE = {255, 255, 255, 255};
 const SDL_Color GREY = {80, 80, 80, 255};
 
-enum States
-{
-  GAMEOVER,
-  SCOREBOARD,
-  GAME,
-  MENU
-};
+enum States { GAMEOVER, SCOREBOARD, GAME, MENU };
 
-class Game
-{
-private:
+class Game {
+ private:
   SDL_Window *_window = nullptr;
   SDL_Renderer *_renderer = nullptr;
   Texture *_textures[NUMBER_TEXTURES];
@@ -191,7 +168,7 @@ private:
   States _state = States::MENU;
   static b2World *_world;
 
-public:
+ public:
   Game();
   ~Game();
   static Game *current;

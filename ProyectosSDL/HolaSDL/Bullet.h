@@ -1,11 +1,10 @@
 #include "Ball.h"
 
-class Bullet : public Ball
-{
-private:
+class Bullet : public Ball {
+ private:
   virtual void setBody(float32 x, float32 y, float32 radius, b2World &world);
 
-public:
+ public:
   Bullet(){};
   Bullet(float32 x, float32 y, float32 radius, float32 speed, Texture *texture)
       : Ball(x, y, radius, speed, texture){};

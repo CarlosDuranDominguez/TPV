@@ -1,21 +1,22 @@
 #pragma once
 
-#include "checkML.h"
 #include "ArkanoidBody.h"
+#include "checkML.h"
 
-class Award : public ArkanoidBody
-{
-private:
+class Award : public ArkanoidBody {
+ private:
   uint _framerate;
   uint _frame;
   b2Timer *_animationTimer;
   float32 _speed;
   bool _contacted;
-  void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+  void setBody(float32 x, float32 y, float32 width, float32 height,
+               b2World &world);
 
-public:
+ public:
   Award() { _animationTimer = new b2Timer(); };
-  Award(float32 x, float32 y, float32 width, float32 height, float32 speed, uint framerate, Texture *texture);
+  Award(float32 x, float32 y, float32 width, float32 height, float32 speed,
+        uint framerate, Texture *texture);
   ~Award();
   virtual void update();
   virtual void render() const;

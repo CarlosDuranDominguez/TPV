@@ -1,14 +1,14 @@
 #pragma once
 
-#include "checkML.h"
 #include "ArkanoidBody.h"
+#include "checkML.h"
 
-class Wall : public ArkanoidBody
-{
-private:
-  void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+class Wall : public ArkanoidBody {
+ private:
+  void setBody(float32 x, float32 y, float32 width, float32 height,
+               b2World &world);
 
-public:
+ public:
   Wall(){};
   Wall(float32 x, float32 y, float32 width, float32 height, Texture *texture);
   ~Wall(){};

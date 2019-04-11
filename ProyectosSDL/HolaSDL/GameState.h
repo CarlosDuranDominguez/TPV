@@ -1,20 +1,18 @@
 #pragma once
-#include "State.h"
 #include "Paddle.h"
+#include "State.h"
 
-class GameState : public State
-{
-protected:
+class GameState : public State {
+ protected:
   virtual void _end();
   Paddle *_paddle;
   void _reset();
 
-private:
+ private:
   void _destroyAll();
 
-public:
-  GameState(Game *game, SDL_Renderer *renderer)
-      : State(game, renderer){};
+ public:
+  GameState(Game *game, SDL_Renderer *renderer) : State(game, renderer){};
   virtual ~GameState(){};
   virtual void reset();
   virtual void init();

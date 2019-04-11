@@ -6,9 +6,9 @@
 void Bullet::onBeginContact(RigidBody *rigidBody) { destroy(); }
 
 /// Public Virtual
-// Defines the deserialize method behaviour to patch the instance when loading a file save
-std::istream &Bullet::deserialize(std::istream &out)
-{
+// Defines the deserialize method behaviour to patch the instance when loading a
+// file save
+std::istream &Bullet::deserialize(std::istream &out) {
   _texture = readTexture(out);
   float32 posx, posy, radius, velx, vely, speed;
   out >> posx >> posy >> radius >> velx >> vely >> speed;
@@ -22,16 +22,15 @@ std::istream &Bullet::deserialize(std::istream &out)
 
 /// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
-std::ostream &Bullet::serialize(std::ostream &is) const
-{
-  return is << "Bullet " << textureIndex() << " " << getPosition().x << " " << getPosition().y << " "
-            << _fixture->GetShape()->m_radius << " " << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
+std::ostream &Bullet::serialize(std::ostream &is) const {
+  return is << "Bullet " << textureIndex() << " " << getPosition().x << " "
+            << getPosition().y << " " << _fixture->GetShape()->m_radius << " "
+            << getVelocity().x << " " << getVelocity().y << " " << getSpeed();
 }
 
 /// Private
 // setBody method, creates a dynamic circle shape with Box2D's API
-void Bullet::setBody(float32 x, float32 y, float32 radius, b2World &world)
-{
+void Bullet::setBody(float32 x, float32 y, float32 radius, b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.allowSleep = false;

@@ -1,25 +1,23 @@
 #pragma once
-#include "checkML.h"
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
+#include "checkML.h"
 
-struct PlayerGame
-{
+struct PlayerGame {
   std::string name;
   int score;
   int time;
 };
 
-class TopBoard
-{
-private:
+class TopBoard {
+ private:
   std::vector<PlayerGame *> _scores;
   bool static _comparename(const PlayerGame *game1, const PlayerGame *game2);
   bool static _comparescore(const PlayerGame *, const PlayerGame *);
   bool static _comparetime(const PlayerGame *, const PlayerGame *);
 
-public:
+ public:
   TopBoard(){};
   TopBoard(const std::string &path);
   ~TopBoard();

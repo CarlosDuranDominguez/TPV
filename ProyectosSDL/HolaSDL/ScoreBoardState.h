@@ -1,18 +1,17 @@
 #pragma once
 
-#include "checkML.h"
-#include "ScoreBoard.h"
 #include "Button.h"
+#include "ScoreBoard.h"
 #include "State.h"
+#include "checkML.h"
 
 class Game;
 
-class ScoreBoardState : public State
-{
-private:
+class ScoreBoardState : public State {
+ private:
   ScoreBoard *_scoreboard;
 
-public:
+ public:
   ScoreBoardState(Game *game, SDL_Renderer *renderer);
   ~ScoreBoardState(){};
   virtual void init();

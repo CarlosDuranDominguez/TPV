@@ -1,17 +1,18 @@
 #pragma once
 
-#include "checkML.h"
 #include "ArkanoidBody.h"
+#include "checkML.h"
 
-class Block : public ArkanoidBody
-{
-private:
+class Block : public ArkanoidBody {
+ private:
   int _color;
-  void setBody(float32 x, float32 y, float32 width, float32 height, b2World &world);
+  void setBody(float32 x, float32 y, float32 width, float32 height,
+               b2World &world);
 
-public:
+ public:
   Block(){};
-  Block(float32 x, float32 y, float32 width, float32 height, int color, Texture *texture);
+  Block(float32 x, float32 y, float32 width, float32 height, int color,
+        Texture *texture);
   ~Block(){};
   virtual void update();
   virtual void render() const;

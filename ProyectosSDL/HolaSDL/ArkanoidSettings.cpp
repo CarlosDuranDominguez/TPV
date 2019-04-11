@@ -2,34 +2,25 @@
 
 /// Public
 // Get the window's height
-float32 ArkanoidSettings::getWindowHeight()
-{
-  return _windowHeight;
-};
+float32 ArkanoidSettings::getWindowHeight() { return _windowHeight; };
 
 /// Public
 // Get the window's width
-float32 ArkanoidSettings::getWindowWidth()
-{
-  return _windowWidth;
-};
+float32 ArkanoidSettings::getWindowWidth() { return _windowWidth; };
 
 /// Public
 // Set the scene's dimensions
-void ArkanoidSettings::setSceneDimensions()
-{
-  if (widthRatio / heightRatio > _windowWidth / _windowHeight)
-  {
+void ArkanoidSettings::setSceneDimensions() {
+  if (widthRatio / heightRatio > _windowWidth / _windowHeight) {
     sceneWidth = _windowWidth;
     sceneHeight = _windowWidth * heightRatio / widthRatio;
-  }
-  else
-  {
+  } else {
     sceneHeight = _windowHeight;
     sceneWidth = _windowHeight * widthRatio / heightRatio;
   }
   float32 ratio = sceneWidth / widthRatio;
-  sceneUpperLeftCorner = b2Vec2{(_windowWidth - sceneWidth) / 2.0f, (_windowHeight - sceneHeight) / 2.0f};
+  sceneUpperLeftCorner = b2Vec2{(_windowWidth - sceneWidth) / 2.0f,
+                                (_windowHeight - sceneHeight) / 2.0f};
   ballRadius = ratio * ballRadiusRatio;
   ballSpeed = ratio * ballSpeedRatio;
   blockHeight = ratio * blockHeightRatio;
@@ -50,8 +41,7 @@ void ArkanoidSettings::setSceneDimensions()
 
 /// Public
 // Setup the scene dimensions
-void ArkanoidSettings::setUp(float32 width, float32 height)
-{
+void ArkanoidSettings::setUp(float32 width, float32 height) {
   _windowWidth = width;
   _windowHeight = height;
   setSceneDimensions();
@@ -59,16 +49,14 @@ void ArkanoidSettings::setUp(float32 width, float32 height)
 
 /// Public
 // Set the window's width
-void ArkanoidSettings::setWindowWidth(float32 width)
-{
+void ArkanoidSettings::setWindowWidth(float32 width) {
   _windowWidth = width;
   setSceneDimensions();
 };
 
 /// Public
 // Set the window's heigth
-void ArkanoidSettings::setWindowHeight(float32 height)
-{
+void ArkanoidSettings::setWindowHeight(float32 height) {
   _windowHeight = height;
   setSceneDimensions();
 };
