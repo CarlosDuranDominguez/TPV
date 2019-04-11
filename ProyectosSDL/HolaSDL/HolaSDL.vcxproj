@@ -192,7 +192,7 @@
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="RigidBody.h" />
-    <ClInclude Include="Scoremarker.h" />
+    <ClInclude Include="ScoreMarker.h" />
     <ClInclude Include="ScoreBoardState.h" />
     <ClInclude Include="StickyAward.h" />
     <ClInclude Include="Text.h" />

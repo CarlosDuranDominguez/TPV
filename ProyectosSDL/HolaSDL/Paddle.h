@@ -35,7 +35,7 @@ class Paddle final : public ArkanoidBody, public Controllable {
   void afterUpdate() override;
   void render() const override;
   void handleEvents(SDL_Event event) override;
-  void onBeginContact(RigidBody *rigigbody) override;
+  void onBeginContact(RigidBody *rigigBody) override;
   void setWidth(float32 width);
   void jointTo(Ball *ball);
   void splitFromBalls();

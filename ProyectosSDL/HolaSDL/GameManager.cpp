@@ -3,7 +3,6 @@
 #include "Game.h"
 #include "GameState.h"
 
-/// Public
 // Constructor
 GameManager::GameManager(Game* game) {
   setGame(game);
@@ -13,7 +12,6 @@ GameManager::GameManager(Game* game) {
 
 Game* GameManager::game_ = nullptr;
 
-/// Public
 // Destructor
 GameManager::~GameManager() {
   topBoard_->storeFile("../saves/save.save");
@@ -40,38 +38,31 @@ std::vector<PlayerGame*> GameManager::getScores() const {
   return topBoard_->showScores();
 };
 
-/// Public
 // Add an amount of balls to the game manager
-void GameManager::addBalls(int balls) { currentBalls_ += balls; }
+void GameManager::addBalls(const int balls) { currentBalls_ += balls; }
 
-/// Public
 // Add a block to the game manager
 void GameManager::addBlock() { ++currentBlocks_; }
 
-/// Public
 // Add an amount of lives to the game manager
-void GameManager::addLives(int lives) { lives_ += lives; }
+void GameManager::addLives(const int lives) { lives_ += lives; }
 
-/// Public
 // Add an amount of points to the game manager
-void GameManager::addScore(int score) { score_ += score; }
+void GameManager::addScore(const int score) { score_ += score; }
 
-/// Public
 // Remove a ball from the game manager
 void GameManager::deleteBall() {
   // If there are no remaining balls, remove a life
   if (--currentBalls_ == 0) deleteLive();
 }
 
-/// Public
 // Remove a block from the game manager
 void GameManager::deleteBlock() {
   // If there are no blocks, finish the level
   if (--currentBlocks_ == 0)
-    finishLevel(static_cast<GameState*>(State::current_)->getTime());
+    finishLevel(reinterpret_cast<GameState*>(State::current_)->getTime());
 }
 
-/// Public
 // Removes a life from the game manager
 void GameManager::deleteLive() {
   // If there are no lives left, go to the menu and end the current state
@@ -84,22 +75,20 @@ void GameManager::deleteLive() {
   }
 }
 
-/// Public
 // Finishes the level and pushes to leaderboard
-void GameManager::finishLevel(float32 time) {
+void GameManager::finishLevel(const float32 time) {
   totalTime_ += time;
   // We store _currentLevel as int instead of Uint32 because it causes compiler
   // errors
-  if ((Uint32)currentLevel_ < ArkanoidSettings::totalLevels_) {
+  if (Uint32(currentLevel_) < ArkanoidSettings::totalLevels_) {
     currentLevel_++;
     State::current_->end();
   } else {
-    topBoard_->pushScore(new PlayerGame{"Alguien", score_, (int)totalTime_});
+    topBoard_->pushScore(new PlayerGame{"Somebody", score_, int(totalTime_)});
     game_->changeState(States::SCOREBOARD);
   }
 }
 
-/// Public
 // Creates a new game, resetting the game manager's properties
 void GameManager::newGame() {
   reset();
@@ -109,33 +98,26 @@ void GameManager::newGame() {
   lives_ = ArkanoidSettings::initialLives_;
 }
 
-/// Public
 // Reset this game manager's amount of blocks and balls
 void GameManager::reset() {
   currentBlocks_ = 0;
   currentBalls_ = 0;
 }
 
-/// Public
 // Set this game manager's amount of balls
-void GameManager::setBalls(int balls) { currentBalls_ = balls; }
+void GameManager::setBalls(const int balls) { currentBalls_ = balls; }
 
-/// Public
 // Set this game manager's amount of blocks
-void GameManager::setBlocks(int blocks) { currentBlocks_ = blocks; }
+void GameManager::setBlocks(const int blocks) { currentBlocks_ = blocks; }
 
-/// Public
 // Set the game manager's current level
-void GameManager::setLevel(int level) { currentLevel_ = level; }
+void GameManager::setLevel(const int level) { currentLevel_ = level; }
 
-/// Public
 // Set the game manager's amount of lives
-void GameManager::setLives(int lives) { lives_ = lives; }
+void GameManager::setLives(const int lives) { lives_ = lives; }
 
-/// Public
 // Set the game manager's amount of points
-void GameManager::setScore(int score) { score_ = score; }
+void GameManager::setScore(const int score) { score_ = score; }
 
-/// Public
 // Set the game manager's total time
-void GameManager::setTotalTime(float32 time) { totalTime_ = time; }
+void GameManager::setTotalTime(const float32 time) { totalTime_ = time; }

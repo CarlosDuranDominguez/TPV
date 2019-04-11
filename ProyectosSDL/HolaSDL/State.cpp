@@ -1,6 +1,5 @@
 #include "State.h"
 #include "ArkanoidSettings.h"
-#include "Award.h"
 #include "Ball.h"
 #include "Block.h"
 #include "Button.h"
@@ -9,16 +8,20 @@
 #include "MultiBallAward.h"
 #include "Paddle.h"
 
-/// Public
+State::State()
+    : listenerLogic_(nullptr),
+      world_(nullptr),
+      stateTime_(nullptr),
+      game_(nullptr) {}
+
 // Constructor
 State::State(Game *game, SDL_Renderer *renderer)
-    : game_(game), renderer_(renderer), stateTime_(new ArkanoidTimer()) {
+    : renderer_(renderer), stateTime_(new ArkanoidTimer()), game_(game) {
   world_ = new b2World(b2Vec2(0.0f, 0.0f));
   listenerLogic_ = new CollisionLogic();
   world_->SetContactListener(listenerLogic_);
 }
 
-/// Public
 // Destructor
 State::~State() {
   for (auto gameObject : gameObjects_) {
@@ -31,11 +34,9 @@ State::~State() {
   delete listenerLogic_;
 }
 
-/// Public Static
 // The current state for the game
 State *State::current_ = nullptr;
 
-/// Public
 // Defines the destroy behaviour for this state
 void State::destroy(list<GameObject *>::iterator &gameObjectId) {
   // For each element pending to destroy, check if it was already pending to be
@@ -50,7 +51,6 @@ void State::destroy(list<GameObject *>::iterator &gameObjectId) {
   pendingOnDestroy_.push_back(gameObjectId);
 }
 
-/// Public
 // Defines the run behaviour for this state
 void State::run() {
   // Set the start time, run state's event loop
@@ -83,18 +83,16 @@ void State::run() {
   _end();
 }
 
-/// Public
 // Pushes a new instance for creation for the task queue
 void State::addCreation(GameObjects type, b2Vec2 &position) {
   pendingOnCreate_.push_back(new NewInstance(type, position));
 }
 
-/// Public
 // Creates a game object from the task queue
-GameObject *State::create(GameObjects type, b2Vec2 &position) {
+GameObject *State::create(const GameObjects type, b2Vec2 &position) {
   GameObject *gameObject = nullptr;
   switch (type) {
-    case GameObjects::kAward:
+    case kAward:
       gameObject = new MultiBallAward(
           position.x, position.y, ArkanoidSettings::rewardWidth_,
           ArkanoidSettings::rewardHeight_, ArkanoidSettings::rewardSpeed_,
@@ -103,7 +101,7 @@ GameObject *State::create(GameObjects type, b2Vec2 &position) {
       dynamic_cast<RigidBody *>(gameObject)->setVelocity(b2Vec2{0, 500.0f});
       add(*gameObject);
       break;
-    case GameObjects::kBall:
+    case kBall:
       gameObject =
           new Ball(position.x, position.y, ArkanoidSettings::ballRadius_,
                    ArkanoidSettings::ballSpeed_, game_->getTextures()[BALL]);
@@ -113,7 +111,7 @@ GameObject *State::create(GameObjects type, b2Vec2 &position) {
               b2Vec2{0.0f, ArkanoidSettings::ballSpeed_});
       Game::getGameManager()->addBalls(1);
       break;
-    case GameObjects::kBlock:
+    case kBlock:
       gameObject =
           new Block(position.x, position.y, ArkanoidSettings::blockWidth_,
                     ArkanoidSettings::blockHeight_, rand() % 6,
@@ -121,7 +119,7 @@ GameObject *State::create(GameObjects type, b2Vec2 &position) {
       add(*gameObject);
       Game::getGameManager()->addBlock();
       break;
-    case GameObjects::kPaddle:
+    case kPaddle:
       gameObject = new Paddle(
           position.x, position.y, ArkanoidSettings::paddleWidth_,
           ArkanoidSettings::paddleHeight_,
@@ -137,27 +135,23 @@ GameObject *State::create(GameObjects type, b2Vec2 &position) {
   return gameObject;
 }
 
-/// Public
 // Adds a game object to the game objects list and sets its id
 void State::add(GameObject &gameObject) {
   gameObjects_.push_front(&gameObject);
   gameObject.setId(gameObjects_.begin());
 }
 
-/// Public
 // Adds an event to the task queue
-void State::addEvent(function<void()> callback) {
+void State::addEvent(const function<void()> &callback) {
   pendingEvents_.push(callback);
 }
 
-/// Public
 // Gets the current time of game in seconds
-float32 State::getTime() const { return (float32)stateTime_->getSeconds(); }
+float32 State::getTime() const { return float32(stateTime_->getSeconds()); }
 
-State::NewInstance::NewInstance(GameObjects type, b2Vec2 &position)
+State::NewInstance::NewInstance(const GameObjects type, b2Vec2 &position)
     : type_(type), position_(position) {}  /// Protected
 void State::_end() {}  // Defines the behaviour for the creation
-State::State() {}
 
 void State::end() { exit_ = true; }
 
@@ -177,7 +171,6 @@ void State::create() {
   pendingOnCreate_.clear();
 }
 
-/// Protected
 // Defines the behaviour for the render
 void State::render() const {
   // Clear the screen
@@ -190,14 +183,12 @@ void State::render() const {
   SDL_RenderPresent(renderer_);
 }
 
-/// Protected
 // Defines the behaviour for the updates
 void State::update() {
   // Update each game object
   for (auto gameObject : gameObjects_) gameObject->update();
 }
 
-/// Protected
 // Defines the behaviour for the event handler
 void State::handleEvents() {
   // Listen to SDL events
@@ -214,22 +205,19 @@ void State::handleEvents() {
   }
 }
 
-/// Protected
 // Defines the behaviour for the fixed update
-void State::fixUpdate(float32 timeStep) {
+void State::fixUpdate(const float32 time) const {
   // Advance the world's physics by the time step, running
   // 8 velocity iterations and 3 position iterations
-  world_->Step(timeStep, 8, 3);
+  world_->Step(time, 8, 3);
 }
 
-/// Protected
 // Defines the behaviour for the after update
 void State::afterUpdate() {
   // For each game object, run the after update handler
   for (auto gameObject : gameObjects_) gameObject->afterUpdate();
 }
 
-/// Protected
 // Defines the behaviour for the events
 void State::events() {
   // Call each event callback from the stack
@@ -239,12 +227,11 @@ void State::events() {
   }
 }
 
-/// Protected Virtual
 // Defines the behaviour for the destroy
 void State::destroy() {
   // For each object pending to be destroyed, destroy and erase from the game
   // objects
-  for (list<GameObject *>::iterator object : pendingOnDestroy_) {
+  for (auto object : pendingOnDestroy_) {
     if (*object != nullptr) {
       delete *object;
       gameObjects_.erase(object);

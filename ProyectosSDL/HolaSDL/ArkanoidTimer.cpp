@@ -10,9 +10,9 @@ ArkanoidTimer::~ArkanoidTimer() { delete firstTime_; }
 float ArkanoidTimer::getSeconds() const {
   time_t now;
   time(&now);
-  return (float)difftime(now, *firstTime_);
+  return float(difftime(now, *firstTime_));
 }
 
-void ArkanoidTimer::delay(Uint32 time) { *firstTime_ -= time; }
+void ArkanoidTimer::delay(const Uint32 time) const { *firstTime_ -= time; }
 
-void ArkanoidTimer::reset() { time(firstTime_); }
+void ArkanoidTimer::reset() const { time(firstTime_); }

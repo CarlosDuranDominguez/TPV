@@ -1,31 +1,31 @@
 #include "Wall.h"
 #include "Game.h"
 
-/// Public
-/// Constructor
-Wall::Wall(float32 x, float32 y, float32 width, float32 height,
-           Texture *texture)
+Wall::Wall() = default;
+
+// Constructor
+Wall::Wall(const float32 x, const float32 y, const float32 width,
+           const float32 height, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public Virtual
-/// Updates the update behaviour
+Wall::~Wall() = default;
+
+// Updates the update behaviour
 void Wall::update() {}
 
-/// Public Virtual
-/// Defines the render behaviour
+// Defines the render behaviour
 void Wall::render() const {
-  b2Vec2 pos = body_->GetPosition();
+  const auto pos = body_->GetPosition();
   texture_->renderFrame(
-      {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-       (int)getSize().x, (int)getSize().y},
+      {int(pos.x) - int(getSize().x) / 2, int(pos.y) - int(getSize().y) / 2,
+       int(getSize().x), int(getSize().y)},
       0, 0);
 }
 
-/// Public Virtual
-/// Defines the deserialize method behaviour to patch the instance when loading
-/// a file save
+// Defines the deserialize method behaviour to patch the instance when loading
+// a file save
 std::istream &Wall::deserialize(std::istream &out) {
   texture_ = readTexture(out);
   float32 posx, posy, sizex, sizey;
@@ -36,17 +36,15 @@ std::istream &Wall::deserialize(std::istream &out) {
   return out;
 }
 
-/// Public Virtual
-/// Defines the serialize method behaviour to save the data into a file save
+// Defines the serialize method behaviour to save the data into a file save
 std::ostream &Wall::serialize(std::ostream &is) const {
   return is << "Wall " << textureIndex() << " " << getPosition().x << " "
             << getPosition().y << " " << getSize().x << " " << getSize().y;
 }
 
-/// Private
 // setBody method, creates a static polygon shape with Box2D's API
-void Wall::setBody(float32 x, float32 y, float32 width, float32 height,
-                   b2World &world) {
+void Wall::setBody(const float32 x, const float32 y, const float32 width,
+                   const float32 height, b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;
@@ -74,10 +72,4 @@ void Wall::setBody(float32 x, float32 y, float32 width, float32 height,
 
   // Set up the shape
   setUp(shape, fixtureDef);
-}
-
-Wall::Wall() {
-}
-
-Wall::~Wall() {
 }

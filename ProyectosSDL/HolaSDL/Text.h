@@ -15,7 +15,7 @@ class Text : public GameObject, public Renderable {
   Text(Font *font, float32 x, float32 y, float32 width, float32 height,
        const SDL_Color &color, const string &text);
   ~Text();
-  void setText(string newText);
+  void setText(const string& newText);
   SDL_Rect getRect() const;
   SDL_Color setColor(const SDL_Color &color);
   void render() const;

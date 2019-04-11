@@ -10,6 +10,6 @@ class ArkanoidTimer {
   ~ArkanoidTimer();
 
   float getSeconds() const;
-  void delay(Uint32 time);
-  void reset();
+  void delay(Uint32 time) const;
+  void reset() const;
 };

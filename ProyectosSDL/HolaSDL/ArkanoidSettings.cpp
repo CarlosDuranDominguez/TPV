@@ -1,14 +1,11 @@
 #include "ArkanoidSettings.h"
 
-/// Public
 // Get the window's height
 float32 ArkanoidSettings::getWindowHeight() { return windowHeight_; };
 
-/// Public
 // Get the window's width
 float32 ArkanoidSettings::getWindowWidth() { return windowWidth_; };
 
-/// Public
 // Set the scene's dimensions
 void ArkanoidSettings::setSceneDimensions() {
   if (widthRatio_ / heightRatio_ > windowWidth_ / windowHeight_) {
@@ -18,9 +15,9 @@ void ArkanoidSettings::setSceneDimensions() {
     sceneHeight_ = windowHeight_;
     sceneWidth_ = windowHeight_ * widthRatio_ / heightRatio_;
   }
-  float32 ratio = sceneWidth_ / widthRatio_;
+  const auto ratio = sceneWidth_ / widthRatio_;
   sceneUpperLeftCorner_ = b2Vec2{(windowWidth_ - sceneWidth_) / 2.0f,
-                                (windowHeight_ - sceneHeight_) / 2.0f};
+                                 (windowHeight_ - sceneHeight_) / 2.0f};
   ballRadius_ = ratio * ballRadiusRatio_;
   ballSpeed_ = ratio * ballSpeedRatio_;
   blockHeight_ = ratio * blockHeightRatio_;
@@ -39,24 +36,21 @@ void ArkanoidSettings::setSceneDimensions() {
   wallHeight_ = ratio * wallHeightRatio_;
 };
 
-/// Public
 // Setup the scene dimensions
-void ArkanoidSettings::setUp(float32 width, float32 height) {
+void ArkanoidSettings::setUp(const float32 width, const float32 height) {
   windowWidth_ = width;
   windowHeight_ = height;
   setSceneDimensions();
 };
 
-/// Public
 // Set the window's width
-void ArkanoidSettings::setWindowWidth(float32 width) {
+void ArkanoidSettings::setWindowWidth(const float32 width) {
   windowWidth_ = width;
   setSceneDimensions();
 };
 
-/// Public
-// Set the window's heigth
-void ArkanoidSettings::setWindowHeight(float32 height) {
+// Set the window's height
+void ArkanoidSettings::setWindowHeight(const float32 height) {
   windowHeight_ = height;
   setSceneDimensions();
 };

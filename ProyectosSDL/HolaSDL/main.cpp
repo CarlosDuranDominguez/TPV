@@ -7,12 +7,12 @@
 using namespace std;
 
 // The main method that runs the entire game
-int main(int argc, char *argv[]) {
+int main(int, char *[]) {
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |
                  _CRTDBG_LEAK_CHECK_DF);  // Check Memory Leaks
-  srand((Uint32)time(nullptr));
+  srand(Uint32(time(nullptr)));
   try {
-    Game *game = new Game();
+    auto game = new Game();
     game->run();
     delete game;
     return 0;

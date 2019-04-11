@@ -35,7 +35,7 @@ class State {
   void render() const;
   void update();
   void handleEvents();
-  void fixUpdate(float32 time);
+  void fixUpdate(float32 time) const;
   void afterUpdate();
   void events();
   virtual void destroy();
@@ -54,6 +54,6 @@ class State {
   void addCreation(GameObjects type, b2Vec2 &position);
   GameObject *create(GameObjects type, b2Vec2 &position);
   void add(GameObject &gameObject);
-  void addEvent(function<void()>);
+  void addEvent(const function<void()>&);
   float32 getTime() const;
 };

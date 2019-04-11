@@ -2,11 +2,11 @@
 #include "RigidBody.h"
 
 void CollisionLogic::BeginContact(b2Contact* contact) {
-  void* a = contact->GetFixtureA()->GetBody()->GetUserData();
-  void* b = contact->GetFixtureB()->GetBody()->GetUserData();
+  const auto a = contact->GetFixtureA()->GetBody()->GetUserData();
+  const auto b = contact->GetFixtureB()->GetBody()->GetUserData();
   if (a && b && a != b) {
-    RigidBody* bodyUserDataA = static_cast<RigidBody*>(a);
-    RigidBody* bodyUserDataB = static_cast<RigidBody*>(b);
+    auto bodyUserDataA = static_cast<RigidBody*>(a);
+    auto bodyUserDataB = static_cast<RigidBody*>(b);
 
     bodyUserDataA->onBeginContact(bodyUserDataB);
     bodyUserDataB->onBeginContact(bodyUserDataA);
@@ -14,11 +14,11 @@ void CollisionLogic::BeginContact(b2Contact* contact) {
 }
 
 void CollisionLogic::EndContact(b2Contact* contact) {
-  void* a = contact->GetFixtureA()->GetBody()->GetUserData();
-  void* b = contact->GetFixtureB()->GetBody()->GetUserData();
+  const auto a = contact->GetFixtureA()->GetBody()->GetUserData();
+  const auto b = contact->GetFixtureB()->GetBody()->GetUserData();
   if (a && b && a != b) {
-    RigidBody* bodyUserDataA = static_cast<RigidBody*>(a);
-    RigidBody* bodyUserDataB = static_cast<RigidBody*>(b);
+    auto bodyUserDataA = static_cast<RigidBody*>(a);
+    auto bodyUserDataB = static_cast<RigidBody*>(b);
 
     bodyUserDataA->onEndContact(bodyUserDataB);
     bodyUserDataB->onEndContact(bodyUserDataA);

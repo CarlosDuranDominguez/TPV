@@ -1,20 +1,26 @@
 #include "DeadZone.h"
 #include "Game.h"
 
-/// Public
+DeadZone::DeadZone() = default;
+
+DeadZone::~DeadZone() = default;
+
 // Constructor
-DeadZone::DeadZone(float32 x, float32 y, float32 width, float32 height)
+DeadZone::DeadZone(const float32 x, const float32 y, const float32 width,
+                   const float32 height)
     : ArkanoidBody(x, y, width, height, nullptr) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public Virtual
+void DeadZone::update() {}
+
+void DeadZone::render() const {}
+
 // Defines behaviour when the instance starts to have contact with an element
 void DeadZone::onBeginContact(RigidBody *rigidBody) {
   dynamic_cast<GameObject *>(rigidBody)->destroy();
 }
 
-/// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &DeadZone::deserialize(std::istream &out) {
@@ -36,8 +42,8 @@ std::ostream &DeadZone::serialize(std::ostream &is) const {
 
 /// Private
 // setBody method, creates a static polygon shape with Box2D's API
-void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height,
-                       b2World &world) {
+void DeadZone::setBody(const float32 x, const float32 y, const float32 width,
+                       const float32 height, b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;
@@ -66,16 +72,4 @@ void DeadZone::setBody(float32 x, float32 y, float32 width, float32 height,
 
   // Set up the shape
   setUp(shape, fixtureDef);
-}
-
-DeadZone::DeadZone() {
-}
-
-DeadZone::~DeadZone() {
-}
-
-void DeadZone::update() {
-}
-
-void DeadZone::render() const {
 }

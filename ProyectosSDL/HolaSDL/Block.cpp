@@ -8,29 +8,31 @@
 #include "ShortenAward.h"
 #include "StickyAward.h"
 
-/// Public
+Block::Block() : color_(0) {}
+
+Block::~Block() = default;
+
 // Constructor
-Block::Block(float32 x, float32 y, float32 width, float32 height, int color,
-             Texture *texture)
+Block::Block(const float32 x, const float32 y, const float32 width,
+             const float32 height, const int color, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture), color_(color) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public Virtual
+int Block::getColor() const { return color_; }
+
 // Updates the update behaviour
 void Block::update() {}
 
-/// Public Virtual
 // Defines the render behaviour
 void Block::render() const {
-  b2Vec2 pos = body_->GetPosition();
+  const auto pos = body_->GetPosition();
   texture_->renderFrame(
-      {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-       (int)getSize().x, (int)getSize().y},
+      {int(pos.x) - int(getSize().x) / 2, int(pos.y) - int(getSize().y) / 2,
+       int(getSize().x), int(getSize().y)},
       color_ / texture_->getNumCols(), color_ % texture_->getNumCols());
 }
 
-/// Public Virtual
 // Defines behaviour when the instance gets in contact with the instance
 void Block::contact() {
   // Destroy the block on contact
@@ -87,7 +89,6 @@ void Block::contact() {
   });
 }
 
-/// Public Virtual
 // Defines behaviour when the instance is to be destroyed
 void Block::destroy() {
   // Call inherited destroy method from GameObject
@@ -95,7 +96,6 @@ void Block::destroy() {
   Game::getGameManager()->deleteBlock();
 }
 
-/// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Block::deserialize(std::istream &out) {
@@ -108,7 +108,6 @@ std::istream &Block::deserialize(std::istream &out) {
   return out;
 }
 
-/// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Block::serialize(std::ostream &is) const {
   return is << "Block " << textureIndex() << " " << getPosition().x << " "
@@ -116,10 +115,9 @@ std::ostream &Block::serialize(std::ostream &is) const {
             << " " << color_;
 }
 
-/// Private
 // setBody method, creates a static polygon shape with Box2D's API
-void Block::setBody(float32 x, float32 y, float32 width, float32 height,
-                    b2World &world) {
+void Block::setBody(const float32 x, const float32 y, const float32 width,
+                    const float32 height, b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.type = b2_staticBody;
@@ -148,9 +146,3 @@ void Block::setBody(float32 x, float32 y, float32 width, float32 height,
   // Set up the shape
   setUp(shape, fixtureDef);
 }
-
-Block::Block() {}
-
-Block::~Block() {}
-
-int Block::getColor() const { return color_; }

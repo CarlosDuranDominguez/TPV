@@ -16,19 +16,22 @@
 #include "MultiBallAward.h"
 #include "NextLevelAward.h"
 #include "Paddle.h"
-#include "Scoremarker.h"
+#include "ScoreMarker.h"
 #include "ShortenAward.h"
 #include "StickyAward.h"
 #include "Timer.h"
 #include "Wall.h"
 
-/// Public Virtual
+GameState::GameState(Game *game, SDL_Renderer *renderer)
+    : State(game, renderer), paddle_(nullptr) {}
+
+GameState::~GameState() = default;
+
 // Adds a pending event to reset this state in the next tick
 void GameState::reset() {
   pendingEvents_.push([this]() { _reset(); });
 }
 
-/// Public Virtual
 // Initializes this state
 void GameState::init() {
   State::init();
@@ -60,16 +63,18 @@ void GameState::init() {
   // Adds the save button
   add(*new Button(game_->getFonts()[MEDIUM_FONT], 400, 400, 100, 100, kWhite,
                   kGrey, "S", [this]() {
-                    auto call = [this]() { saveLevel("../saves/level.save"); };
+                    const auto call = [this]() {
+                      saveLevel("../saves/level.save");
+                    };
                     addEvent(call);
                   }));
   auto gameManager = Game::getGameManager();
   // If the game's level is above 0, try to load the level
   if (gameManager->getLevel() > 0) {
     // Get the amount of lives and load the level
-    int lives = gameManager->getLives();
-    int score = gameManager->getScore();
-    int totalTime = gameManager->getTotalTime();
+    const auto lives = gameManager->getLives();
+    const auto score = gameManager->getScore();
+    const auto totalTime = gameManager->getTotalTime();
     loadLevel("../levels/level" +
               to_string(Game::getGameManager()->getLevel()) + ".ark");
     // If the current level is the first one, give three lives
@@ -91,7 +96,6 @@ void GameState::init() {
   }
 }
 
-/// Public
 // Load a level into this game state
 void GameState::loadLevel(const string &path) {
   // Create an input file stream to the path and open it
@@ -101,7 +105,7 @@ void GameState::loadLevel(const string &path) {
   // If the file failed to load, throw FileNotFoundError
   if (!file)
     // If the name could not be recognized, throw an error
-    throw(FileFormatError)(path);
+    throw FileFormatError(path);
 
   Uint32 level, timer;
   int lives, score;
@@ -117,7 +121,7 @@ void GameState::loadLevel(const string &path) {
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
     // If the name could not be recognized, throw an error
-    throw(FileFormatError)(path);
+    throw FileFormatError(path);
 
   // Read and set the amount of lives
   file >> lives;
@@ -126,7 +130,7 @@ void GameState::loadLevel(const string &path) {
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
     // If the name could not be recognized, throw an error
-    throw(FileFormatError)(path);
+    throw FileFormatError(path);
 
   // Read and set the amount of points
   file >> score;
@@ -135,7 +139,7 @@ void GameState::loadLevel(const string &path) {
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
     // If the name could not be recognized, throw an error
-    throw(FileFormatError)(path);
+    throw FileFormatError(path);
 
   // Read and set the timer second delay
   file >> timer;
@@ -144,7 +148,7 @@ void GameState::loadLevel(const string &path) {
   // If not good (!eof && !fail && !bad), stop loading
   if (!file.good())
     // If the name could not be recognized, throw an error
-    throw(FileFormatError)(path);
+    throw FileFormatError(path);
 
   // Read and set the timer second delay
   file >> timer;
@@ -157,7 +161,7 @@ void GameState::loadLevel(const string &path) {
     file >> name;
 
     // If the name is an empty string (empty line), skip to the next loop
-    if (name == "") continue;
+    if (name.empty()) continue;
 
     // Create a GameObject pointer and identify the kind of object
     GameObject *gameObject;
@@ -194,7 +198,7 @@ void GameState::loadLevel(const string &path) {
       gameObject = new Bullet();
     } else {
       // If the name could not be recognized, throw an error
-      throw(FileFormatError)(path);
+      throw FileFormatError(path);
     }
 
     // Serialize the game object and add it to the state
@@ -206,7 +210,6 @@ void GameState::loadLevel(const string &path) {
   file.close();
 }
 
-/// Public
 // Save the level to a save file
 void GameState::saveLevel(const string &path) {
   // Create and open a output file stream to a path
@@ -214,7 +217,7 @@ void GameState::saveLevel(const string &path) {
   file.open(path, std::ofstream::out);
 
   // If the file failed to load, throw FileNotFoundError
-  if (!file) throw new FileNotFoundError(path);
+  if (!file) throw FileNotFoundError(path);
 
   // Save the level, lives, score, and seconds
   file << Game::getGameManager()->getLevel() << " "
@@ -224,18 +227,17 @@ void GameState::saveLevel(const string &path) {
 
   // Save each one of the objects from this state
   for (auto gameObject : gameObjects_) {
-    if (dynamic_cast<ArkanoidObject *>(gameObject)) file << *gameObject << "\n";
+    if (reinterpret_cast<ArkanoidObject *>(gameObject))
+      file << *gameObject << "\n";
   }
 
   // Close the output file stream
   file.close();
 }
 
-/// Protected
 // Sets the behaviour for the _end method
 void GameState::_end() { _destroyAll(); }
 
-/// Protected
 // Sets the reset behaviour for this state
 void GameState::_reset() {
   // Destroy all the balls
@@ -262,7 +264,7 @@ void GameState::_reset() {
   add(*paddle_);
 
   // Creates the ball on top of the paddle
-  Ball *ball = new Ball(
+  const auto ball = new Ball(
       ArkanoidSettings::sceneUpperLeftCorner_.x +
           ArkanoidSettings::sceneWidth_ / 2.0f +
           ArkanoidSettings::paddleWidth_ / 4.0f,
@@ -283,19 +285,13 @@ void GameState::_reset() {
   stateTime_->reset();
 }
 
-/// Private
 // Sets the behaviour to destroy all objects
 void GameState::_destroyAll() {
   // Delete all game objects
-  for (auto gameobject : gameObjects_) delete gameobject;
+  for (auto gameObject : gameObjects_) delete gameObject;
 
   // Clear the state
   gameObjects_.clear();
 }
-
-GameState::GameState(Game *game, SDL_Renderer *renderer)
-    : State(game, renderer) {}
-
-GameState::~GameState() {}
 
 Paddle *GameState::paddle() const { return paddle_; }

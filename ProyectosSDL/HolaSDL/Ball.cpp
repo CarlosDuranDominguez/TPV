@@ -2,34 +2,30 @@
 #include "Block.h"
 #include "Game.h"
 
-Ball::Ball() {
-} 
-Ball::~Ball() {
-} 
-float32 Ball::getSpeed() const { return speed_; }
+Ball::Ball() : speed_(0) {}
 
-void Ball::setSpeed(float32 speed) { speed_ = speed; }
+Ball::~Ball() = default;
 
-/// Public
 // Constructor
-Ball::Ball(float32 x, float32 y, float32 radius, float32 speed,
-           Texture *texture)
+Ball::Ball(const float32 x, const float32 y, const float32 radius,
+           const float32 speed, Texture *texture)
     : ArkanoidBody(x, y, radius * 2, radius * 2, texture), speed_(speed) {
   setBody(x, y, radius, *Game::getWorld());
 }
 
-/// Public Virtual
+float32 Ball::getSpeed() const { return speed_; }
+void Ball::setSpeed(const float32 speed) { speed_ = speed; }
+
 // Updates the update behaviour
 void Ball::update() {}
 
-/// Public Virtual
 // Defines behaviour after every update cycle
 void Ball::afterUpdate() {
   // Check if the speed is not the maximum speed
-  float32 speed = getVelocity().LengthSquared();
+  const auto speed = getVelocity().LengthSquared();
   if (speed != speed_) {
     // Set the normalized speed to the maximum one
-    b2Vec2 v = getVelocity();
+    auto v = getVelocity();
     v.Normalize();
     v *= speed_;
     setVelocity(v);
@@ -38,29 +34,26 @@ void Ball::afterUpdate() {
   }
 }
 
-/// Public Virtual
 // Defines the render behaviour
 void Ball::render() const {
   // Gets the position, size, and diameter, and renders
-  auto pos = body_->GetPosition();
-  auto size = getSize();
-  auto diameter = (int)fixture_->GetShape()->m_radius * 2;
-  texture_->renderFrame({(int)pos.x - (int)size.x / 2,
-                         (int)pos.y - (int)size.y / 2, diameter, diameter},
+  const auto pos = body_->GetPosition();
+  const auto size = getSize();
+  const auto diameter = int(fixture_->GetShape()->m_radius) * 2;
+  texture_->renderFrame({int(pos.x) - int(size.x) / 2,
+                         int(pos.y) - int(size.y) / 2, diameter, diameter},
                         0, 0);
 }
 
-/// Public Virtual
 // Defines the end contact behaviour
 void Ball::onEndContact(RigidBody *rigidBody) {
   // Casts the rigidBody to a block, since balls can only collide with blocks,
   // walls, and other balls
-  Block *block = dynamic_cast<Block *>(rigidBody);
+  auto block = dynamic_cast<Block *>(rigidBody);
   // If it's a block, invoke the contact call
   if (block) block->contact();
 }
 
-/// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Ball::deserialize(std::istream &out) {
@@ -93,7 +86,8 @@ void Ball::destroy() {
 
 /// Private
 // setBody method, creates a dynamic circle shape with Box2D's API
-void Ball::setBody(float32 x, float32 y, float32 radius, b2World &world) {
+void Ball::setBody(const float32 x, const float32 y, const float32 radius,
+                   b2World &world) {
   // Create the body definition
   b2BodyDef bodyDef;
   bodyDef.allowSleep = false;

@@ -1,19 +1,21 @@
 #include "Button.h"
 
-Button::Button(Font* font, float32 x, float32 y, float32 width, float32 height,
-               SDL_Color inColor, SDL_Color outColor, string text,
-               function<void()> callback)
+Button::Button(Font* font, const float32 x, const float32 y,
+               const float32 width, const float32 height,
+               const SDL_Color inColor, const SDL_Color outColor,
+               const string text, const function<void()>& callback)
     : Text(font, x, y, width, height, outColor, text),
       inColor_(inColor),
       outColor_(outColor),
       callback_(callback) {}
-Button::~Button() {}
+
+Button::~Button() = default;
 
 /**
  * It detects if the cursor is on the button. If it is clicked the call the
  * callback function.
  */
-void Button::handleEvents(SDL_Event event) {
+void Button::handleEvents(const SDL_Event event) {
   SDL_Point p;
   switch (event.type) {
     case SDL_MOUSEMOTION:

@@ -171,7 +171,7 @@ class Game {
   Font **getFonts();
   void changeState(const States &state);
   void run();
-  States getState();
+  States getState() const;
   GameState *getGameState();
   static GameManager *getGameManager();
   static b2World *getWorld();

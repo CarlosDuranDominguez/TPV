@@ -4,26 +4,32 @@
 #include "Bullet.h"
 #include "Game.h"
 
-Paddle::Paddle() {}  /// Public
-/// Constructor
-void Paddle::setSticky(bool sticky) { sticky_ = sticky; }
+Paddle::Paddle()
+    : rightMovement_(false),
+      leftMovement_(false),
+      speed_(0),
+      leftAnchor_(0),
+      rightAnchor_(0),
+      sticky_(false),
+      actionType_() {}
 
-Paddle::Paddle(float32 x, float32 y, float32 width, float32 height,
-               float32 anchorX, float32 limit, float32 maxSpeed, Actions action,
-               Texture *texture)
+Paddle::Paddle(const float32 x, const float32 y, const float32 width,
+               const float32 height, const float32 anchorX, const float32 limit,
+               const float32 maxSpeed, const Actions action, Texture *texture)
     : ArkanoidBody(x, y, width, height, texture),
       rightMovement_(false),
       leftMovement_(false),
+      speed_(maxSpeed),
       leftAnchor_(anchorX - limit),
       rightAnchor_(anchorX + limit),
-      speed_(maxSpeed),
       sticky_(true),
       actionType_(action) {
   setAction(action);
   setBody(x, y, width, height, anchorX, limit, *Game::getWorld());
 }
 
-/// Public
+void Paddle::setSticky(const bool sticky) { sticky_ = sticky; }
+
 // Destructor
 Paddle::~Paddle() {
   for (auto joint : joints_) {
@@ -32,20 +38,18 @@ Paddle::~Paddle() {
   joints_.clear();
 }
 
-/// Public Virtual
 // Defines the update behaviour for this instance
 void Paddle::update() {
   for (auto joint : joints_) {
-    b2Vec2 pos = getPosition() + joint->distance_;
+    const auto pos = getPosition() + joint->distance_;
     joint->ball_->setPosition(pos.x, pos.y);
   }
 }
 
-/// Public Virtual
 // Defines the after update behaviour for this instance
 void Paddle::afterUpdate() {
   // Get position
-  b2Vec2 pos = body_->GetPosition();
+  const auto pos = body_->GetPosition();
 
   // If the paddle is in the walls, move it inside the area
   if (pos.x - size_.x / 2.0f < leftAnchor_) {
@@ -58,14 +62,13 @@ void Paddle::afterUpdate() {
 /// Public Virtual
 // Defines the render behaviour
 void Paddle::render() const {
-  b2Vec2 pos = body_->GetPosition();
-  texture_->render({(int)pos.x - (int)size_.x / 2,
-                    (int)pos.y - (int)size_.y / 2, (int)size_.x, (int)size_.y});
+  const auto pos = body_->GetPosition();
+  texture_->render({int(pos.x) - int(size_.x) / 2,
+                    int(pos.y) - int(size_.y) / 2, int(size_.x), int(size_.y)});
 }
 
-/// Publc Virtual
 // Defines the event handler behaviour
-void Paddle::handleEvents(SDL_Event event) {
+void Paddle::handleEvents(const SDL_Event event) {
   switch (event.type) {
     // If it's a key press
     case SDL_KEYDOWN:
@@ -82,6 +85,8 @@ void Paddle::handleEvents(SDL_Event event) {
         case SDLK_SPACE:
           State::current_->addEvent(action_);
           break;
+        default:
+          break;
       }
       break;
     // If it's a key leave
@@ -95,7 +100,11 @@ void Paddle::handleEvents(SDL_Event event) {
         case SDLK_LEFT:
           leftMovement_ = false;
           break;
+        default:
+          break;
       }
+    default:
+      break;
   }
 
   // Set the velocity
@@ -103,22 +112,20 @@ void Paddle::handleEvents(SDL_Event event) {
       (rightMovement_ ? speed_ : 0) + (leftMovement_ ? -speed_ : 0), 0.0f});
 }
 
-/// Public Virtual
 // Defines behaviour when the instance starts to have contact with an element
-void Paddle::onBeginContact(RigidBody *rigigbody) {
+void Paddle::onBeginContact(RigidBody *rigigBody) {
   Ball *ball;
-  if (sticky_ && (ball = dynamic_cast<Ball *>(rigigbody))) {
+  if (sticky_ && (ball = dynamic_cast<Ball *>(rigigBody))) {
     State::current_->addEvent([this, ball]() { jointTo(ball); });
   }
 }
 
-/// Public Virtual
 // Defines the setWidth behaviour
-void Paddle::setWidth(float32 width) {
+void Paddle::setWidth(const float32 width) {
   // Gets the position and linear velocity, then destroy the fixture and the
   // body
-  b2Vec2 pos = body_->GetPosition();
-  b2Vec2 vel = body_->GetLinearVelocity();
+  const auto pos = body_->GetPosition();
+  auto vel = body_->GetLinearVelocity();
   body_->DestroyFixture(fixture_);
   Game::getWorld()->DestroyBody(body_);
 
@@ -134,14 +141,13 @@ void Paddle::setWidth(float32 width) {
 void Paddle::jointTo(Ball *ball) {
   if (!any_of(joints_.begin(), joints_.end(),
               [ball](ArkanoidJoint *joint) { return joint->ball_ == ball; })) {
-    b2Vec2 a = ball->getPosition() - getPosition();
+    auto a = ball->getPosition() - getPosition();
 
     joints_.push_back(new ArkanoidJoint(ball, a));
     ball->getBody()->SetActive(false);
   }
 }
 
-/// Public
 // Splits from a ball, releasing it to a direction away from the paddle's center
 void Paddle::splitFromBalls() {
   for (auto joint : joints_) {
@@ -154,7 +160,6 @@ void Paddle::splitFromBalls() {
   joints_.clear();
 }
 
-/// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Paddle::deserialize(std::istream &out) {
@@ -175,12 +180,11 @@ std::istream &Paddle::deserialize(std::istream &out) {
                  ArkanoidSettings::sceneWidth_ - ArkanoidSettings::wallWidth_;
   leftMovement_ = false;
   rightMovement_ = false;
-  actionType_ = (Actions)action;
+  actionType_ = Actions(action);
   setAction(actionType_);
   return out;
 }
 
-/// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Paddle::serialize(std::ostream &is) const {
   return is << "Paddle " << textureIndex() << " " << getPosition().x << " "
@@ -188,7 +192,6 @@ std::ostream &Paddle::serialize(std::ostream &is) const {
             << " " << speed_ << actionType_;
 }
 
-/// Private
 // setBody method, creates a kinematic chain shape with Box2D's API
 void Paddle::setBody(float32 x, float32 y, float32 width, float32 height,
                      float32 anchorX, float32 limit, b2World &world) {
@@ -230,9 +233,8 @@ void Paddle::setBody(float32 x, float32 y, float32 width, float32 height,
   setUp(shape, fixtureDef);
 }
 
-/// Public
 // Defines the setWidth behaviour
-void Paddle::setAction(Actions action) {
+void Paddle::setAction(const Actions action) {
   actionType_ = action;
   // Set the proper action.
   switch (action) {
@@ -258,7 +260,7 @@ void Paddle::setAction(Actions action) {
       setSticky(false);
       action_ = [this]() {
         /*Create Bullet*/
-        Bullet *bullet =
+        auto bullet =
             new Bullet(getPosition().x, getPosition().y, 10.0f, 1000.0f,
                        Game::current_->getTextures()[BALLBLACK]);
         State::current_->add(*bullet);
@@ -271,6 +273,6 @@ void Paddle::setAction(Actions action) {
 }
 
 Paddle::ArkanoidJoint::ArkanoidJoint(Ball *ball, b2Vec2 &distance)
-    : ball_(ball), distance_(distance) {}
+    : distance_(distance), ball_(ball) {}
 
-Paddle::ArkanoidJoint::~ArkanoidJoint(){};
+Paddle::ArkanoidJoint::~ArkanoidJoint() = default;

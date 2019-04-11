@@ -4,24 +4,29 @@
 #include "Game.h"
 #include "Paddle.h"
 
-/// Public
 // Constructor
-Award::Award(float32 x, float32 y, float32 width, float32 height, float32 speed,
-             Uint32 framerate, Texture *texture)
+Award::Award(const float32 x, const float32 y, const float32 width,
+             const float32 height, const float32 speed, const Uint32 frameRate,
+             Texture *texture)
     : ArkanoidBody(x, y, width, height, texture),
-      frameRate_(framerate),
-      animationTimer_(new b2Timer()),
+      frameRate_(frameRate),
       frame_(0),
-      contacted_(false),
-      speed_(speed) {
+      animationTimer_(new b2Timer()),
+      speed_(speed),
+      contacted_(false) {
   setBody(x, y, width, height, *Game::getWorld());
 }
 
-/// Public
+Award::Award()
+    : frameRate_(0),
+      frame_(0),
+      animationTimer_(new b2Timer()),
+      speed_(0),
+      contacted_(false) {}
+
 // Destructor
 Award::~Award() { delete animationTimer_; }
 
-/// Public Virtual
 // Updates the update behaviour
 void Award::update() {
   // If the counter's milliseconds counted over 1000 milliseconds divided by
@@ -29,7 +34,7 @@ void Award::update() {
   if (animationTimer_->GetMilliseconds() > 1000.0f / frameRate_) {
     // If the next frame is outside the animation range, go to to the first
     // frame
-    if ((++frame_) > texture_->getNumCols() * texture_->getNumRows()) {
+    if (++frame_ > texture_->getNumCols() * texture_->getNumRows()) {
       frame_ = 0;
     }
 
@@ -38,29 +43,25 @@ void Award::update() {
   }
 }
 
-/// Public Virtual
 // Defines the render behaviour
 void Award::render() const {
-  b2Vec2 pos = body_->GetPosition();
+  const auto pos = body_->GetPosition();
 
   texture_->renderFrame(
-      {(int)pos.x - (int)getSize().x / 2, (int)pos.y - (int)getSize().y / 2,
-       (int)getSize().x, (int)getSize().y},
+      {int(pos.x) - int(getSize().x) / 2, int(pos.y) - int(getSize().y) / 2,
+       int(getSize().x), int(getSize().y)},
       frame_ / (texture_->getNumCols() + 1), frame_ % texture_->getNumCols());
 }
 
-/// Public Virtual
 // Defines behaviour when the instance gets in contact with the instance
 void Award::contact() { destroy(); }
 
-/// Public Virtual
 // Defines behaviour when the instance is to be destroyed
 void Award::destroy() {
   // Call inherited destroy method from GameObject
   GameObject::destroy();
 }
 
-/// Public Virtual
 // Defines behaviour after every update cycle
 void Award::afterUpdate() {
   if (getVelocity().y != speed_) {
@@ -69,7 +70,6 @@ void Award::afterUpdate() {
   }
 }
 
-/// Public Virtual
 // Defines behaviour when the instance starts to have contact with an element
 void Award::onBeginContact(RigidBody *rigidbody) {
   // If the contact was done with the paddle, set _contacted to true
@@ -79,7 +79,6 @@ void Award::onBeginContact(RigidBody *rigidbody) {
   }
 }
 
-/// Public Virtual
 // Defines the deserialize method behaviour to patch the instance when loading a
 // file save
 std::istream &Award::deserialize(std::istream &out) {
@@ -93,7 +92,6 @@ std::istream &Award::deserialize(std::istream &out) {
   return out;
 }
 
-/// Public Virtual
 // Defines the serialize method behaviour to save the data into a file save
 std::ostream &Award::serialize(std::ostream &is) const {
   string a = typeid(*this).name();
@@ -103,11 +101,10 @@ std::ostream &Award::serialize(std::ostream &is) const {
             << " " << speed_ << " " << frameRate_;
 }
 
-/// Private
 // setBody method, creates a dynamic polygon shape with Box2D's API
 void Award::setBody(float32 x, float32 y, float32 width, float32 height,
                     b2World &world) {
-  float32 radius = height / 2.0f;
+  auto radius = height / 2.0f;
 
   // Create the body definition
   b2BodyDef bodyDef;
@@ -118,7 +115,7 @@ void Award::setBody(float32 x, float32 y, float32 width, float32 height,
   bodyDef.linearDamping = 0.0f;
   bodyDef.userData = static_cast<RigidBody *>(this);
 
-  // Create the poligon shape as a box
+  // Create the polygon shape as a box
   b2PolygonShape shape;
   shape.SetAsBox((width - height) / 2.0f, height / 2.0f);
 
@@ -133,46 +130,44 @@ void Award::setBody(float32 x, float32 y, float32 width, float32 height,
   fixtureDef.shape = &shape;
 
   // Create the circle shape
-  b2CircleShape leftshape;
-  leftshape.m_p.x = radius - width;
-  leftshape.m_p.y = 0;
-  leftshape.m_radius = radius;
+  b2CircleShape leftShape;
+  leftShape.m_p.x = radius - width;
+  leftShape.m_p.y = 0;
+  leftShape.m_radius = radius;
 
   // Create the fixture definition for the left side of the capsule
-  b2FixtureDef leftfixtureDef;
-  leftfixtureDef.density = 1.0f;
-  leftfixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0000;
-  leftfixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0001;
-  leftfixtureDef.friction = 0.0f;
-  leftfixtureDef.isSensor = true;
-  leftfixtureDef.restitution = 0.0f;
-  leftfixtureDef.shape = &leftshape;
+  b2FixtureDef leftFixtureDef;
+  leftFixtureDef.density = 1.0f;
+  leftFixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0000;
+  leftFixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0001;
+  leftFixtureDef.friction = 0.0f;
+  leftFixtureDef.isSensor = true;
+  leftFixtureDef.restitution = 0.0f;
+  leftFixtureDef.shape = &leftShape;
 
   // Create the circle shape
-  b2CircleShape rightshape;
-  leftshape.m_p.x = width - radius;
-  leftshape.m_p.y = 0;
-  leftshape.m_radius = radius;
+  b2CircleShape rightShape;
+  leftShape.m_p.x = width - radius;
+  leftShape.m_p.y = 0;
+  leftShape.m_radius = radius;
 
   // Create the fixture definition for the right side of the capsule
-  b2FixtureDef rightfixtureDef;
-  rightfixtureDef.density = 1.0f;
-  rightfixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0100;
-  rightfixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0001;
-  rightfixtureDef.friction = 0.0f;
-  rightfixtureDef.isSensor = true;
-  rightfixtureDef.restitution = 0.0f;
-  rightfixtureDef.shape = &leftshape;
+  b2FixtureDef rightFixtureDef;
+  rightFixtureDef.density = 1.0f;
+  rightFixtureDef.filter.categoryBits = 0b0000'0000'0000'0001'0100;
+  rightFixtureDef.filter.maskBits = 0b0000'0000'0000'0000'0001;
+  rightFixtureDef.friction = 0.0f;
+  rightFixtureDef.isSensor = true;
+  rightFixtureDef.restitution = 0.0f;
+  rightFixtureDef.shape = &leftShape;
 
   // Add the body definition to world
   body_ = world.CreateBody(&bodyDef);
 
   // Set up the shapes
   setUp(shape, fixtureDef);
-  setUp(rightshape, rightfixtureDef);
-  setUp(leftshape, leftfixtureDef);
+  setUp(rightShape, rightFixtureDef);
+  setUp(leftShape, leftFixtureDef);
 }
-
-Award::Award() { animationTimer_ = new b2Timer(); }
 
 int Award::getFramerate() const { return frameRate_; }

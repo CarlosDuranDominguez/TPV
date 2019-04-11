@@ -1,16 +1,28 @@
 #include "Texture.h"
-#include <iostream>
 #include "SDLError.h"
 #include "SDL_image.h"
 
 using namespace std;
 
-Texture::Texture(SDL_Renderer *r) : renderer_(r) {}  /// Public
-Texture::Texture(SDL_Renderer *r, string filename, Uint32 numRows,
-                 Uint32 numCols)
+Texture::Texture(SDL_Renderer *r) : renderer_(r) {}
+Texture::Texture(SDL_Renderer *r, const string &filename, const Uint32 numRows,
+                 const Uint32 numCols)
     : renderer_(r) {
   load(filename, numRows, numCols);
-}  // Constructor
+}
+
+Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, const Uint32 w,
+                 const Uint32 h, const Uint32 fw, const Uint32 fh,
+                 const Uint32 numRows, const Uint32 numCols)
+    : texture_(texture),
+      renderer_(renderer),
+      w_(w),
+      h_(h),
+      fw_(fw),
+      fh_(fh),
+      numCols_(numCols),
+      numRows_(numRows) {}
+
 Texture::~Texture() { liberate(); }
 
 int Texture::getW() const { return w_; }
@@ -30,27 +42,16 @@ void Texture::setTexture(SDL_Texture *texture) {
 
 SDL_Texture *Texture::getTexture() const { return texture_; }
 
-Texture::Texture(SDL_Texture *texture, SDL_Renderer *renderer, Uint32 w,
-                 Uint32 h, Uint32 fw, Uint32 fh, Uint32 numRows, Uint32 numCols)
-    : renderer_(renderer),
-      texture_(texture),
-      w_(w),
-      h_(h),
-      fw_(fw),
-      fh_(fh),
-      numRows_(numRows),
-      numCols_(numCols) {}
-
-/// Public
 // Loads a texture by its file name
-void Texture::load(string filename, Uint32 nRows, Uint32 nCols) {
-  SDL_Surface *tempSurface = IMG_Load(filename.c_str());
+void Texture::load(const string &filename, const Uint32 nRows,
+                   const Uint32 nCols) {
+  const auto tempSurface = IMG_Load(filename.c_str());
   if (tempSurface == nullptr)
-    throw new (SDLError)("Error loading surface from " + filename);
+    throw SDLError("Error loading surface from " + filename);
   liberate();
   texture_ = SDL_CreateTextureFromSurface(renderer_, tempSurface);
   if (texture_ == nullptr)
-    throw new (SDLError)("Error loading texture from " + filename);
+    throw SDLError("Error loading texture from " + filename);
   numRows_ = nRows;
   numCols_ = nCols;
   w_ = tempSurface->w;
@@ -60,7 +61,6 @@ void Texture::load(string filename, Uint32 nRows, Uint32 nCols) {
   SDL_FreeSurface(tempSurface);
 }
 
-/// Public
 // Frees memory
 void Texture::liberate() {
   SDL_DestroyTexture(texture_);
@@ -68,25 +68,21 @@ void Texture::liberate() {
   w_ = h_ = 0;
 }
 
-/// Public
 // Defines the render behaviour
-void Texture::render(const SDL_Rect &destRect, SDL_RendererFlip flip) const {
+void Texture::render(const SDL_Rect &rect, const SDL_RendererFlip flip) const {
   SDL_Rect srcRect;
   srcRect.x = 0;
   srcRect.y = 0;
   srcRect.w = w_;
   srcRect.h = h_;
-  SDL_RenderCopyEx(renderer_, texture_, &srcRect, &destRect, 0, 0, flip);
+  SDL_RenderCopyEx(renderer_, texture_, &srcRect, &rect, 0, nullptr, flip);
 }
 
-/// Public
 // Renders the current frame
-void Texture::renderFrame(const SDL_Rect &destRect, int row, int col, int angle,
-                          SDL_RendererFlip flip) const {
-  SDL_Rect srcRect;
-  srcRect.x = fw_ * col;
-  srcRect.y = fh_ * row;
-  srcRect.w = fw_;
-  srcRect.h = fh_;
-  SDL_RenderCopyEx(renderer_, texture_, &srcRect, &destRect, angle, 0, flip);
+void Texture::renderFrame(const SDL_Rect &destRect, const int row,
+                          const int col, const int angle,
+                          const SDL_RendererFlip flip) const {
+  SDL_Rect srcRect{int(fw_ * col), int(fh_ * row), int(fw_), int(fh_)};
+  SDL_RenderCopyEx(renderer_, texture_, &srcRect, &destRect, angle, nullptr,
+                   flip);
 }
